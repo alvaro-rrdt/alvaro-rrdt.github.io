@@ -2,7 +2,7 @@
 import { SITE, SOCIALS } from "@/config";
 
 interface Props {
-  /** Page title — rendered as `${title} · ${SITE.name}`. Omit on the homepage. */
+  /** Page title, rendered as `${title} · ${SITE.name}`. Omit on the homepage. */
   title?: string;
   description?: string;
   /** OG image path relative to /public */
@@ -27,7 +27,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
 const socialImageURL = new URL(image, siteOrigin);
 const pageTitle = title
   ? `${title} · ${SITE.name}`
-  : `${SITE.name} — ${SITE.jobTitle}`;
+  : `${SITE.name} · ${SITE.jobTitle}`;
 
 /** JSON-LD Person schema so search engines associate the name with the role. */
 const personSchema = {

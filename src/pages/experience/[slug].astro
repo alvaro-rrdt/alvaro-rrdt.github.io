@@ -15,7 +15,7 @@ const { Content } = await render(entry);
 const d = entry.data;
 ---
 
-<BaseLayout title={`${d.company} — ${d.role}`} description={d.summary}>
+<BaseLayout title={`${d.company} · ${d.role}`} description={d.summary}>
   <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
     <p class="font-mono text-sm text-zinc-500">
       $ cat

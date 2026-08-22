@@ -8,4 +8,4 @@ severity: SEV-3
 timeToResolve: 6h
 ---
 
-> ✍️ **In progress** — the full write-up is being prepared. Check back soon.
+> ✍️ **In progress.** The full write-up is being prepared, check back soon.

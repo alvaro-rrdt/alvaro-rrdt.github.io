@@ -3,8 +3,8 @@ import { STATUS_URL } from "@/config";
 
 /**
  * The status endpoint is fetched ONCE, here in the frontmatter, during the
- * static build. The result is baked into plain HTML — zero runtime JS.
- * Unset endpoint or failed request ⇒ the strip simply doesn't render.
+ * static build. The result is baked into plain HTML, no runtime JS.
+ * Unset endpoint or failed request means the strip simply doesn't render.
  */
 let strip: { ok: boolean } | null = null;
 
@@ -30,7 +30,7 @@ if (STATUS_URL) {
           aria-hidden="true"
         />
         <span class={strip.ok ? "text-platform" : "text-security"}>
-          {strip.ok ? "all systems operational" : "degraded — investigating"}
+          {strip.ok ? "all systems operational" : "degraded: investigating"}
         </span>
         <span class="hidden text-zinc-600 sm:inline">
           // homelab status, baked at build time

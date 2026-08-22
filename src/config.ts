@@ -10,27 +10,26 @@ export interface SocialLink {
 }
 
 /**
- * TODO(phase-0): values marked TODO are placeholders — confirm before launch.
+ * Values marked TODO are placeholders pending confirmation.
  */
 export const SITE = {
   name: "Alvaro Riccardi",
   /**
-   * Production origin. TODO(deploy phase): confirm final URL —
-   * `https://<user>.github.io` vs custom domain.
+   * Production origin. TODO(deploy phase): confirm final URL,
+   * either https://<user>.github.io or a custom domain.
    */
   url: "https://alvaro-rrdt.github.io",
   jobTitle: "Software Engineer · Platform Engineering · Security-Minded",
   tagline:
-    "I build reliable systems by day — and take them apart in HackTheBox labs by night.",
+    "I build reliable systems by day and take them apart in HackTheBox labs by night.",
   description:
-    "Personal site of Alvaro Riccardi — software engineer focused on platform engineering, cloud infrastructure and reliability, with a practical cybersecurity edge.",
-  /** Path (served from /public). TODO(launch): replace with the real CV. */
+    "Personal site of Alvaro Riccardi, software engineer focused on platform engineering, cloud infrastructure and reliability, with a practical cybersecurity edge.",
+  /** Path served from /public. TODO(launch): replace with the real CV. */
   cvPath: "/cv.pdf",
 } as const;
 
 /**
  * Social/profile links shown in the hero and footer.
- * TODO(phase-0): confirm remaining URLs below.
  */
 export const SOCIALS: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/alvaro-rrdt" },
@@ -53,7 +52,7 @@ export const SOURCE_REPO_URL = "https://github.com/alvaro-rrdt/Personal-website"
  * Public status endpoint fetched ONCE at build time to bake the homepage
  * status strip into static HTML (zero runtime JS). Leave empty ("") to hide
  * the strip.
- * TODO(phase-0): e.g. an Uptime Kuma status-page URL — anything that returns
- * HTTP 200 when healthy, non-200 when degraded.
+ * TODO(phase-0): e.g. an Uptime Kuma status-page URL, anything returning
+ * HTTP 200 when healthy.
  */
 export const STATUS_URL = "";

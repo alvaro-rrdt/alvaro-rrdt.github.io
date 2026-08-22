@@ -56,15 +56,15 @@ const isDossier = d.category === "security";
         <div class="grid grid-cols-2 gap-3 font-mono text-xs sm:grid-cols-4">
           <div>
             <p class="text-zinc-600">machine</p>
-            <p class="mt-0.5 text-zinc-200">{d.machine ?? "—"}</p>
+            <p class="mt-0.5 text-zinc-200">{d.machine ?? "TBA"}</p>
           </div>
           <div>
             <p class="text-zinc-600">difficulty</p>
-            <p class="mt-0.5 text-zinc-200">{d.difficulty ?? "—"}</p>
+            <p class="mt-0.5 text-zinc-200">{d.difficulty ?? "TBA"}</p>
           </div>
           <div>
             <p class="text-zinc-600">os</p>
-            <p class="mt-0.5 text-zinc-200">{d.os ?? "—"}</p>
+            <p class="mt-0.5 text-zinc-200">{d.os ?? "TBA"}</p>
           </div>
           <div>
             <p class="text-zinc-600">category</p>
@@ -84,7 +84,7 @@ const isDossier = d.category === "security";
 
         {d.spoiler && (
           <p class="mt-3 rounded border border-security/40 bg-security/10 px-3 py-2 font-mono text-xs text-security">
-            ⚠ SPOILERS — full solution walkthrough for a retired machine.
+            ⚠ SPOILERS: full solution walkthrough for a retired machine.
             Try it yourself first.
           </p>
         )}

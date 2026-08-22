@@ -9,7 +9,7 @@ export async function GET(context: APIContext) {
   ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
   return rss({
-    title: `${SITE.name} — writing`,
+    title: `${SITE.name} · writing`,
     description: SITE.description,
     site: context.site ?? new URL(SITE.url),
     items: posts.map((post) => ({
