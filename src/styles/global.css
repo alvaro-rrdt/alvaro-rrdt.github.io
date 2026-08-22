@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+/*
+ * Theme tokens — Tailwind v4 CSS-first config.
+ * Each `--color-*` / `--font-*` here generates matching utility classes
+ * (e.g. `--color-platform` → `bg-platform`, `text-platform`).
+ */
+@theme {
+  /* Track accents: emerald = platform/infra, amber = security */
+  --color-platform: #34d399;
+  --color-security: #fbbf24;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-zinc-950 font-sans text-zinc-100 antialiased;
+  }
+
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-platform) 35%, transparent);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

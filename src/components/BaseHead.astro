@@ -1,0 +1,70 @@
+---
+import { SITE, SOCIALS } from "@/config";
+
+interface Props {
+  /** Page title — rendered as `${title} · ${SITE.name}`. Omit on the homepage. */
+  title?: string;
+  description?: string;
+  /** OG image path relative to /public */
+  image?: string;
+  type?: "website" | "article";
+}
+
+const {
+  title,
+  description = SITE.description,
+  // TODO(phase-5): generate a real 1200×630 OG image into public/
+  image = "/og-image.png",
+  type = "website",
+} = Astro.props;
+
+/**
+ * Canonical URL is derived from Astro's `site` + `base` config (set in the
+ * deploy phase) so every page emits correct absolute URLs automatically.
+ */
+const siteOrigin = Astro.site ?? new URL(SITE.url);
+const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
+const socialImageURL = new URL(image, siteOrigin);
+const pageTitle = title
+  ? `${title} · ${SITE.name}`
+  : `${SITE.name} — ${SITE.jobTitle}`;
+
+/** JSON-LD Person schema so search engines associate the name with the role. */
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: SITE.name,
+  jobTitle: "Software Engineer",
+  description: SITE.description,
+  url: canonicalURL.href,
+  sameAs: SOCIALS.map((social) => social.href),
+};
+---
+
+<!-- Core meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content={SITE.name} />
+<meta name="theme-color" content="#09090b" />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="canonical" href={canonicalURL.href} />
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={SITE.name} />
+<meta property="og:url" content={canonicalURL.href} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={socialImageURL.href} />
+
+<!-- Twitter/X -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={socialImageURL.href} />
+
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

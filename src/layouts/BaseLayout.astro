@@ -1,0 +1,27 @@
+---
+import "@/styles/global.css";
+import BaseHead from "@/components/BaseHead.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-zinc-900 focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-platform"
+    >
+      Skip to content
+    </a>
+    <slot />
+  </body>
+</html>

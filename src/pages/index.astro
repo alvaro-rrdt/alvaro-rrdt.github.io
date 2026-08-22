@@ -1,17 +1,19 @@
 ---
-
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/config";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <!-- TODO(phase-2): replace with full homepage sections -->
+  <main
+    id="main"
+    class="mx-auto flex min-h-dvh max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center"
+  >
+    <p class="font-mono text-sm text-zinc-500">$ whoami</p>
+    <h1 class="text-5xl font-bold tracking-tight text-zinc-50">
+      {SITE.name}
+    </h1>
+    <p class="font-mono text-lg text-platform">{SITE.jobTitle}</p>
+    <p class="max-w-xl text-balance text-zinc-400">{SITE.tagline}</p>
+  </main>
+</BaseLayout>
