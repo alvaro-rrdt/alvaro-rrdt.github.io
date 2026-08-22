@@ -134,6 +134,13 @@ const commands = [
       }
       if (root.classList.contains("hidden")) return;
 
+      // Keep keyboard focus inside the palette while it is open
+      if (event.key === "Tab") {
+        event.preventDefault();
+        input.focus();
+        return;
+      }
+
       if (event.key === "Escape") close();
       if (event.key === "ArrowDown") {
         event.preventDefault();

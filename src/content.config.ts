@@ -71,6 +71,7 @@ const testimonials = defineCollection({
     name: z.string(),
     role: z.string(),
     order: z.number(),
+    draft: z.boolean().default(false),
   }),
 });
 

@@ -16,13 +16,14 @@ const screenshots = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/projects/*.{png,jpg,jpeg,webp,avif}",
 );
 
-const resolveImage = (fileName?: string) => {
-  if (!fileName) return null;
-  const match = Object.entries(screenshots).find(([path]) =>
-    path.endsWith(`/${fileName}`),
-  );
-  return match ? match[1]().default : null;
-};
+const imageByName = new Map<string, ImageMetadata>();
+for (const [path, load] of Object.entries(screenshots)) {
+  const mod = await load();
+  imageByName.set(path.split("/").pop() ?? "", mod.default);
+}
+
+const resolveImage = (fileName?: string) =>
+  fileName ? (imageByName.get(fileName) ?? null) : null;
 ---
 
 <Section id="projects" prompt="~/projects" title="Selected work">
