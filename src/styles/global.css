@@ -1,15 +1,45 @@
 @import "tailwindcss";
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/jetbrains-mono";
 @plugin "@tailwindcss/typography";
 
 /*
  * Theme tokens: Tailwind v4 CSS-first config.
  * Each `--color-*` here generates matching utilities
- * (e.g. `--color-platform` → `bg-platform`, `text-platform`).
+ * (e.g. `--color-platform` -> `bg-platform`, `text-platform`).
  */
 @theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo,
+    Consolas, monospace;
+
   /* Track accents: emerald = platform/infra, amber = security */
   --color-platform: #34d399;
   --color-security: #fbbf24;
+}
+
+/*
+ * Light mode: Tailwind v4 utilities consume these CSS variables directly,
+ * so redefining them under [data-theme="light"] flips the entire site.
+ * Accents darken for AA contrast on white surfaces.
+ */
+:root[data-theme="light"] {
+  --color-zinc-50: #09090b;
+  --color-zinc-100: #27272a;
+  --color-zinc-300: #3f3f46;
+  --color-zinc-400: #52525b;
+  --color-zinc-500: #71717a;
+  --color-zinc-600: #a1a1aa;
+  --color-zinc-700: #d4d4d8;
+  --color-zinc-800: #e4e4e7;
+  --color-zinc-900: #ffffff;
+  --color-zinc-950: #fafafa;
+
+  --color-platform: #059669;
+  --color-security: #b45309;
+
+  color-scheme: light;
 }
 
 @layer base {
@@ -38,7 +68,7 @@
 .dot-grid {
   background-image: radial-gradient(
     circle at 1px 1px,
-    rgb(255 255 255 / 0.05) 1px,
+    var(--grid-dot, rgb(255 255 255 / 0.05)) 1px,
     transparent 0
   );
   background-size: 28px 28px;
@@ -47,6 +77,24 @@
     black 25%,
     transparent 75%
   );
+}
+
+:root[data-theme="light"] {
+  --grid-dot: rgb(0 0 0 / 0.07);
+}
+
+/* Scroll-reveal: elements start hidden only when JS is running */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity 0.6s ease,
+    transform 0.6s ease;
 }
 
 /* Slim, theme-matched scrollbars */
@@ -75,6 +123,29 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Light-mode readability for markdown articles */
+:root[data-theme="light"] .prose-invert {
+  --tw-prose-body: #3f3f46;
+  --tw-prose-headings: #09090b;
+  --tw-prose-lead: #52525b;
+  --tw-prose-links: #047857;
+  --tw-prose-bold: #18181b;
+  --tw-prose-counters: #71717a;
+  --tw-prose-bullets: #a1a1aa;
+  --tw-prose-hr: #e4e4e7;
+  --tw-prose-quotes: #3f3f46;
+  --tw-prose-quote-borders: #059669;
+  --tw-prose-captions: #71717a;
+  --tw-prose-code: #18181b;
+  --tw-prose-th-borders: #e4e4e7;
+  --tw-prose-td-borders: #e4e4e7;
 }
 
 /* Print: only the CV sheet survives, clean white paper output */

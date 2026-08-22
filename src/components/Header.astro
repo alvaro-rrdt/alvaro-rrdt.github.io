@@ -1,10 +1,12 @@
 ---
 import { SITE } from "@/config";
+import ThemeToggle from "@/components/ThemeToggle.astro";
 
 const links = [
   { href: "#about", label: "about" },
   { href: "/blog", label: "blog" },
   { href: "#experience", label: "experience" },
+  { href: "#security", label: "security" },
   { href: "#certifications", label: "certs" },
 ];
 ---
@@ -13,18 +15,19 @@ const links = [
   class="fixed inset-x-0 top-0 z-40 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur"
 >
   <nav
-    class="mx-auto flex h-14 max-w-5xl items-center justify-between px-6"
+    class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6"
     aria-label="Main navigation"
   >
     <a
       href="#top"
-      class="font-mono text-sm font-semibold text-zinc-100 transition-colors hover:text-platform"
+      class="shrink-0 font-mono text-sm font-semibold text-zinc-100 transition-colors hover:text-platform"
     >
       &gt;_{SITE.name.toLowerCase()}
     </a>
 
-    <div class="flex items-center gap-4">
-      <ul class="hidden items-center gap-1 font-mono text-sm text-zinc-400 md:flex">
+    <!-- Desktop nav -->
+    <div class="hidden items-center gap-4 md:flex">
+      <ul class="flex items-center gap-1 font-mono text-sm text-zinc-400">
         {
           links.map((link) => (
             <li>
@@ -38,6 +41,18 @@ const links = [
           ))
         }
       </ul>
+
+      <button
+        type="button"
+        data-palette-open
+        class="rounded-md border border-zinc-800 px-2 py-1.5 font-mono text-xs text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300"
+        aria-label="Open quick navigation"
+      >
+        ⌘K
+      </button>
+
+      <ThemeToggle />
+
       <a
         href="/cv"
         class="rounded-md border border-platform/40 bg-platform/10 px-3 py-1.5 font-mono text-sm text-platform transition-colors hover:bg-platform/20"
@@ -45,5 +60,57 @@ const links = [
         cv
       </a>
     </div>
+
+    <!-- Mobile controls -->
+    <div class="flex items-center gap-1 md:hidden">
+      <button
+        type="button"
+        data-palette-open
+        class="rounded-md border border-zinc-800 px-2 py-1.5 font-mono text-xs text-zinc-400"
+        aria-label="Open quick navigation"
+      >
+        ⌘K
+      </button>
+      <ThemeToggle />
+      <a
+        href="/cv"
+        class="rounded-md border border-platform/40 bg-platform/10 px-2.5 py-1.5 font-mono text-sm text-platform"
+      >
+        cv
+      </a>
+    </div>
+  </nav>
+
+  <!-- Mobile nav: horizontally scrollable chips, no JS needed -->
+  <nav
+    aria-label="Section shortcuts"
+    class="border-t border-zinc-800/60 bg-zinc-950/80 md:hidden"
+  >
+    <ul
+      class="scrollbar-none flex items-center gap-2 overflow-x-auto px-4 py-2 font-mono text-xs text-zinc-400"
+    >
+      {
+        links.map((link) => (
+          <li class="shrink-0">
+            <a
+              href={link.href}
+              class="inline-block rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 transition-colors hover:border-platform/50 hover:text-platform"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </nav>
 </header>
+
+<style>
+  /* Hide the scrollbar on the mobile chip strip while keeping it scrollable */
+  .scrollbar-none {
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+</style>
