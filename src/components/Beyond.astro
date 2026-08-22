@@ -1,0 +1,43 @@
+---
+import Section from "@/components/Section.astro";
+
+/**
+ * The human section — kept short and dignified on purpose.
+ * TODO(phase-0): replace every placeholder below with real details:
+ *   1. Two or three sentences: who you are when nothing is on fire
+ *   2. One light anecdote (travel, project-with-feelings, funny fail)
+ *   3. Real interest chips (hobbies, sport, music, languages…)
+ */
+const interests = ["TODO — hobby", "TODO — hobby", "TODO — language", "TODO — sport or game"];
+---
+
+<Section id="beyond" prompt="~/off-the-clock.md" title="Beyond the terminal">
+  <div class="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
+    <div class="space-y-4 leading-relaxed text-zinc-400">
+      <p>
+        TODO — two or three sentences about who you are outside work. What
+        pulls your attention when no terminal is open. Concrete beats generic.
+      </p>
+      <p>
+        TODO — one small, honest anecdote. The kind of detail a stranger could
+        ask you about at the coffee machine.
+      </p>
+    </div>
+
+    <aside
+      class="rounded-xl border border-zinc-800 bg-zinc-900 p-5 font-mono text-sm"
+      aria-label="Interests"
+    >
+      <p class="text-zinc-500">$ interests --list</p>
+      <ul class="mt-3 flex flex-wrap gap-2">
+        {
+          interests.map((interest) => (
+            <li class="rounded border border-zinc-700/70 bg-zinc-950/50 px-2 py-1 text-xs text-zinc-300">
+              {interest}
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
+</Section>

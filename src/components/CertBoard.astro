@@ -18,6 +18,13 @@ interface Cert {
  */
 const certs: Cert[] = [
   {
+    name: "CKA",
+    fullName: "Certified Kubernetes Administrator",
+    issuer: "CNCF",
+    status: "planned",
+    note: "pairs with the homelab", // TODO: in progress? tell me the %
+  },
+  {
     name: "CJCA",
     fullName: "Certified Junior Cybersecurity Associate",
     issuer: "HackTheBox",
@@ -43,7 +50,7 @@ const certs: Cert[] = [
 ---
 
 <Section id="certifications" prompt="~/certs --list" title="Certification journey">
-  <div class="grid gap-4 sm:grid-cols-3">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {
       certs.map((cert) => (
         <article class="rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-600">
