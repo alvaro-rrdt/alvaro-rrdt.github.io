@@ -1,11 +1,11 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts } from "@/lib/content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
-  const categories = [...new Set(posts.map((post) => post.data.category))];
+  const all = await getPosts();
+  const categories = [...new Set(all.map((post) => post.data.category))];
   return categories.map((category) => ({
     params: { category },
     props: { category },
@@ -13,10 +13,9 @@ export async function getStaticPaths() {
 }
 
 const { category } = Astro.props;
-const all = (
-  await getCollection("blog", ({ data }) => !data.draft)
-).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const posts = all.filter((post) => post.data.category === category);
+const posts = (await getPosts()).filter(
+  (post) => post.data.category === category,
+);
 
 const accent =
   category === "security"

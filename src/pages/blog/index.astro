@@ -1,11 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts } from "@/lib/content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 
-const posts = (
-  await getCollection("blog", ({ data }) => !data.draft)
-).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = await getPosts();
 
 const trackClass: Record<string, string> = {
   platform: "border-platform/30 bg-platform/10 text-platform",

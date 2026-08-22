@@ -1,14 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts } from "@/lib/content";
 import Section from "@/components/Section.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 
 /** Latest three published posts, newest first. */
-const posts = (
-  await getCollection("blog", ({ data }) => !data.draft)
-)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+const posts = (await getPosts()).slice(0, 3);
 
 const trackClass: Record<string, string> = {
   platform: "border-platform/30 bg-platform/10 text-platform",
