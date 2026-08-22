@@ -1,0 +1,62 @@
+---
+import Section from "@/components/Section.astro";
+
+interface SkillGroup {
+  category: string;
+  skills: string[];
+}
+
+/**
+ * TODO(phase-0): trim/extend lists so every chip is something you'd defend
+ * in an interview screen-share.
+ */
+const groups: SkillGroup[] = [
+  {
+    category: "languages",
+    skills: ["TypeScript", "Go", "Python", "Bash", "SQL"],
+  },
+  {
+    category: "frameworks & runtimes",
+    skills: ["Astro", "Node.js", "Docker", "Kubernetes"],
+  },
+  {
+    category: "cloud & devops",
+    skills: ["GCP", "AWS", "Terraform", "Pulumi", "ArgoCD", "Renovate"],
+  },
+  {
+    category: "observability",
+    skills: ["Prometheus", "Grafana", "Uptime Kuma", "Loki"],
+  },
+  {
+    category: "security",
+    skills: ["HackTheBox", "Exegol", "Nmap", "Burp Suite", "SOPS"],
+  },
+  {
+    category: "practices",
+    skills: ["GitOps", "CI/CD", "IaC", "Postmortems", "AI-assisted dev"],
+  },
+];
+---
+
+<Section id="skills" prompt="~/skills.json" title="Toolbox">
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      groups.map((group) => (
+        <div class="rounded-lg border border-zinc-800 bg-zinc-900 p-5">
+          <h3 class="font-mono text-sm text-zinc-500">
+            <span class="text-platform">"</span>
+            {group.category}
+            <span class="text-platform">":</span>
+          </h3>
+          <ul class="mt-4 flex flex-wrap gap-2">
+            {group.skills.map((skill) => (
+              <li class="rounded border border-zinc-700/70 bg-zinc-950/50 px-2 py-1 font-mono text-xs text-zinc-300">
+                {skill}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</Section>

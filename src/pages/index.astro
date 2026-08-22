@@ -1,19 +1,30 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { SITE } from "@/config";
+import Header from "@/components/Header.astro";
+import Hero from "@/components/Hero.astro";
+import StatusStrip from "@/components/StatusStrip.astro";
+import About from "@/components/About.astro";
+import Projects from "@/components/Projects.astro";
+import Architecture from "@/components/Architecture.astro";
+import BlogSection from "@/components/BlogSection.astro";
+import Experience from "@/components/Experience.astro";
+import CertBoard from "@/components/CertBoard.astro";
+import Skills from "@/components/Skills.astro";
+import Footer from "@/components/Footer.astro";
 ---
 
 <BaseLayout>
-  <!-- TODO(phase-2): replace with full homepage sections -->
-  <main
-    id="main"
-    class="mx-auto flex min-h-dvh max-w-3xl flex-col items-center justify-center gap-6 px-6 text-center"
-  >
-    <p class="font-mono text-sm text-zinc-500">$ whoami</p>
-    <h1 class="text-5xl font-bold tracking-tight text-zinc-50">
-      {SITE.name}
-    </h1>
-    <p class="font-mono text-lg text-platform">{SITE.jobTitle}</p>
-    <p class="max-w-xl text-balance text-zinc-400">{SITE.tagline}</p>
+  <Header />
+  <main id="main">
+    <Hero />
+    <StatusStrip />
+    <About />
+    <Projects />
+    <Architecture />
+    <BlogSection />
+    <Experience />
+    <CertBoard />
+    <Skills />
   </main>
+  <Footer />
 </BaseLayout>

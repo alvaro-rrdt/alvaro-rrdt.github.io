@@ -1,0 +1,51 @@
+---
+import { SITE } from "@/config";
+
+const links = [
+  { href: "#about", label: "about" },
+  { href: "#projects", label: "projects" },
+  { href: "#writing", label: "writing" },
+  { href: "#experience", label: "experience" },
+  { href: "#certifications", label: "certs" },
+];
+---
+
+<header
+  class="fixed inset-x-0 top-0 z-40 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur"
+>
+  <nav
+    class="mx-auto flex h-14 max-w-5xl items-center justify-between px-6"
+    aria-label="Main navigation"
+  >
+    <a
+      href="#top"
+      class="font-mono text-sm font-semibold text-zinc-100 transition-colors hover:text-platform"
+    >
+      &gt;_{SITE.name.toLowerCase()}
+    </a>
+
+    <div class="flex items-center gap-4">
+      <ul class="hidden items-center gap-5 font-mono text-sm text-zinc-400 md:flex">
+        {
+          links.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                class="transition-colors hover:text-platform"
+              >
+                ./{link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <a
+        href={SITE.cvPath}
+        download
+        class="rounded-md border border-platform/40 bg-platform/10 px-3 py-1.5 font-mono text-sm text-platform transition-colors hover:bg-platform/20"
+      >
+        cv.pdf
+      </a>
+    </div>
+  </nav>
+</header>

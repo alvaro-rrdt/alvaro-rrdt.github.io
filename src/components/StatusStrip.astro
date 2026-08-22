@@ -1,0 +1,41 @@
+---
+import { STATUS_URL } from "@/config";
+
+/**
+ * The status endpoint is fetched ONCE, here in the frontmatter, during the
+ * static build. The result is baked into plain HTML — zero runtime JS.
+ * Unset endpoint or failed request ⇒ the strip simply doesn't render.
+ */
+let strip: { ok: boolean } | null = null;
+
+if (STATUS_URL) {
+  try {
+    const res = await fetch(STATUS_URL, { signal: AbortSignal.timeout(4000) });
+    strip = { ok: res.ok };
+  } catch {
+    strip = null;
+  }
+}
+---
+
+{
+  strip && (
+    <div class="border-y border-zinc-800/60 bg-zinc-900/40">
+      <div class="mx-auto flex max-w-5xl items-center gap-3 px-6 py-2.5 font-mono text-xs">
+        <span
+          class:list={[
+            "inline-block size-2 shrink-0 rounded-full",
+            strip.ok ? "bg-platform" : "bg-security",
+          ]}
+          aria-hidden="true"
+        />
+        <span class={strip.ok ? "text-platform" : "text-security"}>
+          {strip.ok ? "all systems operational" : "degraded — investigating"}
+        </span>
+        <span class="hidden text-zinc-600 sm:inline">
+          // homelab status, baked at build time
+        </span>
+      </div>
+    </div>
+  )
+}

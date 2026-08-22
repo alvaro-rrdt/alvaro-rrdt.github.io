@@ -1,0 +1,95 @@
+---
+import Section from "@/components/Section.astro";
+
+type CertStatus = "in-progress" | "planned" | "earned";
+
+interface Cert {
+  name: string;
+  fullName: string;
+  issuer: string;
+  status: CertStatus;
+  /** Only meaningful for in-progress certs. TODO(phase-0): real values. */
+  progress?: number;
+  note?: string;
+}
+
+/**
+ * TODO(phase-0): confirm statuses/order + fill progress + verification URLs.
+ */
+const certs: Cert[] = [
+  {
+    name: "CJCA",
+    fullName: "Certified Junior Cybersecurity Associate",
+    issuer: "HackTheBox",
+    status: "in-progress",
+    progress: 55,
+    note: "modules in progress",
+  },
+  {
+    name: "CDSA",
+    fullName: "Certified Defensive Security Analyst",
+    issuer: "HackTheBox",
+    status: "planned",
+    note: "queued next",
+  },
+  {
+    name: "CPTS",
+    fullName: "Certified Penetration Testing Specialist",
+    issuer: "HackTheBox",
+    status: "planned",
+    note: "the long game",
+  },
+];
+---
+
+<Section id="certifications" prompt="~/certs --list" title="Certification journey">
+  <div class="grid gap-4 sm:grid-cols-3">
+    {
+      certs.map((cert) => (
+        <article class="rounded-lg border border-zinc-800 bg-zinc-900 p-5">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-mono text-lg font-bold text-zinc-50">
+              {cert.name}
+            </h3>
+            <span class="font-mono text-xs text-zinc-600">{cert.issuer}</span>
+          </div>
+
+          <p class="mt-1 min-h-10 text-sm text-zinc-400">{cert.fullName}</p>
+
+          <div class="mt-4">
+            {cert.status === "earned" && (
+              <span class="font-mono text-xs text-platform">✓ earned</span>
+            )}
+
+            {cert.status === "in-progress" && (
+              <div>
+                <div
+                  class="h-1.5 overflow-hidden rounded-full bg-zinc-800"
+                  role="progressbar"
+                  aria-label={`${cert.name} progress`}
+                  aria-valuenow={cert.progress}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                >
+                  <div
+                    class="h-full rounded-full bg-security"
+                    style={`width: ${cert.progress ?? 0}%`}
+                  />
+                </div>
+                <p class="mt-2 font-mono text-xs text-security">
+                  in progress · {cert.note}
+                </p>
+              </div>
+            )}
+
+            {cert.status === "planned" && (
+              <p class="font-mono text-xs text-zinc-500">
+                □ planned · {cert.note}
+              </p>
+            )}
+          </div>
+        </article>
+      ))
+    }
+  </div>
+</Section>

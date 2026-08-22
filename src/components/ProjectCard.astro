@@ -1,0 +1,83 @@
+---
+export type Track = "platform" | "security";
+
+interface Props {
+  title: string;
+  description: string;
+  stack: string[];
+  track?: Track;
+  href?: string;
+  synced?: boolean;
+}
+
+const {
+  title,
+  description,
+  stack,
+  track = "platform",
+  href,
+  synced = false,
+} = Astro.props;
+
+const accentText = track === "platform" ? "text-platform" : "text-security";
+const accentBorder =
+  track === "platform"
+    ? "border-platform/40 hover:border-platform/70"
+    : "border-security/40 hover:border-security/70";
+---
+
+<article
+  class="group flex flex-col overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900 transition-colors hover:border-zinc-600"
+>
+  <!-- Screenshot slot (real images land with the content system) -->
+  <div
+    class="flex aspect-video items-center justify-center border-b border-zinc-800 bg-gradient-to-br from-zinc-800/80 to-zinc-900"
+    aria-hidden="true"
+  >
+    <span class="font-mono text-sm text-zinc-600">
+      {title.toLowerCase().replaceAll(" ", "_")}.png
+    </span>
+  </div>
+
+  <div class="flex flex-1 flex-col p-5">
+    <div class="flex items-start justify-between gap-3">
+      <h3 class="font-semibold text-zinc-50">{title}</h3>
+      {
+        synced && (
+          <span class="shrink-0 rounded border border-platform/30 bg-platform/10 px-1.5 py-0.5 font-mono text-[11px] text-platform">
+            ✓ synced
+          </span>
+        )
+      }
+    </div>
+
+    <p class="mt-2 flex-1 text-sm leading-relaxed text-zinc-400">
+      {description}
+    </p>
+
+    <ul class="mt-4 flex flex-wrap gap-2" aria-label="Technologies used">
+      {
+        stack.map((tech) => (
+          <li class="rounded border border-zinc-700/70 px-2 py-0.5 font-mono text-xs text-zinc-400">
+            {tech}
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      href && (
+        <a
+          href={href}
+          class:list={[
+            "mt-4 inline-block font-mono text-sm transition-colors",
+            accentBorder,
+            accentText,
+          ]}
+        >
+          read write-up →
+        </a>
+      )
+    }
+  </div>
+</article>

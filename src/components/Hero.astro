@@ -1,0 +1,112 @@
+---
+import { SITE, SOCIALS } from "@/config";
+
+/** Job title split on "·" so separators can be dimmed. */
+const titleParts = SITE.jobTitle.split(" · ");
+---
+
+<section id="top" class="flex min-h-dvh items-center pt-14">
+  <div class="mx-auto w-full max-w-5xl px-6">
+    <p class="font-mono text-lg text-zinc-300" aria-hidden="true">
+      <span class="typing">$ whoami</span><span
+        class="caret"
+        aria-hidden="true"></span>
+    </p>
+
+    <h1
+      class="mt-6 text-balance text-4xl font-bold tracking-tight text-zinc-50 sm:text-6xl"
+    >
+      {SITE.name}
+    </h1>
+
+    <p class="mt-4 font-mono text-base sm:text-lg">
+      {
+        titleParts.map((part, i) => (
+          <>
+            {i > 0 && <span class="mx-2 text-zinc-600">·</span>}
+            <span class:list={[i === 0 ? "text-platform" : "text-zinc-400"]}>
+              {part}
+            </span>
+          </>
+        ))
+      }
+    </p>
+
+    <p class="mt-6 max-w-xl text-lg leading-relaxed text-zinc-400">
+      {SITE.tagline}
+    </p>
+
+    <div class="mt-10 flex flex-wrap items-center gap-3">
+      <a
+        href={SITE.cvPath}
+        download
+        class="rounded-md bg-platform px-4 py-2.5 font-mono text-sm font-semibold text-zinc-950 transition-[filter] hover:brightness-110"
+      >
+        Download CV ↓
+      </a>
+      {
+        SOCIALS.map((social) => (
+          <a
+            href={social.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="rounded-md border border-zinc-800 bg-zinc-900 px-3 py-2.5 font-mono text-sm text-zinc-300 transition-colors hover:border-platform/50 hover:text-platform"
+          >
+            [{social.label}]
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  /*
+   * Pure-CSS typing effect: "$ whoami" is 8 characters wide.
+   * Disabled globally under prefers-reduced-motion (see global.css).
+   */
+  .typing {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+    animation:
+      typing 1.4s steps(8, end) forwards,
+      hide-caret-border 0.01s linear 1.4s forwards;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.55ch;
+    height: 1.1em;
+    translate: 0 0.18em;
+    background: var(--color-platform);
+    animation: caret-blink 0.9s step-end infinite;
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 8ch;
+    }
+  }
+
+  /* Once typing finishes, the border-style caret is replaced by the block one */
+  @keyframes hide-caret-border {
+    to {
+      border-right-color: transparent;
+    }
+  }
+
+  .typing {
+    border-right: 2px solid transparent;
+  }
+
+  @keyframes caret-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

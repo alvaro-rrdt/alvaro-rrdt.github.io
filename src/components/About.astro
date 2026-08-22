@@ -1,0 +1,54 @@
+---
+import Section from "@/components/Section.astro";
+
+/**
+ * TODO(phase-0): confirm wording (especially the Saab award line).
+ */
+const facts = [
+  "Software engineer by trade, platform engineer at heart",
+  "Cloud: GCP & AWS · IaC: Terraform, plus Go/Pulumi at home",
+  "AI-assisted development workflows — owned end-to-end",
+  "EU national · open to relocation",
+];
+---
+
+<Section id="about" prompt="~/about.md" title="About">
+  <div class="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
+    <div class="space-y-4 leading-relaxed text-zinc-400">
+      <p>
+        I'm a software engineer who gravitates toward the platform layer — the
+        CI runners, the GitOps controllers, the PostgreSQL upgrades nobody
+        wants to touch. At Saab I worked on infrastructure that earned an
+        achievement award
+        <!-- TODO(phase-0): exact award name + one-line context -->
+        , and I've been automating my way through cloud environments ever
+        since.
+      </p>
+      <p>
+        Day to day that means GCP and AWS provisioned with Terraform,
+        self-hosted Kubernetes glued together by ArgoCD, and AI-assisted
+        development workflows that speed me up without blurring ownership.
+        Off the clock I run a tailnet-only homelab and work through
+        HackTheBox labs — because understanding how systems break is how you
+        learn to keep them up.
+      </p>
+    </div>
+
+    <aside
+      class="rounded-lg border border-zinc-800 bg-zinc-900 p-5 font-mono text-sm"
+      aria-label="Quick facts"
+    >
+      <p class="text-zinc-500">$ facts --brief</p>
+      <ul class="mt-3 space-y-2.5">
+        {
+          facts.map((fact) => (
+            <li class="flex gap-2 text-zinc-300">
+              <span class="select-none text-platform">→</span>
+              {fact}
+            </li>
+          ))
+        }
+      </ul>
+    </aside>
+  </div>
+</Section>

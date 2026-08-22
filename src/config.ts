@@ -34,8 +34,12 @@ export const SITE = {
  */
 export const SOCIALS: SocialLink[] = [
   { label: "GitHub", href: "https://github.com/alvaro-rrdt" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/TODO" }, // TODO
-  { label: "HackTheBox", href: "https://app.hackthebox.com/users/TODO" }, // TODO
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/alvarorrdt/" },
+  {
+    label: "HackTheBox",
+    // canonical profile URL (utm tracking param stripped)
+    href: "https://profile.hackthebox.com/profile/019e45c5-9186-721d-8a8c-488f1315b045",
+  },
 ];
 
 /**
@@ -44,3 +48,12 @@ export const SOCIALS: SocialLink[] = [
  * Used e.g. for a "view source" footer link.
  */
 export const SOURCE_REPO_URL = "https://github.com/alvaro-rrdt/Personal-website";
+
+/**
+ * Public status endpoint fetched ONCE at build time to bake the homepage
+ * status strip into static HTML (zero runtime JS). Leave empty ("") to hide
+ * the strip.
+ * TODO(phase-0): e.g. an Uptime Kuma status-page URL — anything that returns
+ * HTTP 200 when healthy, non-200 when degraded.
+ */
+export const STATUS_URL = "";

@@ -1,0 +1,63 @@
+---
+import Section from "@/components/Section.astro";
+import type { Track } from "@/components/ProjectCard.astro";
+
+/**
+ * Placeholder posts — TODO(phase-3): replaced by the `blog` content
+ * collection; rows become real links to /blog/<slug>.
+ */
+interface PostPreview {
+  title: string;
+  blurb: string;
+  track: Track;
+}
+
+const posts: PostPreview[] = [
+  {
+    title: "Postmortem: PostgreSQL 14 → 17 rollback",
+    blurb:
+      "How a routine major-version upgrade became a 14-hour restore — and why the backup discipline saved me.",
+    track: "platform",
+  },
+  {
+    title: "The Forgejo runner registration saga",
+    blurb:
+      "CI runners, expiring tokens, and the debugging marathon nobody warns you about.",
+    track: "platform",
+  },
+  {
+    title: "First blood: an HTB machine write-up",
+    blurb:
+      "Structured methodology notes from my first full own — recon to root, no Metasploit crutches.",
+    track: "security",
+  },
+];
+---
+
+<Section id="writing" prompt="~/blog" title="Writing">
+  <div>
+    {
+      posts.map((post) => (
+        <div class="flex items-center justify-between gap-4 border-b border-zinc-800/60 py-5">
+          <div>
+            <h3 class="font-medium text-zinc-100">{post.title}</h3>
+            <p class="mt-1 text-sm text-zinc-500">{post.blurb}</p>
+          </div>
+          <span
+            class:list={[
+              "shrink-0 rounded border px-2 py-0.5 font-mono text-xs",
+              post.track === "platform"
+                ? "border-platform/30 bg-platform/10 text-platform"
+                : "border-security/30 bg-security/10 text-security",
+            ]}
+          >
+            {post.track}
+          </span>
+        </div>
+      ))
+    }
+  </div>
+  <p class="mt-6 font-mono text-sm text-zinc-600">
+    // full archive ships with the content collection (phase 3)
+  </p>
+</Section>

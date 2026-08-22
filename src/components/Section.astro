@@ -1,0 +1,27 @@
+---
+/**
+ * Shared section shell: anchor target + terminal-prompt eyebrow + heading.
+ */
+interface Props {
+  id: string;
+  /** Shell command rendered as the eyebrow, e.g. `~/projects` */
+  prompt: string;
+  title: string;
+}
+
+const { id, prompt, title } = Astro.props;
+---
+
+<section id={id} class="scroll-mt-20 py-16 sm:py-24">
+  <div class="mx-auto max-w-5xl px-6">
+    <p class="font-mono text-sm text-zinc-500" aria-hidden="true">
+      $ cat <span class="text-platform">{prompt}</span>
+    </p>
+    <h2 class="mt-2 text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl">
+      {title}
+    </h2>
+    <div class="mt-10">
+      <slot />
+    </div>
+  </div>
+</section>
