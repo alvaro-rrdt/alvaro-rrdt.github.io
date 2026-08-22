@@ -1,0 +1,160 @@
+---
+import { getCollection } from "astro:content";
+
+const posts = (
+  await getCollection("blog", ({ data }) => !data.draft)
+).map((post) => ({
+  label: post.data.title,
+  hint: post.data.category,
+  href: `/blog/${post.id}`,
+}));
+
+const commands = [
+  { label: "home", hint: "page", href: "/" },
+  { label: "about", hint: "section", href: "/#about" },
+  { label: "projects", hint: "section", href: "/#projects" },
+  { label: "architecture", hint: "section", href: "/#architecture" },
+  { label: "writing", hint: "section", href: "/blog" },
+  { label: "experience", hint: "section", href: "/experience" },
+  { label: "security track", hint: "section", href: "/#security" },
+  { label: "certifications", hint: "section", href: "/#certifications" },
+  { label: "cv viewer", hint: "page", href: "/cv" },
+  ...posts,
+];
+---
+
+<div
+  id="palette"
+  data-commands={JSON.stringify(commands)}
+  class="fixed inset-0 z-[70] hidden bg-zinc-950/70 backdrop-blur-sm"
+>
+  <!-- click-away layer -->
+  <div class="absolute inset-0" data-palette-close aria-hidden="true"></div>
+
+  <div
+    role="dialog"
+    aria-modal="true"
+    aria-label="Quick navigation"
+    class="relative mx-auto mt-[12vh] w-[min(92vw,34rem)] overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl"
+  >
+    <input
+      id="palette-input"
+      type="text"
+      placeholder="jump to…"
+      autocomplete="off"
+      spellcheck="false"
+      class="w-full border-b border-zinc-800 bg-transparent px-5 py-4 font-mono text-sm text-zinc-100 outline-none placeholder:text-zinc-600"
+    />
+    <ul
+      id="palette-list"
+      class="max-h-[50vh] overflow-y-auto p-2"
+      role="listbox"
+    ></ul>
+    <p
+      class="border-t border-zinc-800 px-5 py-2 font-mono text-[11px] text-zinc-600"
+    >
+      ↑↓ navigate · enter open · esc close
+    </p>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    const COMMANDS = JSON.parse(
+      document.getElementById("palette").dataset.commands,
+    );
+    const root = document.getElementById("palette");
+    const input = document.getElementById("palette-input");
+    const list = document.getElementById("palette-list");
+
+    let filtered = [];
+    let selected = 0;
+
+    const open = () => {
+      root.classList.remove("hidden");
+      input.value = "";
+      render("");
+      input.focus();
+    };
+
+    const close = () => {
+      root.classList.add("hidden");
+    };
+
+    const render = (query) => {
+      const q = query.trim().toLowerCase();
+      filtered = COMMANDS.filter((command) =>
+        command.label.toLowerCase().includes(q),
+      ).slice(0, 9);
+      selected = 0;
+
+      list.innerHTML = "";
+      if (filtered.length === 0) {
+        list.innerHTML =
+          '<li class="px-4 py-6 text-center font-mono text-sm text-zinc-600">no matches</li>';
+        return;
+      }
+
+      for (const [index, command] of filtered.entries()) {
+        const li = document.createElement("li");
+        li.setAttribute("role", "option");
+        li.className =
+          "flex items-center justify-between gap-3 rounded-lg px-4 py-2.5 font-mono text-sm cursor-pointer";
+        li.innerHTML = `
+          <span class="text-zinc-200">${command.label}</span>
+          <span class="text-xs text-zinc-600">${command.hint}</span>`;
+        li.addEventListener("click", () => {
+          window.location.href = command.href;
+        });
+        li.addEventListener("mousemove", () => select(index));
+        list.appendChild(li);
+      }
+      paint();
+    };
+
+    const paint = () => {
+      [...list.children].forEach((child, index) => {
+        child.classList.toggle("bg-zinc-800", index === selected);
+        if (index === selected) {
+          child.querySelector("span").classList.add("text-platform");
+        } else {
+          child.querySelector("span").classList.remove("text-platform");
+        }
+      });
+    };
+
+    const select = (index) => {
+      selected = Math.max(0, Math.min(index, filtered.length - 1));
+      paint();
+    };
+
+    document.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        root.classList.contains("hidden") ? open() : close();
+        return;
+      }
+      if (root.classList.contains("hidden")) return;
+
+      if (event.key === "Escape") close();
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        select(selected + 1);
+      }
+      if (event.key === "ArrowUp") {
+        event.preventDefault();
+        select(selected - 1);
+      }
+      if (event.key === "Enter" && filtered[selected]) {
+        window.location.href = filtered[selected].href;
+      }
+    });
+
+    document.addEventListener("click", (event) => {
+      if (event.target.closest("[data-palette-open]")) open();
+      if (event.target.closest("[data-palette-close]")) close();
+    });
+
+    input?.addEventListener("input", () => render(input.value));
+  })();
+</script>

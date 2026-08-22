@@ -1,11 +1,9 @@
 ---
 /**
- * Scroll position indicator, progressive enhancement only:
- * the links are plain anchors that work without JS; a tiny inline script
- * (well under 1 KB) adds the active-section state and the top progress bar.
- *
- * Desktop: vertical dot rail on the right edge with labels on hover.
- * Mobile: just the slim gradient progress bar pinned to the top.
+ * Scroll position indicator (desktop only): a vertical rail of stops that
+ * tracks the current section. Links are plain anchors, so the rail works
+ * without JS; a tiny inline script adds the active-section state.
+ * The reading-progress bar lives in ScrollProgress.astro (all viewports).
  */
 const stops = [
   { id: "about", label: "about" },
@@ -17,15 +15,6 @@ const stops = [
 ];
 ---
 
-<!-- Reading progress bar -->
-<div class="fixed inset-x-0 top-0 z-50 h-[3px]" aria-hidden="true">
-  <div
-    id="scroll-progress"
-    class="h-full w-0 bg-gradient-to-r from-platform to-security"
-  ></div>
-</div>
-
-<!-- Section rail (desktop only) -->
 <nav
   aria-label="Section position"
   class="fixed right-5 top-1/2 z-40 hidden -translate-y-1/2 lg:block xl:right-8"
@@ -102,21 +91,5 @@ const stops = [
       const section = document.getElementById(id);
       if (section) observer.observe(section);
     }
-
-    // Reading progress
-    const bar = document.getElementById("scroll-progress");
-    if (!bar) return;
-    const root = document.documentElement;
-    const paint = () => {
-      const max = root.scrollHeight - root.clientHeight;
-      bar.style.width = `${max > 0 ? (root.scrollTop / max) * 100 : 0}%`;
-    };
-    document.addEventListener(
-      "scroll",
-      () => requestAnimationFrame(paint),
-      { passive: true },
-    );
-    window.addEventListener("resize", paint);
-    paint();
   })();
 </script>

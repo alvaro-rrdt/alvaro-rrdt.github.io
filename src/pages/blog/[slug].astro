@@ -2,17 +2,32 @@
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostHeader from "@/components/PostHeader.astro";
+import ScrollProgress from "@/components/ScrollProgress.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
-  return posts.map((post) => ({
+  const posts = (
+    await getCollection("blog", ({ data }) => !data.draft)
+  ).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+
+  return posts.map((post, index) => ({
     params: { slug: post.id },
-    props: { post },
+    props: {
+      post,
+      prev: posts[index - 1] ?? null,
+      next: posts[index + 1] ?? null,
+    },
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await render(post);
+const { post, prev, next } = Astro.props;
+const { Content, headings } = await render(post);
+
+/** TOC entries: top-level sections plus one nesting level */
+const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
+
+/** Rough reading time from the raw markdown word count */
+const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
+const readMinutes = Math.max(1, Math.round(words / 220));
 ---
 
 <BaseLayout
@@ -20,13 +35,132 @@ const { Content } = await render(post);
   description={post.data.description}
   type="article"
 >
-  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
-    <PostHeader data={post.data} />
+  <ScrollProgress />
 
-    <article
-      class="prose prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400 prose-code:before:hidden prose-code:after:hidden prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800"
-    >
-      <Content />
-    </article>
+  <main id="main" class="mx-auto max-w-6xl px-4 pt-20 pb-16 sm:px-6">
+    <div class="xl:grid xl:grid-cols-[1fr_230px] xl:gap-14">
+      <article class="mx-auto w-full max-w-3xl min-w-0">
+        <!-- Breadcrumb -->
+        <p class="font-mono text-sm text-zinc-500">
+          $ cat
+          <a href="/blog" class="text-platform hover:underline">~/blog</a>
+          <span class="text-zinc-600">/{post.data.category}</span>
+          <span class="ml-3 text-zinc-600">· {readMinutes} min read</span>
+        </p>
+
+        <!-- Mobile TOC -->
+        {
+          toc.length > 1 && (
+            <details class="mt-5 rounded-lg border border-zinc-800 bg-zinc-900 xl:hidden">
+              <summary class="cursor-pointer px-4 py-2.5 font-mono text-xs text-zinc-400">
+                contents
+              </summary>
+              <ul class="border-t border-zinc-800 px-4 py-3 font-mono text-xs">
+                {toc.map((heading) => (
+                  <li
+                    class:list={[
+                      heading.depth === 3 ? "pl-4" : "",
+                      "py-1",
+                    ]}
+                  >
+                    <a
+                      href={`#${heading.slug}`}
+                      class="text-zinc-500 transition-colors hover:text-platform"
+                    >
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )
+        }
+
+        <div class="mt-8">
+          <PostHeader data={post.data} />
+        </div>
+
+        <article
+          class="prose prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-headings:scroll-mt-28 prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400 prose-code:before:hidden prose-code:after:hidden prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800"
+        >
+          <Content />
+        </article>
+
+        <!-- Prev / next -->
+        <nav
+          class="mt-14 grid gap-3 border-t border-zinc-800/60 pt-8 sm:grid-cols-2"
+          aria-label="More posts"
+        >
+          {
+            prev ? (
+              <a
+                href={`/blog/${prev.id}`}
+                class="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition-colors hover:border-zinc-600"
+              >
+                <span class="font-mono text-xs text-zinc-600">← older</span>
+                <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
+                  {prev.data.title}
+                </p>
+              </a>
+            ) : (
+              <span />
+            )
+          }
+          {
+            next && (
+              <a
+                href={`/blog/${next.id}`}
+                class="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-right transition-colors hover:border-zinc-600"
+              >
+                <span class="font-mono text-xs text-zinc-600">newer →</span>
+                <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
+                  {next.data.title}
+                </p>
+              </a>
+            )
+          }
+        </nav>
+
+        <p class="mt-10">
+          <a
+            href="/blog"
+            class="font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
+          >
+            ← all writing
+          </a>
+        </p>
+      </article>
+
+      <!-- Desktop TOC -->
+      {
+        toc.length > 1 && (
+          <aside class="hidden xl:block">
+            <nav
+              aria-label="Table of contents"
+              class="sticky top-28 max-h-[70vh] overflow-y-auto"
+            >
+              <p class="font-mono text-xs uppercase tracking-widest text-zinc-600">
+                contents
+              </p>
+              <ul class="mt-4 space-y-2 border-l border-zinc-800 font-mono text-xs">
+                {toc.map((heading) => (
+                  <li>
+                    <a
+                      href={`#${heading.slug}`}
+                      class:list={[
+                        "block py-0.5 transition-colors hover:text-platform",
+                        heading.depth === 3 ? "pl-7 text-zinc-600" : "pl-4 text-zinc-400",
+                      ]}
+                    >
+                      {heading.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        )
+      }
+    </div>
   </main>
 </BaseLayout>

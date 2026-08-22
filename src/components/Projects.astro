@@ -7,6 +7,22 @@ import ProjectCard from "@/components/ProjectCard.astro";
 const projects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+/**
+ * Screenshot lookup: drop files into src/assets/projects/ and reference
+ * the file name in the project's frontmatter (`screenshot: name.png`).
+ */
+const screenshots = import.meta.glob<{ default: ImageMetadata }>(
+  "/src/assets/projects/*.{png,jpg,jpeg,webp,avif}",
+);
+
+const resolveImage = (fileName?: string) => {
+  if (!fileName) return null;
+  const match = Object.entries(screenshots).find(([path]) =>
+    path.endsWith(`/${fileName}`),
+  );
+  return match ? match[1]().default : null;
+};
 ---
 
 <Section id="projects" prompt="~/projects" title="Selected work">
@@ -20,6 +36,7 @@ const projects = (await getCollection("projects")).sort(
           track={project.data.track}
           synced={project.data.synced}
           href={`/projects/${project.id}`}
+          image={resolveImage(project.data.screenshot)}
         />
       ))
     }

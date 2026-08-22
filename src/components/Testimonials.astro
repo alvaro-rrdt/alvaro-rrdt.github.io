@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content";
+import Section from "@/components/Section.astro";
+
+const quotes = (
+  await getCollection("testimonials", ({ data }) => !data.draft)
+).sort((a, b) => a.data.order - b.data.order);
+---
+
+{
+  quotes.length > 0 && (
+    <Section id="testimonials" prompt="~/references" title="Kind words">
+      <div class="grid gap-4 sm:grid-cols-2">
+        {quotes.map((entry) => (
+          <figure class="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-zinc-600">
+            <blockquote class="flex-1 text-sm leading-relaxed text-zinc-300">
+              “{entry.data.quote}”
+            </blockquote>
+            <figcaption class="mt-4 font-mono text-xs text-zinc-500">
+              <span class="text-platform">{entry.data.name}</span>
+              {" · "}
+              {entry.data.role}
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </Section>
+  )
+}

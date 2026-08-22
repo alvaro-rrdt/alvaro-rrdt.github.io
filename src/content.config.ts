@@ -52,10 +52,26 @@ const projects = defineCollection({
     summary: z.string(),
     stack: z.array(z.string()),
     repoUrl: z.url().optional(),
+    /**
+     * File name inside src/assets/projects/ (e.g. "homelab.png").
+     * Optional: cards fall back to a terminal-styled placeholder.
+     */
+    screenshot: z.string().optional(),
     order: z.number(),
     synced: z.boolean().default(false),
     track: z.enum(["platform", "security"]).default("platform"),
   }),
 });
 
-export const collections = { blog, experience, projects };
+/** Reader quotes, shown on the homepage only when entries exist. */
+const testimonials = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/testimonials" }),
+  schema: z.object({
+    quote: z.string(),
+    name: z.string(),
+    role: z.string(),
+    order: z.number(),
+  }),
+});
+
+export const collections = { blog, experience, projects, testimonials };
