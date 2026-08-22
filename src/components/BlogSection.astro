@@ -1,63 +1,56 @@
 ---
+import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
-import type { Track } from "@/components/ProjectCard.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
 
-/**
- * Placeholder posts — TODO(phase-3): replaced by the `blog` content
- * collection; rows become real links to /blog/<slug>.
- */
-interface PostPreview {
-  title: string;
-  blurb: string;
-  track: Track;
-}
+/** Latest three published posts, newest first. */
+const posts = (
+  await getCollection("blog", ({ data }) => !data.draft)
+)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 
-const posts: PostPreview[] = [
-  {
-    title: "Postmortem: PostgreSQL 14 → 17 rollback",
-    blurb:
-      "How a routine major-version upgrade became a 14-hour restore — and why the backup discipline saved me.",
-    track: "platform",
-  },
-  {
-    title: "The Forgejo runner registration saga",
-    blurb:
-      "CI runners, expiring tokens, and the debugging marathon nobody warns you about.",
-    track: "platform",
-  },
-  {
-    title: "First blood: an HTB machine write-up",
-    blurb:
-      "Structured methodology notes from my first full own — recon to root, no Metasploit crutches.",
-    track: "security",
-  },
-];
+const trackClass: Record<string, string> = {
+  platform: "border-platform/30 bg-platform/10 text-platform",
+  security: "border-security/30 bg-security/10 text-security",
+  dev: "border-zinc-700 bg-zinc-900 text-zinc-400",
+};
 ---
 
 <Section id="writing" prompt="~/blog" title="Writing">
   <div>
     {
       posts.map((post) => (
-        <div class="flex items-center justify-between gap-4 border-b border-zinc-800/60 py-5">
+        <a
+          href={`/blog/${post.id}`}
+          class="group flex items-center justify-between gap-4 border-b border-zinc-800/60 py-5"
+        >
           <div>
-            <h3 class="font-medium text-zinc-100">{post.title}</h3>
-            <p class="mt-1 text-sm text-zinc-500">{post.blurb}</p>
+            <h3 class="font-medium text-zinc-100 transition-colors group-hover:text-platform">
+              {post.data.title}
+            </h3>
+            <p class="mt-1 text-sm text-zinc-500">
+              <FormattedDate date={post.data.pubDate} />
+              {" · "}
+              {post.data.description}
+            </p>
           </div>
           <span
             class:list={[
               "shrink-0 rounded border px-2 py-0.5 font-mono text-xs",
-              post.track === "platform"
-                ? "border-platform/30 bg-platform/10 text-platform"
-                : "border-security/30 bg-security/10 text-security",
+              trackClass[post.data.category],
             ]}
           >
-            {post.track}
+            {post.data.category}
           </span>
-        </div>
+        </a>
       ))
     }
   </div>
-  <p class="mt-6 font-mono text-sm text-zinc-600">
-    // full archive ships with the content collection (phase 3)
-  </p>
+  <a
+    href="/blog"
+    class="mt-6 inline-block font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
+  >
+    view all posts →
+  </a>
 </Section>

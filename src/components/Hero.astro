@@ -5,25 +5,45 @@ import { SITE, SOCIALS } from "@/config";
 const titleParts = SITE.jobTitle.split(" · ");
 ---
 
-<section id="top" class="flex min-h-dvh items-center pt-14">
-  <div class="mx-auto w-full max-w-5xl px-6">
-    <p class="font-mono text-lg text-zinc-300" aria-hidden="true">
-      <span class="typing">$ whoami</span><span
-        class="caret"
-        aria-hidden="true"></span>
+<section id="top" class="relative flex min-h-dvh items-center overflow-hidden pt-14">
+  <!-- Backdrop: dot grid fading toward the fold + soft emerald glow -->
+  <div class="dot-grid pointer-events-none absolute inset-0" aria-hidden="true"
+  ></div>
+  <div
+    class="pointer-events-none absolute -top-48 left-1/2 size-[560px] -translate-x-1/2 rounded-full bg-platform/10 blur-[140px]"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative mx-auto w-full max-w-5xl px-6">
+    <p
+      class="inline-flex items-center gap-2.5 rounded-full border border-zinc-800 bg-zinc-900/80 px-3.5 py-1.5 font-mono text-xs text-zinc-400"
+    >
+      <span class="relative flex size-2" aria-hidden="true">
+        <span
+          class="absolute inline-flex h-full w-full animate-ping rounded-full bg-platform opacity-60 motion-reduce:animate-none"
+        ></span>
+        <span class="relative inline-flex size-2 rounded-full bg-platform"
+        ></span>
+      </span>
+      open to opportunities · EU · relocation OK
+    </p>
+
+    <p class="mt-10 font-mono text-lg text-zinc-300" aria-hidden="true">
+      <span class="typing">$ whoami</span><span class="caret" aria-hidden="true"
+      ></span>
     </p>
 
     <h1
-      class="mt-6 text-balance text-4xl font-bold tracking-tight text-zinc-50 sm:text-6xl"
+      class="mt-6 text-balance text-5xl font-bold tracking-tighter text-zinc-50 sm:text-7xl"
     >
       {SITE.name}
     </h1>
 
-    <p class="mt-4 font-mono text-base sm:text-lg">
+    <p class="mt-5 font-mono text-base sm:text-xl">
       {
         titleParts.map((part, i) => (
           <>
-            {i > 0 && <span class="mx-2 text-zinc-600">·</span>}
+            {i > 0 && <span class="mx-2.5 text-zinc-600">·</span>}
             <span class:list={[i === 0 ? "text-platform" : "text-zinc-400"]}>
               {part}
             </span>
@@ -40,9 +60,21 @@ const titleParts = SITE.jobTitle.split(" · ");
       <a
         href={SITE.cvPath}
         download
-        class="rounded-md bg-platform px-4 py-2.5 font-mono text-sm font-semibold text-zinc-950 transition-[filter] hover:brightness-110"
+        class="inline-flex items-center gap-2 rounded-lg bg-platform px-5 py-3 font-mono text-sm font-semibold text-zinc-950 transition-all hover:-translate-y-0.5 hover:brightness-110"
       >
-        Download CV ↓
+        Download CV
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          class="size-4"
+          aria-hidden="true"
+        >
+          <path
+            d="M8 1a1 1 0 0 1 1 1v8.586l2.293-2.293a1 1 0 1 1 1.414 1.414l-4 4a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L7 10.586V2a1 1 0 0 1 1-1Z"
+          ></path>
+          <path d="M2 13.5A1.5 1.5 0 0 1 3.5 12h9a1.5 1.5 0 0 1 0 3h-9A1.5 1.5 0 0 1 2 13.5Z"></path>
+        </svg>
       </a>
       {
         SOCIALS.map((social) => (
@@ -50,7 +82,7 @@ const titleParts = SITE.jobTitle.split(" · ");
             href={social.href}
             target="_blank"
             rel="noopener noreferrer"
-            class="rounded-md border border-zinc-800 bg-zinc-900 px-3 py-2.5 font-mono text-sm text-zinc-300 transition-colors hover:border-platform/50 hover:text-platform"
+            class="rounded-lg border border-zinc-800 bg-zinc-900/80 px-4 py-3 font-mono text-sm text-zinc-300 transition-all hover:-translate-y-0.5 hover:border-platform/50 hover:text-platform"
           >
             [{social.label}]
           </a>
@@ -70,9 +102,7 @@ const titleParts = SITE.jobTitle.split(" · ");
     overflow: hidden;
     white-space: nowrap;
     vertical-align: bottom;
-    animation:
-      typing 1.4s steps(8, end) forwards,
-      hide-caret-border 0.01s linear 1.4s forwards;
+    animation: typing 1.4s steps(8, end) forwards;
   }
 
   .caret {
@@ -80,6 +110,7 @@ const titleParts = SITE.jobTitle.split(" · ");
     width: 0.55ch;
     height: 1.1em;
     translate: 0 0.18em;
+    margin-left: 0.1ch;
     background: var(--color-platform);
     animation: caret-blink 0.9s step-end infinite;
   }
@@ -91,17 +122,6 @@ const titleParts = SITE.jobTitle.split(" · ");
     to {
       width: 8ch;
     }
-  }
-
-  /* Once typing finishes, the border-style caret is replaced by the block one */
-  @keyframes hide-caret-border {
-    to {
-      border-right-color: transparent;
-    }
-  }
-
-  .typing {
-    border-right: 2px solid transparent;
   }
 
   @keyframes caret-blink {

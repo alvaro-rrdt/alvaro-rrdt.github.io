@@ -1,0 +1,56 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+const roles = (await getCollection("experience")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+---
+
+<BaseLayout
+  title="Experience"
+  description="Where I've worked and what I owned — deeper than any CV bullet."
+>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+    <p class="font-mono text-sm text-zinc-500">$ cat ~/experience.log</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
+      Experience
+    </h1>
+
+    <ul class="mt-10 space-y-4">
+      {
+        roles.map((entry) => (
+          <li>
+            <a
+              href={`/experience/${entry.id}`}
+              class="group block rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-all hover:-translate-y-0.5 hover:border-zinc-600"
+            >
+              <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                <h2 class="font-semibold text-zinc-100 transition-colors group-hover:text-platform">
+                  {entry.data.company}
+                  <span class="ml-2 font-mono text-sm font-normal text-zinc-500">
+                    {entry.data.role}
+                  </span>
+                </h2>
+                <span class="font-mono text-xs text-zinc-600">
+                  {entry.data.period}
+                </span>
+              </div>
+              {entry.data.award && (
+                <span class="mt-2 inline-block rounded border border-security/30 bg-security/10 px-2 py-0.5 font-mono text-xs text-security">
+                  {entry.data.award}
+                </span>
+              )}
+              <p class="mt-2 text-sm leading-relaxed text-zinc-400">
+                {entry.data.summary}
+              </p>
+              <p class="mt-4 font-mono text-sm text-zinc-600 transition-colors group-hover:text-platform">
+                read the full story →
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</BaseLayout>

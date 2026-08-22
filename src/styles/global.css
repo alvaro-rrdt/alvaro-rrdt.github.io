@@ -1,8 +1,9 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /*
  * Theme tokens — Tailwind v4 CSS-first config.
- * Each `--color-*` / `--font-*` here generates matching utility classes
+ * Each `--color-*` here generates matching utilities
  * (e.g. `--color-platform` → `bg-platform`, `text-platform`).
  */
 @theme {
@@ -24,6 +25,43 @@
   ::selection {
     background-color: color-mix(in oklab, var(--color-platform) 35%, transparent);
   }
+
+  /* Consistent, on-brand keyboard focus */
+  :focus-visible {
+    outline: 2px solid var(--color-platform);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* Subtle dot-grid used behind the hero — fades out toward the fold */
+.dot-grid {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgb(255 255 255 / 0.05) 1px,
+    transparent 0
+  );
+  background-size: 28px 28px;
+  mask-image: radial-gradient(
+    ellipse 90% 65% at 50% 0%,
+    black 25%,
+    transparent 75%
+  );
+}
+
+/* Slim, theme-matched scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #27272a transparent;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 8px;
+  border: 2px solid #09090b;
 }
 
 @media (prefers-reduced-motion: reduce) {

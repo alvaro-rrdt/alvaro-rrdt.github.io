@@ -1,52 +1,17 @@
 ---
+import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
 
-interface Role {
-  company: string;
-  role: string;
-  period: string;
-  blurb: string;
-  award?: string;
-}
-
-/**
- * TODO(phase-0): confirm order, dates and blurbs.
- * TODO(phase-3): `deepDive` becomes a real link to /experience/<slug>.
- */
-const roles: Role[] = [
-  {
-    company: "Saab",
-    role: "Software Engineer",
-    period: "TODO — dates",
-    blurb:
-      "Cloud infrastructure & reliability work on GCP with Terraform; recognised with an achievement award.",
-    award: "🏆 achievement award",
-  },
-  {
-    company: "Zinco",
-    role: "Software Engineer",
-    period: "TODO — dates",
-    blurb: "One-line summary of what I owned and shipped. TODO.",
-  },
-  {
-    company: "Hovmark",
-    role: "Software Engineer",
-    period: "TODO — dates",
-    blurb: "One-line summary of what I owned and shipped. TODO.",
-  },
-  {
-    company: "ExeQute",
-    role: "Software Engineer",
-    period: "TODO — dates",
-    blurb: "One-line summary of what I owned and shipped. TODO.",
-  },
-];
+/** Roles, most recent first (order ascending). */
+const roles = (
+  await getCollection("experience")
+).sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Section id="experience" prompt="~/experience.log" title="Experience">
   <ol class="relative space-y-12 border-l border-zinc-800 pl-8">
     {
-      roles.map((role) => (
+      roles.map((entry) => (
         <li class="relative">
           <span
             class="absolute -left-[37px] top-1.5 size-2.5 rounded-full border-2 border-zinc-950 bg-platform"
@@ -55,25 +20,31 @@ const roles: Role[] = [
 
           <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
             <h3 class="text-lg font-semibold text-zinc-50">
-              {role.company}
+              {entry.data.company}
             </h3>
-            <span class="font-mono text-sm text-zinc-500">{role.role}</span>
-            {role.award && (
+            <span class="font-mono text-sm text-zinc-500">
+              {entry.data.role}
+            </span>
+            {entry.data.award && (
               <span class="rounded border border-security/30 bg-security/10 px-2 py-0.5 font-mono text-xs text-security">
-                {role.award}
+                {entry.data.award}
               </span>
             )}
           </div>
 
-          <p class="mt-0.5 font-mono text-xs text-zinc-600">{role.period}</p>
+          <p class="mt-0.5 font-mono text-xs text-zinc-600">
+            {entry.data.period}
+          </p>
           <p class="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-400">
-            {role.blurb}
+            {entry.data.summary}
           </p>
 
-          {/* TODO(phase-3): real deep-dive link */}
-          <span class="mt-3 inline-block font-mono text-sm text-zinc-600">
-            read the full story → (coming in phase 3)
-          </span>
+          <a
+            href={`/experience/${entry.id}`}
+            class="mt-3 inline-block font-mono text-sm text-zinc-600 transition-colors hover:text-platform"
+          >
+            read the full story →
+          </a>
         </li>
       ))
     }

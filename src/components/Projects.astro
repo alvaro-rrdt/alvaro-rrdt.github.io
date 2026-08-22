@@ -1,53 +1,12 @@
 ---
+import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-import type { Track } from "@/components/ProjectCard.astro";
 
-/**
- * Placeholder data — TODO(phase-3): move to the `projects` content collection
- * so each project gets a real write-up page + screenshot.
- */
-interface ProjectPreview {
-  title: string;
-  description: string;
-  stack: string[];
-  track: Track;
-  synced?: boolean;
-}
-
-const projects: ProjectPreview[] = [
-  {
-    title: "AI GitOps Platform",
-    description:
-      "Renovate bumps versions, Forgejo Actions runs checks, and a DeepSeek-powered bot opens draft PRs — ArgoCD ships them once a human approves.",
-    stack: ["Forgejo Actions", "Renovate", "DeepSeek", "ArgoCD", "k3s"],
-    track: "platform",
-    synced: true,
-  },
-  {
-    title: "Self-Hosted Homelab",
-    description:
-      "k3s on Hetzner provisioned with Go/Pulumi, secrets encrypted with SOPS, and every service exposed only through the tailnet — nothing public.",
-    stack: ["k3s", "Pulumi (Go)", "SOPS", "Tailscale", "Hetzner"],
-    track: "platform",
-    synced: true,
-  },
-  {
-    title: "Observability Stack",
-    description:
-      "Prometheus scraping, Grafana dashboards, Uptime Kuma probes and Telegram alerts that actually reach me when something breaks.",
-    stack: ["Prometheus", "Grafana", "Uptime Kuma", "Telegram API"],
-    track: "platform",
-    synced: true,
-  },
-  {
-    title: "Security Lab",
-    description:
-      "Structured HackTheBox practice plus an Exegol playground — pentest methodology, active directory chains, and honest note-taking.",
-    stack: ["HackTheBox", "Exegol", "Nmap", "Burp Suite"],
-    track: "security",
-  },
-];
+/** Projects, curated order. */
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
 ---
 
 <Section id="projects" prompt="~/projects" title="Selected work">
@@ -55,11 +14,12 @@ const projects: ProjectPreview[] = [
     {
       projects.map((project) => (
         <ProjectCard
-          title={project.title}
-          description={project.description}
-          stack={project.stack}
-          track={project.track}
-          synced={project.synced}
+          title={project.data.title}
+          description={project.data.summary}
+          stack={project.data.stack}
+          track={project.data.track}
+          synced={project.data.synced}
+          href={`/projects/${project.id}`}
         />
       ))
     }

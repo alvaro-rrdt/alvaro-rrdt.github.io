@@ -1,0 +1,69 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const categories = [...new Set(posts.map((post) => post.data.category))];
+  return categories.map((category) => ({
+    params: { category },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const all = (
+  await getCollection("blog", ({ data }) => !data.draft)
+).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const posts = all.filter((post) => post.data.category === category);
+
+const accent =
+  category === "security"
+    ? "text-security"
+    : category === "platform"
+      ? "text-platform"
+      : "text-zinc-300";
+---
+
+<BaseLayout
+  title={`${category} writing`}
+  description={`All ${category} posts by Alvaro Riccardi.`}
+>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+    <p class="font-mono text-sm text-zinc-500">
+      $ ls ~/blog/<span class={accent}>{category}</span>
+    </p>
+    <h1 class="mt-2 text-3xl font-bold capitalize tracking-tight text-zinc-50">
+      <span class:list={[accent]}>{category}</span> writing
+    </h1>
+
+    <ul class="mt-10">
+      {
+        posts.map((post) => (
+          <li>
+            <a
+              href={`/blog/${post.id}`}
+              class="group block border-b border-zinc-800/60 py-6"
+            >
+              <h2 class="font-semibold text-zinc-100 transition-colors group-hover:text-platform">
+                {post.data.title}
+              </h2>
+              <p class="mt-1.5 text-sm leading-relaxed text-zinc-500">
+                {post.data.description}
+              </p>
+              <p class="mt-2 font-mono text-xs text-zinc-600">
+                <FormattedDate date={post.data.pubDate} />
+                {post.data.tags.map((tag) => ` · #${tag}`)}
+              </p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <a href="/blog" class="mt-8 inline-block font-mono text-sm text-zinc-500 hover:text-platform">
+      ← all writing
+    </a>
+  </main>
+</BaseLayout>

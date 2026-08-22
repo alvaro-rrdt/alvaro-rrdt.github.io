@@ -1,0 +1,32 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import PostHeader from "@/components/PostHeader.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  type="article"
+>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+    <PostHeader data={post.data} />
+
+    <article
+      class="prose prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400 prose-code:before:hidden prose-code:after:hidden prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800"
+    >
+      <Content />
+    </article>
+  </main>
+</BaseLayout>

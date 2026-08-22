@@ -1,0 +1,73 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("projects");
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+
+const accentText = d.track === "platform" ? "text-platform" : "text-security";
+---
+
+<BaseLayout title={d.title} description={d.summary}>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+    <p class="font-mono text-sm text-zinc-500">
+      $ cat
+      <a href="/#projects" class="text-platform hover:underline">~/projects</a>
+      <span class="text-zinc-600">/{entry.id}</span>
+    </p>
+
+    <div class="mt-3 flex flex-wrap items-center gap-3">
+      <h1 class="text-balance text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
+        {d.title}
+      </h1>
+      {
+        d.synced && (
+          <span class="rounded border border-platform/30 bg-platform/10 px-2 py-0.5 font-mono text-xs text-platform">
+            ✓ synced
+          </span>
+        )
+      }
+      <span class:list={["font-mono text-xs", accentText]}>{d.track}</span>
+    </div>
+
+    <p class="mt-4 max-w-2xl leading-relaxed text-zinc-400">{d.summary}</p>
+
+    <ul class="mt-5 flex flex-wrap gap-2" aria-label="Stack">
+      {
+        d.stack.map((tech) => (
+          <li class="rounded border border-zinc-700/70 px-2 py-0.5 font-mono text-xs text-zinc-400">
+            {tech}
+          </li>
+        ))
+      }
+    </ul>
+
+    {
+      d.repoUrl && (
+        <a
+          href={d.repoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-4 inline-block font-mono text-sm text-platform hover:underline"
+        >
+          view repository →
+        </a>
+      )
+    }
+
+    <article
+      class="prose prose-invert mt-10 max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400"
+    >
+      <Content />
+    </article>
+  </main>
+</BaseLayout>
