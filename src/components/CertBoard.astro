@@ -1,58 +1,12 @@
 ---
 import Section from "@/components/Section.astro";
-
-type CertStatus = "in-progress" | "planned" | "earned";
-
-interface Cert {
-  name: string;
-  fullName: string;
-  issuer: string;
-  status: CertStatus;
-  /** Only meaningful for in-progress certs. TODO(phase-0): real values. */
-  progress?: number;
-  note?: string;
-}
-
-/**
- * TODO(phase-0): confirm statuses/order + fill progress + verification URLs.
- */
-const certs: Cert[] = [
-  {
-    name: "CKA",
-    fullName: "Certified Kubernetes Administrator",
-    issuer: "CNCF",
-    status: "planned",
-    note: "pairs with the homelab", // TODO: in progress? tell me the %
-  },
-  {
-    name: "CJCA",
-    fullName: "Certified Junior Cybersecurity Associate",
-    issuer: "HackTheBox",
-    status: "in-progress",
-    progress: 55,
-    note: "modules in progress",
-  },
-  {
-    name: "CDSA",
-    fullName: "Certified Defensive Security Analyst",
-    issuer: "HackTheBox",
-    status: "planned",
-    note: "queued next",
-  },
-  {
-    name: "CPTS",
-    fullName: "Certified Penetration Testing Specialist",
-    issuer: "HackTheBox",
-    status: "planned",
-    note: "the long game",
-  },
-];
+import { CERTS } from "@/data/certs";
 ---
 
 <Section id="certifications" prompt="~/certs --list" title="Certification journey">
   <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
     {
-      certs.map((cert) => (
+      CERTS.map((cert) => (
         <article class="rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-600">
           <div class="flex items-baseline justify-between gap-2">
             <h3 class="font-mono text-lg font-bold text-zinc-50">

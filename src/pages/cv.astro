@@ -1,0 +1,241 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+import { SITE, SOCIALS } from "@/config";
+import { CV, CV_PDF_READY } from "@/data/cv";
+import { CERTS } from "@/data/certs";
+import { SKILL_GROUPS } from "@/data/skills";
+
+const roles = (await getCollection("experience")).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const projects = (
+  await getCollection("projects", ({ data }) => data.track === "platform")
+)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const contactLine = SOCIALS.map((social) => social.href
+  .replace("https://www.", "")
+  .replace("https://", "")
+  .replace(/\/$/, ""));
+---
+
+<BaseLayout title="CV" description={`Curriculum vitae of ${SITE.name}, ${SITE.jobTitle.toLowerCase()}.`}>
+  <main id="main" class="mx-auto max-w-4xl px-4 pb-20 pt-24 sm:px-6">
+    <!-- Toolbar -->
+    <div class="no-print mb-6 flex flex-wrap items-center justify-between gap-3">
+      <p class="font-mono text-sm text-zinc-500">
+        $ cat <span class="text-platform">~/cv</span>
+        <a href="/" class="ml-2 text-zinc-600 transition-colors hover:text-platform">(home)</a>
+      </p>
+
+      <div class="flex items-center gap-2">
+        {
+          CV_PDF_READY ? (
+            <a
+              href={SITE.cvPath}
+              download
+              class="rounded-lg bg-platform px-4 py-2 font-mono text-sm font-semibold text-zinc-950 transition-all hover:-translate-y-0.5 hover:brightness-110"
+            >
+              ↓ pdf
+            </a>
+          ) : (
+            <span class="font-mono text-xs text-zinc-600">
+              // pdf pending update: use print instead
+            </span>
+          )
+        }
+        <button
+          type="button"
+          onclick="window.print()"
+          class="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-2 font-mono text-sm text-zinc-300 transition-colors hover:border-platform/50 hover:text-platform"
+        >
+          print / save as pdf
+        </button>
+      </div>
+    </div>
+
+    <!-- The sheet -->
+    <article
+      class="cv-sheet rounded-xl border border-zinc-200 bg-zinc-50 p-7 text-zinc-900 shadow-[0_24px_80px_-24px_rgb(0,0,0,0.8)] sm:p-12"
+    >
+      <!-- Header -->
+      <header>
+        <h1 class="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+          {SITE.name}
+        </h1>
+        <p class="mt-1 font-mono text-sm text-emerald-700">{SITE.jobTitle}</p>
+        <p class="mt-2 font-mono text-xs text-zinc-500">
+          {
+            contactLine.map((contact, i) => (
+              <>
+                {i > 0 && <span class="mx-2 text-zinc-300">·</span>}
+                <span>{contact}</span>
+              </>
+            ))
+          }
+        </p>
+      </header>
+
+      <hr class="my-6 border-zinc-200" />
+
+      <!-- Profile -->
+      <section aria-label="Profile">
+        <h2 class="cv-section-label">Profile</h2>
+        <p class="mt-3 leading-relaxed text-zinc-700">{CV.profile}</p>
+      </section>
+
+      <!-- Experience -->
+      <section class="mt-8" aria-label="Experience">
+        <h2 class="cv-section-label">Experience</h2>
+        <div class="mt-4 space-y-5">
+          {
+            roles.map((entry) => (
+              <div>
+                <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                  <h3 class="font-semibold text-zinc-900">
+                    {entry.data.company}
+                    <span class="ml-1.5 font-mono text-sm font-normal text-emerald-700">
+                      {entry.data.role}
+                    </span>
+                  </h3>
+                  <span class="font-mono text-xs text-zinc-500">
+                    {entry.data.period}
+                  </span>
+                </div>
+                <p class="mt-1 text-sm leading-relaxed text-zinc-600">
+                  {entry.data.summary}
+                </p>
+                {entry.data.tech.length > 0 && (
+                  <p class="mt-1 font-mono text-xs text-zinc-400">
+                    {entry.data.tech.join(" · ")}
+                  </p>
+                )}
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Selected projects -->
+      <section class="mt-8" aria-label="Selected projects">
+        <h2 class="cv-section-label">Selected projects</h2>
+        <div class="mt-4 space-y-4">
+          {
+            projects.map((project) => (
+              <div>
+                <h3 class="font-semibold text-zinc-900">{project.data.title}</h3>
+                <p class="text-sm leading-relaxed text-zinc-600">
+                  {project.data.summary}
+                </p>
+                <p class="mt-0.5 font-mono text-xs text-zinc-400">
+                  {project.data.stack.join(" · ")}
+                </p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Education -->
+      <section class="mt-8" aria-label="Education">
+        <h2 class="cv-section-label">Education</h2>
+        <div class="mt-4 space-y-3">
+          {
+            CV.education.map((school) => (
+              <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                <h3 class="font-semibold text-zinc-900">{school.degree}</h3>
+                <span class="font-mono text-xs text-zinc-500">
+                  {school.period}
+                </span>
+                <p class="w-full text-sm text-zinc-600">{school.school}</p>
+              </div>
+            ))
+          }
+        </div>
+      </section>
+
+      <!-- Certifications -->
+      <section class="mt-8" aria-label="Certifications">
+        <h2 class="cv-section-label">Certifications</h2>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {
+            CERTS.map((cert) => (
+              <li class="rounded-md border border-zinc-300 bg-white px-2.5 py-1 font-mono text-xs text-zinc-700">
+                <span class="font-semibold">{cert.name}</span>
+                <span class="text-zinc-400">
+                  {" "}
+                  · {cert.issuer} ·{" "}
+                  {cert.status === "in-progress" ? "in progress" : cert.status}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <!-- Languages + skills -->
+      <div class="mt-8 grid gap-8 sm:grid-cols-2">
+        <section aria-label="Languages">
+          <h2 class="cv-section-label">Languages</h2>
+          <ul class="mt-4 space-y-1 text-sm text-zinc-700">
+            {
+              CV.languages.map((language) => (
+                <li>
+                  <span class="font-medium text-zinc-900">
+                    {language.name}
+                  </span>{" "}
+                  · {language.level}
+                </li>
+              ))
+            }
+          </ul>
+        </section>
+
+        <section aria-label="Core skills">
+          <h2 class="cv-section-label">Core skills</h2>
+          <div class="mt-4 space-y-2.5">
+            {
+              SKILL_GROUPS.slice(0, 4).map((group) => (
+                <p class="text-sm leading-relaxed text-zinc-700">
+                  <span class="font-mono text-xs uppercase tracking-wider text-emerald-700">
+                    {group.category}:
+                  </span>{" "}
+                  {group.skills.join(", ")}
+                </p>
+              ))
+            }
+          </div>
+        </section>
+      </div>
+
+      <footer class="mt-10 border-t border-zinc-200 pt-4 font-mono text-[11px] text-zinc-400">
+        Generated from the live site at
+        <span>{SITE.url}</span> · always up to date
+      </footer>
+    </article>
+  </main>
+</BaseLayout>
+
+<style>
+  /*
+   * Light "paper sheet" typography on top of the dark site.
+   * Scoped so the rest of the site keeps its own look.
+   */
+  .cv-sheet :is(h2, h3) {
+    letter-spacing: -0.01em;
+  }
+
+  .cv-section-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #047857;
+    padding-bottom: 0.375rem;
+    border-bottom: 1px solid var(--color-zinc-200);
+  }
+</style>

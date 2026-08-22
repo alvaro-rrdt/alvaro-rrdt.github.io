@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 /*
- * Theme tokens — Tailwind v4 CSS-first config.
+ * Theme tokens: Tailwind v4 CSS-first config.
  * Each `--color-*` here generates matching utilities
  * (e.g. `--color-platform` → `bg-platform`, `text-platform`).
  */
@@ -34,7 +34,7 @@
   }
 }
 
-/* Subtle dot-grid used behind the hero — fades out toward the fold */
+/* Subtle dot-grid behind the hero, fading out toward the fold */
 .dot-grid {
   background-image: radial-gradient(
     circle at 1px 1px,
@@ -74,5 +74,29 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* Print: only the CV sheet survives, clean white paper output */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+  }
+
+  main#main {
+    padding: 0 !important;
+    max-width: none !important;
+  }
+
+  .cv-sheet {
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
   }
 }
