@@ -1,0 +1,111 @@
+---
+import Section from "@/components/Section.astro";
+import { SECURITY } from "@/data/security";
+
+const statusStyle: Record<string, { chip: string; glyph: string }> = {
+  completed: { chip: "border-platform/30 bg-platform/10 text-platform", glyph: "✓" },
+  active: { chip: "border-security/40 bg-security/15 text-security", glyph: "●" },
+  planned: { chip: "border-zinc-700 bg-zinc-950/50 text-zinc-400", glyph: "□" },
+};
+---
+
+<Section id="security" prompt="~/hackthebox" title="Security track">
+  <div class="grid gap-6 lg:grid-cols-2">
+    <!-- Learning -->
+    <article
+      class="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-security/40"
+    >
+      <div class="flex items-baseline justify-between gap-3">
+        <h3 class="font-semibold text-zinc-50">Learning</h3>
+        <a
+          href={SECURITY.profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-mono text-xs text-zinc-500 transition-colors hover:text-security"
+        >
+          htb profile ↗
+        </a>
+      </div>
+
+      <p class="mt-2 text-sm leading-relaxed text-zinc-400">
+        Structured study through the HackTheBox academy paths, plus machines
+        and challenges for hands-on practice.
+      </p>
+
+      <ul class="mt-4 space-y-2 font-mono text-sm">
+        {
+          SECURITY.nowStudying.map((item) => (
+            <li class="flex gap-2 text-zinc-300">
+              <span class="select-none text-security">▸</span>
+              {item}
+            </li>
+          ))
+        }
+      </ul>
+
+      <dl class="mt-auto grid grid-cols-3 gap-3 pt-6">
+        {
+          SECURITY.stats.map((stat) => (
+            <div class="rounded-lg border border-zinc-800 bg-zinc-950/60 p-3 text-center">
+              <dt class="order-2 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+                {stat.label}
+              </dt>
+              <dd class="font-mono text-lg font-bold text-security">
+                {stat.value}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </article>
+
+    <!-- Competitive -->
+    <article
+      class="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-security/40"
+    >
+      <div class="flex items-baseline justify-between gap-3">
+        <h3 class="font-semibold text-zinc-50">Pro labs</h3>
+        <span class="font-mono text-xs text-zinc-600">competitive</span>
+      </div>
+
+      <p class="mt-2 text-sm leading-relaxed text-zinc-400">
+        Multi-machine corporate networks, typically full Active Directory
+        environments. The goal is simple and brutal: own everything.
+      </p>
+
+      <ul class="mt-4 space-y-3">
+        {
+          SECURITY.proLabs.map((lab) => {
+            const style = statusStyle[lab.status];
+            return (
+              <li class="flex items-center justify-between gap-3 rounded-lg border border-zinc-800 bg-zinc-950/60 px-4 py-3">
+                <div>
+                  <p class="font-mono text-sm text-zinc-100">{lab.name}</p>
+                  <p class="text-xs text-zinc-500">
+                    {lab.tier}
+                    {lab.note ? ` · ${lab.note}` : ""}
+                  </p>
+                </div>
+                <span
+                  class:list={[
+                    "shrink-0 rounded border px-2 py-0.5 font-mono text-xs",
+                    style.chip,
+                  ]}
+                >
+                  {style.glyph} {lab.status}
+                </span>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <a
+        href="#certifications"
+        class="mt-auto pt-5 font-mono text-sm text-zinc-600 transition-colors hover:text-security"
+      >
+        certification journey ↓
+      </a>
+    </article>
+  </div>
+</Section>
