@@ -1,0 +1,32 @@
+---
+/**
+ * Slim gradient reading-progress bar pinned to the top of the viewport.
+ * Pure static HTML; a tiny inline script fills it on scroll.
+ */
+---
+
+<div class="fixed inset-x-0 top-0 z-50 h-[3px]" aria-hidden="true">
+  <div
+    id="scroll-progress"
+    class="h-full w-0 bg-gradient-to-r from-platform to-security"
+  ></div>
+</div>
+
+<script is:inline>
+  (() => {
+    const bar = document.getElementById("scroll-progress");
+    if (!bar) return;
+    const root = document.documentElement;
+    const paint = () => {
+      const max = root.scrollHeight - root.clientHeight;
+      bar.style.width = `${max > 0 ? (root.scrollTop / max) * 100 : 0}%`;
+    };
+    document.addEventListener(
+      "scroll",
+      () => requestAnimationFrame(paint),
+      { passive: true },
+    );
+    window.addEventListener("resize", paint);
+    paint();
+  })();
+</script>

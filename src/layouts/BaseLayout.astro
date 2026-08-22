@@ -20,12 +20,13 @@ const { title, description, type } = Astro.props;
     <script is:inline>
       // Apply stored theme before first paint to avoid a flash of wrong theme
       (() => {
+        let stored = "dark";
         try {
-          document.documentElement.dataset.theme =
-            localStorage.getItem("theme") === "light" ? "light" : "dark";
-        } catch {
-          document.documentElement.dataset.theme = "dark";
-        }
+          stored = localStorage.getItem("theme") === "light" ? "light" : "dark";
+        } catch {}
+        document.documentElement.dataset.theme = stored;
+        const meta = document.getElementById("theme-color-meta");
+        if (meta) meta.content = stored === "light" ? "#fafafa" : "#09090b";
       })();
     </script>
   </head>
@@ -49,6 +50,8 @@ const { title, description, type } = Astro.props;
         const root = document.documentElement;
         const next = root.dataset.theme === "light" ? "dark" : "light";
         root.dataset.theme = next;
+        const meta = document.getElementById("theme-color-meta");
+        if (meta) meta.content = next === "light" ? "#fafafa" : "#09090b";
         try {
           localStorage.setItem("theme", next);
         } catch {}

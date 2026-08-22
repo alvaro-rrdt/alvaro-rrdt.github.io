@@ -1,9 +1,7 @@
 ---
-import { getCollection } from "astro:content";
+import { getPosts } from "@/lib/content";
 
-const posts = (
-  await getCollection("blog", ({ data }) => !data.draft)
-).map((post) => ({
+const posts = (await getPosts()).map((post) => ({
   label: post.data.title,
   hint: post.data.category,
   href: `/blog/${post.id}`,

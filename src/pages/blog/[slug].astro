@@ -1,13 +1,13 @@
 ---
-import { getCollection, render } from "astro:content";
+import { render } from "astro:content";
+import { getPosts } from "@/lib/content";
+import { SITE } from "@/config";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostHeader from "@/components/PostHeader.astro";
 import ScrollProgress from "@/components/ScrollProgress.astro";
 
 export async function getStaticPaths() {
-  const posts = (
-    await getCollection("blog", ({ data }) => !data.draft)
-  ).sort((a, b) => a.data.pubDate.valueOf() - b.data.pubDate.valueOf());
+  const posts = (await getPosts()).reverse();
 
   return posts.map((post, index) => ({
     params: { slug: post.id },
@@ -21,6 +21,20 @@ export async function getStaticPaths() {
 
 const { post, prev, next } = Astro.props;
 const { Content, headings } = await render(post);
+
+/** Article schema: richer search results for the writing */
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.pubDate.toISOString(),
+  author: {
+    "@type": "Person",
+    name: SITE.name,
+    url: SITE.url,
+  },
+};
 
 /** TOC entries: top-level sections plus one nesting level */
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
@@ -36,6 +50,8 @@ const readMinutes = Math.max(1, Math.round(words / 220));
   type="article"
 >
   <ScrollProgress />
+
+  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <main id="main" class="mx-auto max-w-6xl px-4 pt-20 pb-16 sm:px-6">
     <div class="xl:grid xl:grid-cols-[1fr_230px] xl:gap-14">
