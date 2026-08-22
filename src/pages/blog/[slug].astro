@@ -51,7 +51,7 @@ const readMinutes = Math.max(1, Math.round(words / 220));
 >
   <ScrollProgress />
 
-  <script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
   <main id="main" class="mx-auto max-w-6xl px-4 pt-20 pb-16 sm:px-6">
     <div class="xl:grid xl:grid-cols-[1fr_230px] xl:gap-14">
@@ -101,6 +101,30 @@ const readMinutes = Math.max(1, Math.round(words / 220));
         >
           <Content />
         </article>
+
+        <!-- Copy buttons are injected into each code block by the script below -->
+        <script is:inline>
+          (() => {
+            const blocks = document.querySelectorAll("article pre");
+            for (const pre of blocks) {
+              const button = document.createElement("button");
+              button.type = "button";
+              button.className = "code-copy";
+              button.setAttribute("aria-label", "Copy code to clipboard");
+              button.textContent = "copy";
+
+              if (!navigator.clipboard) button.hidden = true;
+
+              button.addEventListener("click", async () => {
+                await navigator.clipboard.writeText(pre.innerText);
+                button.textContent = "copied ✓";
+                setTimeout(() => (button.textContent = "copy"), 1600);
+              });
+
+              pre.appendChild(button);
+            }
+          })();
+        </script>
 
         <!-- Prev / next -->
         <nav
@@ -180,3 +204,38 @@ const readMinutes = Math.max(1, Math.round(words / 220));
     </div>
   </main>
 </BaseLayout>
+
+<style>
+  /* Copy button injected into each code block */
+  :global(.code-copy) {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.6rem;
+    padding: 0.2rem 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--color-zinc-400);
+    background-color: var(--color-zinc-900);
+    border: 1px solid var(--color-zinc-700);
+    border-radius: 0.375rem;
+    opacity: 0;
+    transition:
+      opacity 0.15s,
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  :global(article:hover .code-copy),
+  :global(.code-copy:focus-visible) {
+    opacity: 1;
+  }
+
+  :global(article pre) {
+    position: relative;
+  }
+
+  :global(.code-copy:hover) {
+    color: var(--color-platform);
+    border-color: var(--color-platform);
+  }
+</style>

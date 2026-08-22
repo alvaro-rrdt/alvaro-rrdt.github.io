@@ -1,0 +1,92 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/config";
+
+/**
+ * Gear and tooling. TODO(phase-0): swap placeholders for your real setup.
+ */
+const groups: { title: string; items: { name: string; note: string }[] }[] = [
+  {
+    title: "daily drivers",
+    items: [
+      { name: "TODO laptop model", note: "main machine" },
+      { name: "TODO monitor / desk", note: "setup" },
+      { name: "TODO keyboard + mouse", note: "input" },
+    ],
+  },
+  {
+    title: "software",
+    items: [
+      { name: "TODO editor (Zed, VS Code…)", note: "primary editor" },
+      { name: "TODO terminal emulator", note: "shell of choice" },
+      { name: "Obsidian or similar", note: "notes & lab write-ups" },
+    ],
+  },
+  {
+    title: "homelab corner",
+    items: [
+      { name: "Hetzner CX22", note: "k3s control plane" },
+      { name: "Forgejo on Forgejo Actions", note: "git + CI" },
+      { name: "Uptime Kuma + Telegram", note: "watchdog" },
+    ],
+  },
+  {
+    title: "on the bench",
+    items: [
+      { name: "Exegol", note: "pentest workspace" },
+      { name: "TODO VPN/lab hardware", note: "security practice" },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Uses"
+  description={`The gear and software ${SITE.name} uses day to day.`}
+>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+    <p class="font-mono text-sm text-zinc-500">$ cat ~/uses.json</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
+      Uses
+    </h1>
+    <p class="mt-4 max-w-xl leading-relaxed text-zinc-400">
+      The tools behind the work. Nothing here is an ad; it is just what is on
+      and around my desk.
+    </p>
+
+    <div class="mt-10 space-y-8">
+      {
+        groups.map((group) => (
+          <section aria-label={group.title}>
+            <h2 class="font-mono text-sm text-zinc-500">
+              <span class="text-platform">"</span>
+              {group.title}
+              <span class="text-platform">":</span>
+            </h2>
+            <ul class="mt-3 divide-y divide-zinc-800/60 rounded-xl border border-zinc-800 bg-zinc-900">
+              {group.items.map((item) => (
+                <li class="flex items-baseline justify-between gap-4 px-5 py-3.5">
+                  <span class="text-sm font-medium text-zinc-100">
+                    {item.name}
+                  </span>
+                  <span class="shrink-0 font-mono text-xs text-zinc-500">
+                    {item.note}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
+    </div>
+
+    <p class="mt-10">
+      <a
+        href="/"
+        class="font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
+      >
+        ← back home
+      </a>
+    </p>
+  </main>
+</BaseLayout>

@@ -13,6 +13,14 @@ const year = new Date().getFullYear();
       </div>
 
       <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs text-zinc-500">
+        <li>
+          <a
+            href={`mailto:${SITE.email}`}
+            class="transition-colors hover:text-platform"
+          >
+            {SITE.email}
+          </a>
+        </li>
         {
           SOCIALS.map((social) => (
             <li>

@@ -10,6 +10,12 @@ export default defineConfig({
   // If base gets added, prefix every internal link with import.meta.env.BASE_URL.
   site: 'https://alvaro-rrdt.github.io',
   integrations: [sitemap()],
+  markdown: {
+    shikiConfig: {
+      // Muted greys that sit well inside zinc-900 code panels
+      theme: 'github-dark-dimmed',
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
   },

@@ -1,5 +1,6 @@
 ---
 import { getPosts } from "@/lib/content";
+import { SITE } from "@/config";
 
 const posts = (await getPosts()).map((post) => ({
   label: post.data.title,
@@ -17,6 +18,12 @@ const commands = [
   { label: "security track", hint: "section", href: "/#security" },
   { label: "certifications", hint: "section", href: "/#certifications" },
   { label: "cv viewer", hint: "page", href: "/cv" },
+  { label: "uses", hint: "page", href: "/uses" },
+  {
+    label: `email ${SITE.email}`,
+    hint: "contact",
+    href: `mailto:${SITE.email}`,
+  },
   ...posts,
 ];
 ---
