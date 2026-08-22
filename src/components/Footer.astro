@@ -28,8 +28,8 @@ const year = new Date().getFullYear();
           ))
         }
         <li>
-          <a href={SITE.cvPath} download class="transition-colors hover:text-platform">
-            cv.pdf ↓
+          <a href="/cv" class="transition-colors hover:text-platform">
+            cv
           </a>
         </li>
         <li>
@@ -47,7 +47,7 @@ const year = new Date().getFullYear();
 
     <div class="flex flex-wrap items-center justify-between gap-2 border-t border-zinc-800/60 pt-5 font-mono text-xs text-zinc-600">
       <p>© {year} {SITE.name}</p>
-      <p>built with astro · zero runtime js · self-hosted git</p>
+      <p>built with astro · static first · self hosted git</p>
     </div>
   </div>
 </footer>
