@@ -59,6 +59,13 @@ Everything below is implemented and committed on GitButler branch
   empty testimonials section. Replace the TODO text to publish a block.
   The hero pdf button and BaseHead og:image/twitter:image are gated the same
   way, by CV_PDF_READY and SITE.ogImage respectively.
+- Experience entries whose summary says "details coming soon" render without
+  a summary line (homepage, /experience, /cv); fill the frontmatter to show.
+- Project cards hide the screenshot block until `screenshot:` frontmatter
+  resolves to a real file, and show "write-up in progress" instead of the
+  read link while the body carries the "Write-up in progress" stub marker.
+- Footer ends with a contact band (email CTA) and links /uses; the ⌘K
+  palette trigger relabels to "search" on touch devices.
 - ⌘K command palette site-wide (pages/sections/posts, keyboard nav, focus trap).
 - Light mode: toggle persists to localStorage, applied pre-paint. Works by
   overriding `--color-zinc-*` and accent vars under :root[data-theme="light"]
@@ -90,7 +97,9 @@ Everything below is implemented and committed on GitButler branch
    `astro dev --background`.
 8. Never ship visible TODO placeholder strings: components filter them at
    render (see SecurityTrack, cv, uses). New placeholder data must follow
-   the same filter pattern until real values land.
+   the same filter pattern until real values land. The same goes for
+   "details coming soon" experience summaries and "Write-up in progress"
+   project bodies: gate them, never render them as final copy.
 
 ## PENDING (needs the owner, then quick builds)
 

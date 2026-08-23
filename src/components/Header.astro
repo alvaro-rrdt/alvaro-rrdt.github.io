@@ -48,7 +48,8 @@ const links = [
         class="rounded-md border border-zinc-800 px-2 py-1.5 font-mono text-xs text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300"
         aria-label="Open quick navigation"
       >
-        ⌘K
+        <span class="kbd-fine">⌘K</span>
+        <span class="kbd-coarse">search</span>
       </button>
 
       <ThemeToggle />
@@ -69,7 +70,8 @@ const links = [
         class="rounded-md border border-zinc-800 px-2 py-1.5 font-mono text-xs text-zinc-400"
         aria-label="Open quick navigation"
       >
-        ⌘K
+        <span class="kbd-fine">⌘K</span>
+        <span class="kbd-coarse">search</span>
       </button>
       <ThemeToggle />
       <a
@@ -112,5 +114,18 @@ const links = [
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Touch devices have no command key: relabel the palette trigger */
+  .kbd-coarse {
+    display: none;
+  }
+  @media (pointer: coarse) {
+    .kbd-fine {
+      display: none;
+    }
+    .kbd-coarse {
+      display: inline;
+    }
   }
 </style>

@@ -45,6 +45,11 @@ const commands = [
     <input
       id="palette-input"
       type="text"
+      role="combobox"
+      aria-label="Search pages, sections and posts"
+      aria-expanded="true"
+      aria-controls="palette-list"
+      aria-autocomplete="list"
       placeholder="jump to…"
       autocomplete="off"
       spellcheck="false"
@@ -103,6 +108,8 @@ const commands = [
       for (const [index, command] of filtered.entries()) {
         const li = document.createElement("li");
         li.setAttribute("role", "option");
+        li.id = `palette-option-${index}`;
+        li.setAttribute("aria-selected", "false");
         li.className =
           "flex items-center justify-between gap-3 rounded-lg px-4 py-2.5 font-mono text-sm cursor-pointer";
         li.innerHTML = `
@@ -120,7 +127,12 @@ const commands = [
     const paint = () => {
       [...list.children].forEach((child, index) => {
         child.classList.toggle("bg-zinc-800", index === selected);
+        child.setAttribute(
+          "aria-selected",
+          String(index === selected),
+        );
         if (index === selected) {
+          input.setAttribute("aria-activedescendant", child.id);
           child.querySelector("span").classList.add("text-platform");
         } else {
           child.querySelector("span").classList.remove("text-platform");

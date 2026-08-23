@@ -4,6 +4,30 @@ import { SITE, SOCIALS, SOURCE_REPO_URL } from "@/config";
 const year = new Date().getFullYear();
 ---
 
+<!-- Contact band: catches readers at the end of the page -->
+<section
+  class="no-print border-t border-zinc-800/60 bg-zinc-900/30"
+  aria-label="Contact"
+>
+  <div
+    class="mx-auto flex max-w-5xl flex-col gap-5 px-6 py-12 sm:flex-row sm:items-center sm:justify-between"
+  >
+    <div>
+      <p class="font-mono text-sm text-zinc-500">$ contact --init</p>
+      <p class="mt-2 max-w-md text-balance text-lg font-semibold text-zinc-100">
+        Hiring for a platform or backend role? My inbox is open.
+      </p>
+    </div>
+    <a
+      href={`mailto:${SITE.email}`}
+      class="inline-flex shrink-0 items-center gap-2 self-start rounded-lg bg-platform px-5 py-3 font-mono text-sm font-semibold text-zinc-950 transition-all hover:-translate-y-0.5 hover:brightness-110 sm:self-auto"
+    >
+      {SITE.email}
+      <span aria-hidden="true">→</span>
+    </a>
+  </div>
+</section>
+
 <footer class="no-print border-t border-zinc-800/60 py-10">
   <div class="mx-auto flex max-w-5xl flex-col gap-6 px-6">
     <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
@@ -38,6 +62,11 @@ const year = new Date().getFullYear();
         <li>
           <a href="/cv" class="transition-colors hover:text-platform">
             cv
+          </a>
+        </li>
+        <li>
+          <a href="/uses" class="transition-colors hover:text-platform">
+            uses
           </a>
         </li>
         <li>

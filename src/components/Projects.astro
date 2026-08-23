@@ -24,6 +24,13 @@ for (const [path, load] of Object.entries(screenshots)) {
 
 const resolveImage = (fileName?: string) =>
   fileName ? (imageByName.get(fileName) ?? null) : null;
+
+/**
+ * A write-up counts as ready once its body no longer carries the
+ * "Write-up in progress" stub marker.
+ */
+const writeupReady = (body?: string) =>
+  !(body ?? "").includes("Write-up in progress");
 ---
 
 <Section id="projects" prompt="~/projects" title="Selected work">
@@ -38,6 +45,7 @@ const resolveImage = (fileName?: string) =>
           synced={project.data.synced}
           href={`/projects/${project.id}`}
           image={resolveImage(project.data.screenshot)}
+          writeupReady={writeupReady(project.body)}
         />
       ))
     }

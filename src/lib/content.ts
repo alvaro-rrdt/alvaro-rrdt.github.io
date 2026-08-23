@@ -13,3 +13,12 @@ export async function getPosts() {
 
   return visible.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 }
+
+/**
+ * Rough reading time in minutes from a raw markdown body.
+ * Shared by the post page header and the listing meta lines.
+ */
+export function readingMinutes(body: string | undefined): number {
+  const words = (body ?? "").split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}

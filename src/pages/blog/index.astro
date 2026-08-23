@@ -1,5 +1,5 @@
 ---
-import { getPosts } from "@/lib/content";
+import { getPosts, readingMinutes } from "@/lib/content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 
@@ -68,6 +68,8 @@ const trackClass: Record<string, string> = {
             </p>
             <p class="mt-2 font-mono text-xs text-zinc-500">
               <FormattedDate date={post.data.pubDate} />
+              {" · "}
+              {readingMinutes(post.body)} min read
               {post.data.tags.map((tag) => ` · #${tag}`)}
             </p>
           </li>

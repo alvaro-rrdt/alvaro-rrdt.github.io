@@ -1,6 +1,6 @@
 ---
 import { render } from "astro:content";
-import { getPosts } from "@/lib/content";
+import { getPosts, readingMinutes } from "@/lib/content";
 import { SITE } from "@/config";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostHeader from "@/components/PostHeader.astro";
@@ -38,9 +38,7 @@ const articleSchema = {
 /** TOC entries: top-level sections plus one nesting level */
 const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 
-/** Rough reading time from the raw markdown word count */
-const words = (post.body ?? "").split(/\s+/).filter(Boolean).length;
-const readMinutes = Math.max(1, Math.round(words / 220));
+const readMinutes = readingMinutes(post.body);
 ---
 
 <BaseLayout
@@ -123,6 +121,40 @@ const readMinutes = Math.max(1, Math.round(words / 220));
           })();
         </script>
 
+        <!-- Desktop TOC: highlight the heading crossing mid-viewport -->
+        <script is:inline>
+          (() => {
+            const links = Array.from(
+              document.querySelectorAll("[data-toc-link]"),
+            );
+            if (links.length === 0) return;
+            const byId = new Map();
+            for (const link of links) {
+              byId.set(link.getAttribute("data-toc-link"), link);
+            }
+            const setActive = (id) => {
+              for (const link of links) {
+                const active = link.getAttribute("data-toc-link") === id;
+                link.classList.toggle("text-platform", active);
+                link.classList.toggle("border-platform", active);
+                link.classList.toggle("border-transparent", !active);
+              }
+            };
+            const observer = new IntersectionObserver(
+              (entries) => {
+                for (const entry of entries) {
+                  if (entry.isIntersecting) setActive(entry.target.id);
+                }
+              },
+              { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
+            );
+            for (const id of byId.keys()) {
+              const heading = document.getElementById(id);
+              if (heading) observer.observe(heading);
+            }
+          })();
+        </script>
+
         <!-- Prev / next -->
         <nav
           class="mt-14 grid gap-3 border-t border-zinc-800/60 pt-8 sm:grid-cols-2"
@@ -179,13 +211,14 @@ const readMinutes = Math.max(1, Math.round(words / 220));
               <p class="font-mono text-xs uppercase tracking-widest text-zinc-600">
                 contents
               </p>
-              <ul class="mt-4 space-y-2 border-l border-zinc-800 font-mono text-xs">
+              <ul class="toc-list mt-4 space-y-2 border-l border-zinc-800 font-mono text-xs">
                 {toc.map((heading) => (
                   <li>
                     <a
                       href={`#${heading.slug}`}
+                      data-toc-link={heading.slug}
                       class:list={[
-                        "block py-0.5 transition-colors hover:text-platform",
+                        "-ml-px block border-l border-transparent py-0.5 transition-colors hover:text-platform",
                         heading.depth === 3 ? "pl-7 text-zinc-600" : "pl-4 text-zinc-400",
                       ]}
                     >
@@ -225,6 +258,13 @@ const readMinutes = Math.max(1, Math.round(words / 220));
   :global(article:hover .code-copy),
   :global(.code-copy:focus-visible) {
     opacity: 1;
+  }
+
+  /* Touch devices have no hover, so keep the button visible there */
+  @media (pointer: coarse) {
+    :global(.code-copy) {
+      opacity: 1;
+    }
   }
 
   :global(article pre) {

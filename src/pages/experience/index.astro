@@ -5,6 +5,12 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 const roles = (await getCollection("experience")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+/**
+ * Placeholder summaries ("details coming soon") never render; fill the
+ * real summary in the entry frontmatter and it appears automatically.
+ */
+const showSummary = (summary: string) => !summary.includes("details coming soon");
 ---
 
 <BaseLayout
@@ -41,9 +47,11 @@ const roles = (await getCollection("experience")).sort(
                   {entry.data.award}
                 </span>
               )}
-              <p class="mt-2 text-sm leading-relaxed text-zinc-400">
-                {entry.data.summary}
-              </p>
+              {showSummary(entry.data.summary) && (
+                <p class="mt-2 text-sm leading-relaxed text-zinc-400">
+                  {entry.data.summary}
+                </p>
+              )}
               <p class="mt-4 font-mono text-sm text-zinc-500 transition-colors group-hover:text-platform">
                 read the full story →
               </p>

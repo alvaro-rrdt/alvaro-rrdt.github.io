@@ -6,6 +6,13 @@ import Section from "@/components/Section.astro";
 const roles = (
   await getCollection("experience")
 ).sort((a, b) => a.data.order - b.data.order);
+
+/**
+ * Placeholder summaries ("details coming soon") never render; fill the
+ * real summary in the entry frontmatter and it appears automatically.
+ */
+const summaryOf = (summary: string) =>
+  summary.includes("details coming soon") ? null : summary;
 ---
 
 <Section id="experience" prompt="~/experience.log" title="Experience">
@@ -35,9 +42,13 @@ const roles = (
           <p class="mt-0.5 font-mono text-xs text-zinc-500">
             {entry.data.period}
           </p>
-          <p class="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-400">
-            {entry.data.summary}
-          </p>
+          {
+            summaryOf(entry.data.summary) && (
+              <p class="mt-2 max-w-2xl text-sm leading-relaxed text-zinc-400">
+                {entry.data.summary}
+              </p>
+            )
+          }
 
           <a
             href={`/experience/${entry.id}`}
@@ -49,4 +60,11 @@ const roles = (
       ))
     }
   </ol>
+
+  <a
+    href="/experience"
+    class="mt-10 inline-block font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
+  >
+    browse all roles →
+  </a>
 </Section>

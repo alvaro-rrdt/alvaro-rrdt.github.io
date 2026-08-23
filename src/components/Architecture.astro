@@ -8,7 +8,7 @@ import Section from "@/components/Section.astro";
   emerald #34d399 (platform), amber #fbbf24 (security/boundary).
 -->
 <Section id="architecture" prompt="~/homelab/topology.svg" title="How it's wired">
-  <div class="overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-900 p-4 sm:p-6">
+  <div class="topology overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-900 p-4 sm:p-6">
     <svg
       viewBox="0 0 960 500"
       class="h-auto w-full min-w-[720px]"
@@ -78,7 +78,48 @@ import Section from "@/components/Section.astro";
       <text x="374" y="434" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">provisions hetzner</text>
     </svg>
   </div>
+  <p class="mt-3 font-mono text-xs text-zinc-500 md:hidden" aria-hidden="true">
+    ← drag sideways to explore the full topology
+  </p>
   <p class="mt-4 font-mono text-sm text-zinc-600">
     // secrets never leave the cluster unencrypted: SOPS + age, keys in the tailnet only
   </p>
 </Section>
+
+<style is:global>
+  /*
+   * Light mode: the SVG above hardcodes dark-theme hexes (it predates the
+   * theme toggle). These attribute-selector overrides remap them to the
+   * light palette so the diagram reads intentional on white.
+   */
+  :root[data-theme="light"] .topology [fill="#18181b"] {
+    fill: #ffffff;
+  }
+  :root[data-theme="light"] .topology [fill="#131316"] {
+    fill: #f4f4f5;
+  }
+  :root[data-theme="light"] .topology [stroke="#3f3f46"] {
+    stroke: #d4d4d8;
+  }
+  :root[data-theme="light"] .topology [stroke="#52525b"] {
+    stroke: #a1a1aa;
+  }
+  :root[data-theme="light"] .topology [fill="#d4d4d8"] {
+    fill: #27272a;
+  }
+  :root[data-theme="light"] .topology [fill="#71717a"] {
+    fill: #52525b;
+  }
+  :root[data-theme="light"] .topology [fill="#34d399"] {
+    fill: #059669;
+  }
+  :root[data-theme="light"] .topology [stroke="#34d399"] {
+    stroke: #059669;
+  }
+  :root[data-theme="light"] .topology [fill="#fbbf24"] {
+    fill: #b45309;
+  }
+  :root[data-theme="light"] .topology [stroke="#fbbf24"] {
+    stroke: #b45309;
+  }
+</style>

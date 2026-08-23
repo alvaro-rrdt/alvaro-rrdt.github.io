@@ -31,8 +31,11 @@ const accentText = d.track === "platform" ? "text-platform" : "text-security";
       </h1>
       {
         d.synced && (
-          <span class="rounded border border-platform/30 bg-platform/10 px-2 py-0.5 font-mono text-xs text-platform">
-            ✓ synced
+          <span
+            class="rounded border border-platform/30 bg-platform/10 px-2 py-0.5 font-mono text-xs text-platform"
+            title="Deployed and running live in my self-hosted homelab"
+          >
+            ✓ live in homelab
           </span>
         )
       }
