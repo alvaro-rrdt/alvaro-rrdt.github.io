@@ -61,12 +61,21 @@ const commands = [
       role="listbox"
     ></ul>
     <p
-      class="border-t border-zinc-800 px-5 py-2 font-mono text-[11px] text-zinc-500"
+      class="palette-hint border-t border-zinc-800 px-5 py-2 font-mono text-[11px] text-zinc-500"
     >
       ↑↓ navigate · enter open · esc close
     </p>
   </div>
 </div>
+
+<style>
+  /* Keyboard hints mean nothing on touch: the list is tappable, say nothing */
+  @media (pointer: coarse) {
+    .palette-hint {
+      display: none;
+    }
+  }
+</style>
 
 <script is:inline>
   (() => {

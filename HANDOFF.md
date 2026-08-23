@@ -65,7 +65,13 @@ Everything below is implemented and committed on GitButler branch
   resolves to a real file, and show "write-up in progress" instead of the
   read link while the body carries the "Write-up in progress" stub marker.
 - Footer ends with a contact band (email CTA) and links /uses; the ⌘K
-  palette trigger relabels to "search" on touch devices.
+  palette trigger relabels to "search" on touch devices (keyboard hint
+  line hidden there too).
+- Mobile chip strip is context-aware: homepage shows section chips, all
+  other pages show page chips (home/blog/cv/uses) so posts never yank
+  readers to homepage anchors. Desktop nav keeps section links everywhere.
+- Hero CTAs are View CV + [email] only; socials are a quiet mono text row
+  (full set lives in footer/CV/contact band).
 - Visual system: sections are numbered (01-09) and accent-coded (emerald =
   platform track: projects/architecture, amber = security track:
   security/certs, neutral otherwise) via Section props (accent, index, wash).

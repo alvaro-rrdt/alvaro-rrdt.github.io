@@ -2,13 +2,26 @@
 import { SITE } from "@/config";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 
-const links = [
+/** Homepage chips jump to sections; everywhere else they jump between
+ *  pages, so reading a post never yanks you back to the homepage. */
+const isHome = Astro.url.pathname === "/";
+
+const sectionLinks = [
   { href: "/#about", label: "about" },
   { href: "/blog", label: "blog" },
   { href: "/#experience", label: "experience" },
   { href: "/#security", label: "security" },
   { href: "/#certifications", label: "certs" },
 ];
+
+const pageLinks = [
+  { href: "/", label: "home" },
+  { href: "/blog", label: "blog" },
+  { href: "/cv", label: "cv" },
+  { href: "/uses", label: "uses" },
+];
+
+const links = isHome ? sectionLinks : pageLinks;
 ---
 
 <header
@@ -29,7 +42,7 @@ const links = [
     <div class="hidden items-center gap-4 md:flex">
       <ul class="flex items-center gap-1 font-mono text-sm text-zinc-400">
         {
-          links.map((link) => (
+          sectionLinks.map((link) => (
             <li>
               <a
                 href={link.href}
@@ -96,7 +109,7 @@ const links = [
           <li class="shrink-0">
             <a
               href={link.href}
-              class="inline-block rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1 transition-colors hover:border-platform/50 hover:text-platform"
+              class="inline-block rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1.5 transition-colors hover:border-platform/50 hover:text-platform"
             >
               {link.label}
             </a>
