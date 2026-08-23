@@ -10,7 +10,24 @@ import { CERTS } from "@/data/certs";
         <article class="rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-600">
           <div class="flex items-baseline justify-between gap-2">
             <h3 class="font-mono text-lg font-bold text-zinc-50">
-              {cert.name}
+              {
+                cert.url ? (
+                  <a
+                    href={cert.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="transition-colors hover:text-security"
+                    aria-label={`${cert.name}: ${cert.fullName} (official program page)`}
+                  >
+                    {cert.name}
+                    <span class="ml-1 text-xs text-zinc-600" aria-hidden="true">
+                      ↗
+                    </span>
+                  </a>
+                ) : (
+                  cert.name
+                )
+              }
             </h3>
             <span class="font-mono text-xs text-zinc-600">{cert.issuer}</span>
           </div>

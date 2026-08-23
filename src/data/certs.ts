@@ -8,6 +8,8 @@ export interface Cert {
   /** Only meaningful for in-progress certs. */
   progress?: number;
   note?: string;
+  /** Official program page, linked from cards so people can read what it is */
+  url?: string;
 }
 
 /**
@@ -23,6 +25,7 @@ export const CERTS: Cert[] = [
     status: "in-progress",
     progress: 55,
     note: "modules in progress",
+    url: "https://academy.hackthebox.com/preview/certifications/htb-certified-junior-cybersecurity-associate",
   },
   {
     name: "CKA",
@@ -30,6 +33,7 @@ export const CERTS: Cert[] = [
     issuer: "CNCF",
     status: "planned",
     note: "next up after CJCA",
+    url: "https://www.cncf.io/training/certification/cka/",
   },
   {
     name: "CDSA",
@@ -37,6 +41,7 @@ export const CERTS: Cert[] = [
     issuer: "HackTheBox",
     status: "planned",
     note: "then defensive security",
+    url: "https://academy.hackthebox.com/preview/certifications/htb-certified-defensive-security-analyst",
   },
   {
     name: "CPTS",
@@ -44,5 +49,6 @@ export const CERTS: Cert[] = [
     issuer: "HackTheBox",
     status: "planned",
     note: "the long game",
+    url: "https://academy.hackthebox.com/preview/certifications/htb-certified-penetration-testing-specialist",
   },
 ];

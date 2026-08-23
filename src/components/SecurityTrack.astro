@@ -37,7 +37,18 @@ const statusStyle: Record<string, { chip: string; glyph: string }> = {
           SECURITY.nowStudying.map((item) => (
             <li class="flex gap-2 text-zinc-300">
               <span class="select-none text-security">▸</span>
-              {item}
+              {item.href ? (
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="transition-colors hover:text-security"
+                >
+                  {item.label} ↗
+                </a>
+              ) : (
+                item.label
+              )}
             </li>
           ))
         }

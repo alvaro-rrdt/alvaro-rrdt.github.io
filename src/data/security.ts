@@ -20,8 +20,11 @@ export const SECURITY = {
    * TODO(phase-0): replace placeholders with the actual module/machine names.
    */
   nowStudying: [
-    "CJCA path · modules in progress",
-    "TODO: current machine or module",
+    {
+      label: "CJCA path · modules in progress",
+      href: "https://academy.hackthebox.com/preview/certifications/htb-certified-junior-cybersecurity-associate",
+    },
+    { label: "TODO: current machine or module" },
   ],
 
   /**
