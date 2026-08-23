@@ -1,31 +1,92 @@
 ---
 /**
  * Shared section shell: anchor target + terminal-prompt eyebrow + heading.
+ *
+ * accent tints the eyebrow, section number and underline (emerald marks
+ * the platform track, amber the security track, neutral everything else).
+ * index renders a section number ("01") for wayfinding rhythm. wash adds
+ * a faint band behind the section so the page breathes while scrolling.
  */
 interface Props {
   id: string;
   /** Shell command rendered as the eyebrow, e.g. `~/projects` */
   prompt: string;
   title: string;
+  accent?: "platform" | "security" | "neutral";
+  /** Section number rendered before the title, e.g. "01" */
+  index?: string;
+  /** Faint lighter band behind the whole section */
+  wash?: boolean;
 }
 
-const { id, prompt, title } = Astro.props;
+const {
+  id,
+  prompt,
+  title,
+  accent = "neutral",
+  index,
+  wash = false,
+} = Astro.props;
+
+const promptClass =
+  accent === "platform"
+    ? "text-platform"
+    : accent === "security"
+      ? "text-security"
+      : "text-zinc-300";
+
+const numberClass =
+  accent === "platform"
+    ? "text-platform/70"
+    : accent === "security"
+      ? "text-security/70"
+      : "text-zinc-600";
+
+const underlineClass =
+  accent === "platform"
+    ? "from-platform via-platform/40"
+    : accent === "security"
+      ? "from-security via-security/40"
+      : "from-zinc-500 via-zinc-500/40";
 ---
 
 <!-- Mobile header is two rows tall, so anchored sections need more clearance -->
-<section id={id} class="scroll-mt-24 py-16 sm:py-24 md:scroll-mt-20">
+<section
+  id={id}
+  class:list={[
+    "scroll-mt-24 py-16 sm:py-24 md:scroll-mt-20",
+    wash && "bg-white/[0.02]",
+  ]}
+>
   <div class="mx-auto max-w-5xl px-6">
     <p class="font-mono text-sm text-zinc-500" aria-hidden="true">
-      $ cat <span class="text-platform">{prompt}</span>
+      $ cat <span class={promptClass}>{prompt}</span>
     </p>
     <h2 class="mt-2 text-2xl font-bold tracking-tight text-zinc-50 sm:text-3xl">
+      {
+        index && (
+          <span
+            class:list={[
+              "mr-3 font-mono text-base font-normal sm:text-lg",
+              numberClass,
+            ]}
+            aria-hidden="true"
+          >
+            {index}/
+          </span>
+        )
+      }
       {title}
     </h2>
     <div
-      class="mt-3 h-px w-20 bg-gradient-to-r from-platform via-platform/40 to-transparent"
+      class:list={[
+        "mt-3 h-px w-20 bg-gradient-to-r to-transparent",
+        underlineClass,
+      ]}
       aria-hidden="true"
     ></div>
-    <div class="mt-12" data-reveal>
+    <!-- relative anchors absolutely-positioned slot decorations (e.g. glows) -->
+    <div class="relative mt-12" data-reveal>
       <slot />
     </div>
   </div>

@@ -3,15 +3,29 @@ import Section from "@/components/Section.astro";
 import { CERTS } from "@/data/certs";
 ---
 
-<Section id="certifications" prompt="~/certs --list" title="Certification journey">
-  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+<Section
+  id="certifications"
+  prompt="~/certs --list"
+  title="Certification journey"
+  accent="security"
+  index="07"
+>
+  <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-stagger>
     {
-      CERTS.map((cert) => (
-        <article class="rounded-xl border border-zinc-800 bg-zinc-900 p-5 transition-colors hover:border-zinc-600">
-          <div class="flex items-baseline justify-between gap-2">
-            <h3 class="font-mono text-lg font-bold text-zinc-50">
-              {
-                cert.url ? (
+      CERTS.map((cert) => {
+        const featured = cert.status === "in-progress";
+        return (
+          <article
+            class:list={[
+              "group rounded-xl border bg-zinc-900 p-5 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/40",
+              featured
+                ? "border-security/50 sm:col-span-2 lg:col-span-2"
+                : "border-zinc-700/60 hover:border-zinc-500",
+            ]}
+          >
+            <div class="flex items-baseline justify-between gap-2">
+              <h3 class="font-mono text-lg font-bold text-zinc-50">
+                {cert.url ? (
                   <a
                     href={cert.url}
                     target="_blank"
@@ -26,48 +40,48 @@ import { CERTS } from "@/data/certs";
                   </a>
                 ) : (
                   cert.name
-                )
-              }
-            </h3>
-            <span class="font-mono text-xs text-zinc-500">{cert.issuer}</span>
-          </div>
+                )}
+              </h3>
+              <span class="font-mono text-xs text-zinc-500">{cert.issuer}</span>
+            </div>
 
-          <p class="mt-1 min-h-10 text-sm text-zinc-400">{cert.fullName}</p>
+            <p class="mt-1 min-h-10 text-sm text-zinc-400">{cert.fullName}</p>
 
-          <div class="mt-4">
-            {cert.status === "earned" && (
-              <span class="font-mono text-xs text-platform">✓ earned</span>
-            )}
+            <div class={featured ? "mt-5" : "mt-4"}>
+              {cert.status === "earned" && (
+                <span class="font-mono text-xs text-platform">✓ earned</span>
+              )}
 
-            {cert.status === "in-progress" && (
-              <div>
-                <div
-                  class="h-1.5 overflow-hidden rounded-full bg-zinc-800"
-                  role="progressbar"
-                  aria-label={`${cert.name} progress`}
-                  aria-valuenow={cert.progress}
-                  aria-valuemin={0}
-                  aria-valuemax={100}
-                >
+              {cert.status === "in-progress" && (
+                <div>
                   <div
-                    class="h-full rounded-full bg-security"
-                    style={`width: ${cert.progress ?? 0}%`}
-                  />
+                    class="h-2 overflow-hidden rounded-full bg-zinc-800"
+                    role="progressbar"
+                    aria-label={`${cert.name} progress`}
+                    aria-valuenow={cert.progress}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                  >
+                    <div
+                      class="h-full rounded-full bg-security transition-[width] duration-500"
+                      style={`width: ${cert.progress ?? 0}%`}
+                    />
+                  </div>
+                  <p class="mt-2.5 font-mono text-xs text-security">
+                    in progress · {cert.progress}% · {cert.note}
+                  </p>
                 </div>
-                <p class="mt-2 font-mono text-xs text-security">
-                  in progress · {cert.note}
-                </p>
-              </div>
-            )}
+              )}
 
-            {cert.status === "planned" && (
-              <p class="font-mono text-xs text-zinc-500">
-                □ planned · {cert.note}
-              </p>
-            )}
-          </div>
-        </article>
-      ))
+              {cert.status === "planned" && (
+                <p class="font-mono text-xs text-zinc-500">
+                  □ planned · {cert.note}
+                </p>
+              )}
+            </div>
+          </article>
+        );
+      })
     }
   </div>
 </Section>

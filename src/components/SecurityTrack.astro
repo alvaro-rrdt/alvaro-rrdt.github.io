@@ -18,11 +18,24 @@ const studying = SECURITY.nowStudying.filter(
 const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
 ---
 
-<Section id="security" prompt="~/hackthebox" title="Security track">
-  <div class="grid gap-6 lg:grid-cols-2">
+<Section
+  id="security"
+  prompt="~/hackthebox"
+  title="Security track"
+  accent="security"
+  index="06"
+  wash
+>
+  <!-- Amber glow echoing the hero's emerald one, marking the security track -->
+  <div
+    class="pointer-events-none absolute right-0 top-24 size-[420px] rounded-full bg-security/[0.07] blur-[120px]"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative grid gap-6 lg:grid-cols-2" data-stagger>
     <!-- Learning -->
     <article
-      class="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-security/40"
+      class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-security/40 hover:shadow-lg hover:shadow-black/40"
     >
       <div class="flex items-baseline justify-between gap-3">
         <h3 class="font-semibold text-zinc-50">Learning</h3>
@@ -85,7 +98,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
 
     <!-- Competitive -->
     <article
-      class="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 p-6 transition-colors hover:border-security/40"
+      class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-security/40 hover:shadow-lg hover:shadow-black/40"
     >
       <div class="flex items-baseline justify-between gap-3">
         <h3 class="font-semibold text-zinc-50">Pro labs</h3>

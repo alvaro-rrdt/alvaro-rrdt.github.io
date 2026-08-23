@@ -4,23 +4,28 @@ import { SITE, SOCIALS, SOURCE_REPO_URL } from "@/config";
 const year = new Date().getFullYear();
 ---
 
-<!-- Contact band: catches readers at the end of the page -->
+<!-- Contact band: oversized terminal line, the last beat of the page -->
 <section
-  class="no-print border-t border-zinc-800/60 bg-zinc-900/30"
+  class="no-print border-t border-zinc-800/60"
   aria-label="Contact"
 >
-  <div
-    class="mx-auto flex max-w-5xl flex-col gap-5 px-6 py-12 sm:flex-row sm:items-center sm:justify-between"
-  >
-    <div>
-      <p class="font-mono text-sm text-zinc-500">$ contact --init</p>
-      <p class="mt-2 max-w-md text-balance text-lg font-semibold text-zinc-100">
-        Hiring for a platform or backend role? My inbox is open.
-      </p>
-    </div>
+  <div class="mx-auto max-w-5xl px-6 py-20 text-center sm:py-24">
+    <p
+      class="font-mono text-xl tracking-tight sm:text-3xl"
+      aria-hidden="true"
+    >
+      <span class="text-zinc-500">$ git commit -m</span>
+      <span class="font-semibold text-platform">"hire me"</span><span
+        class="footer-caret"
+      ></span>
+    </p>
+    <p class="mx-auto mt-6 max-w-md text-balance leading-relaxed text-zinc-400">
+      Hiring for a platform or backend role, or curious about the homelab?
+      My inbox is open.
+    </p>
     <a
       href={`mailto:${SITE.email}`}
-      class="inline-flex shrink-0 items-center gap-2 self-start rounded-lg bg-platform px-5 py-3 font-mono text-sm font-semibold text-zinc-950 transition-all hover:-translate-y-0.5 hover:brightness-110 sm:self-auto"
+      class="mt-8 inline-flex items-center gap-2 rounded-lg bg-platform px-6 py-3.5 font-mono text-sm font-semibold text-zinc-950 transition-all hover:-translate-y-0.5 hover:brightness-110"
     >
       {SITE.email}
       <span aria-hidden="true">→</span>
@@ -88,3 +93,22 @@ const year = new Date().getFullYear();
     </div>
   </div>
 </footer>
+
+<style>
+  /* Blinking caret after the closing "hire me" line */
+  .footer-caret {
+    display: inline-block;
+    width: 0.55ch;
+    height: 1em;
+    translate: 0 0.14em;
+    margin-left: 0.4ch;
+    background: var(--color-platform);
+    animation: footer-caret-blink 0.9s step-end infinite;
+  }
+
+  @keyframes footer-caret-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+</style>

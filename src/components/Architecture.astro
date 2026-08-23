@@ -7,8 +7,14 @@ import Section from "@/components/Section.astro";
   zero JS, no image assets. Colors mirror the theme tokens:
   emerald #34d399 (platform), amber #fbbf24 (security/boundary).
 -->
-<Section id="architecture" prompt="~/homelab/topology.svg" title="How it's wired">
-  <div class="topology overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-900 p-4 sm:p-6">
+<Section
+  id="architecture"
+  prompt="~/homelab/topology.svg"
+  title="How it's wired"
+  accent="platform"
+  index="03"
+>
+  <div class="topology overflow-x-auto rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 shadow-sm shadow-black/30 sm:p-6">
     <svg
       viewBox="0 0 960 500"
       class="h-auto w-full min-w-[720px]"

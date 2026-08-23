@@ -164,7 +164,7 @@ const readMinutes = readingMinutes(post.body);
             prev ? (
               <a
                 href={`/blog/${prev.id}`}
-                class="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition-colors hover:border-zinc-600"
+                class="group rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg hover:shadow-black/40"
               >
                 <span class="font-mono text-xs text-zinc-500">← older</span>
                 <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
@@ -179,7 +179,7 @@ const readMinutes = readingMinutes(post.body);
             next && (
               <a
                 href={`/blog/${next.id}`}
-                class="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-right transition-colors hover:border-zinc-600"
+                class="group rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 text-right shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg hover:shadow-black/40"
               >
                 <span class="font-mono text-xs text-zinc-500">newer →</span>
                 <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">

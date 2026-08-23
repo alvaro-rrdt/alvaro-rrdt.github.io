@@ -66,6 +66,16 @@ Everything below is implemented and committed on GitButler branch
   read link while the body carries the "Write-up in progress" stub marker.
 - Footer ends with a contact band (email CTA) and links /uses; the ⌘K
   palette trigger relabels to "search" on touch devices.
+- Visual system: sections are numbered (01-09) and accent-coded (emerald =
+  platform track: projects/architecture, amber = security track:
+  security/certs, neutral otherwise) via Section props (accent, index, wash).
+  Cards share one elevation language (border-zinc-700/60 + shadow-sm, lift +
+  shadow-lg on hover); chips/controls stay quiet (zinc-800). The hero has a
+  terminal-window visual (keep its whitespace-pre lines under ~32 chars or
+  they clip on small phones) and one accent word in the tagline. A subtle
+  fixed film-grain layer (.grain in global.css, print-excluded) and a
+  security-track amber glow add depth. Reveal cascades: [data-stagger]
+  containers stagger direct children, [data-reveal-delay] fades after N ms.
 - ⌘K command palette site-wide (pages/sections/posts, keyboard nav, focus trap).
 - Light mode: toggle persists to localStorage, applied pre-paint. Works by
   overriding `--color-zinc-*` and accent vars under :root[data-theme="light"]

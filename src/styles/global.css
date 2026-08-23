@@ -79,6 +79,23 @@
   );
 }
 
+/* Film grain overlay: fixed, inert, ~2% opacity so dark surfaces get
+   texture without muddying text. Toggled off under reduced motion is
+   unnecessary: it never animates. */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+:root[data-theme="light"] .grain {
+  opacity: 0.03;
+}
+
 :root[data-theme="light"] {
   --grid-dot: rgb(0 0 0 / 0.07);
 }
@@ -150,7 +167,8 @@
 
 /* Print: only the CV sheet survives, clean white paper output */
 @media print {
-  .no-print {
+  .no-print,
+  .grain {
     display: none !important;
   }
 
