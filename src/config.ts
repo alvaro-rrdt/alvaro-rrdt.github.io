@@ -26,12 +26,6 @@ export const SITE = {
     "Personal site of Alvaro Riccardi, software engineer focused on platform engineering, cloud infrastructure and reliability, with a practical cybersecurity edge.",
   /** Path served from /public. TODO(launch): replace with the real CV. */
   cvPath: "/cv.pdf",
-  /**
-   * Open Graph share image served from /public, e.g. "/og-image.png"
-   * (1200x630). TODO(launch): add the file and set the path here; the
-   * og:image / twitter:image meta tags only render while this is set.
-   */
-  ogImage: "",
   /** Public contact address, shown in footer/CV/palette. */
   email: "alvaro.rm.rdt@gmail.com",
 } as const;

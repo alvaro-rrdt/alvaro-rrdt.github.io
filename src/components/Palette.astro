@@ -52,8 +52,10 @@ const commands = [
       aria-autocomplete="list"
       placeholder="jump to…"
       autocomplete="off"
+      autocapitalize="none"
+      enterkeyhint="go"
       spellcheck="false"
-      class="w-full border-b border-zinc-800 bg-transparent px-5 py-4 font-mono text-sm text-zinc-100 outline-none placeholder:text-zinc-500"
+      class="w-full border-b border-zinc-800 bg-transparent px-5 py-4 font-mono text-base text-zinc-100 outline-none placeholder:text-zinc-500"
     />
     <ul
       id="palette-list"
@@ -91,6 +93,10 @@ const commands = [
 
     const open = () => {
       root.classList.remove("hidden");
+      // Lock background scroll and hide it from assistive tech while open
+      document.body.style.overflow = "hidden";
+      const page = document.getElementById("main");
+      if (page) page.inert = true;
       input.value = "";
       render("");
       input.focus();
@@ -98,6 +104,9 @@ const commands = [
 
     const close = () => {
       root.classList.add("hidden");
+      document.body.style.overflow = "";
+      const page = document.getElementById("main");
+      if (page) page.inert = false;
     };
 
     const render = (query) => {

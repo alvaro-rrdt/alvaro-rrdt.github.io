@@ -11,15 +11,25 @@ interface Props {
   description?: string;
   /** Open Graph type forwarded to BaseHead */
   type?: "website" | "article";
+  /** OG image path override, e.g. per-post generated card */
+  ogImage?: string;
+  /** Article publish date forwarded to BaseHead */
+  publishedTime?: Date;
 }
 
-const { title, description, type } = Astro.props;
+const { title, description, type, ogImage, publishedTime } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="en">
   <head>
-    <BaseHead title={title} description={description} type={type} />
+    <BaseHead
+      title={title}
+      description={description}
+      type={type}
+      image={ogImage}
+      publishedTime={publishedTime}
+    />
     <script is:inline>
       // Apply stored theme before first paint to avoid a flash of wrong theme
       (() => {

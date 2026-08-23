@@ -70,6 +70,17 @@ Everything below is implemented and committed on GitButler branch
 - Mobile chip strip is context-aware: homepage shows section chips, all
   other pages show page chips (home/blog/cv/uses) so posts never yank
   readers to homepage anchors. Desktop nav keeps section links everywhere.
+- Shareability: OG images generated at build time by astro-og-canvas
+  (src/pages/og/[...route].ts): /og/default.png for the site plus one card
+  per post (/og/<post id>.png), emerald platform / amber security accent.
+  BaseHead emits the full tag set (og:image dimensions/alt,
+  article:published_time and article:author on posts). Icons: apple-touch-icon
+  (180), icon-192/512, maskable 512 in public/site.webmanifest, favicon.svg
+  dark + favicon-light.svg light via prefers-color-scheme.
+- Mobile fixes: palette input is 16px (no iOS focus zoom) with
+  autocapitalize none / enterkeyhint go; opening it locks body scroll and
+  sets main.inert; header controls are min-h-11 tap targets; viewport-fit
+  cover + safe-area padding keeps the chip strip clear of notches.
 - Hero CTAs are View CV + [email] only; socials are a quiet mono text row
   (full set lives in footer/CV/contact band).
 - Visual system: sections are numbered (01-09) and accent-coded (emerald =
@@ -133,9 +144,9 @@ Everything below is implemented and committed on GitButler branch
 5. Testimonials: awaiting quotes from Saab/Zinco colleagues; files go in
    `src/content/testimonials/`.
 6. Uptime Kuma status URL into STATUS_URL (config.ts) to activate StatusStrip.
-7. OG share image (1200x630): drop the file at public/og-image.png and set
-   SITE.ogImage in src/config.ts. BaseHead only emits og:image/twitter:image
-   (and twitter:card summary_large_image) while that is set.
+7. DONE 2026-08-23: OG images now generate at build time (astro-og-canvas).
+   Optional owner polish: tweak title/subtitle styling in
+   src/pages/og/[...route].ts if the default look is not to taste.
 8. Display-name check: "Alvaro Riccardi" used everywhere; confirm spelling/accent.
 
 ## DEPLOY (pipeline added 2026-08-25, owner setup steps pending)

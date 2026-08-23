@@ -5,17 +5,19 @@ interface Props {
   /** Page title, rendered as `${title} · ${SITE.name}`. Omit on the homepage. */
   title?: string;
   description?: string;
-  /** OG image path relative to /public. Defaults to SITE.ogImage; empty
-   *  means no image meta is emitted (no broken share cards). */
+  /** OG image path relative to the site root, e.g. /og/default.png */
   image?: string;
   type?: "website" | "article";
+  /** Article publish date; enriches the OG article tag set */
+  publishedTime?: Date;
 }
 
 const {
   title,
   description = SITE.description,
-  image = SITE.ogImage,
+  image = "/og/default.png",
   type = "website",
+  publishedTime,
 } = Astro.props;
 
 /**
@@ -45,14 +47,29 @@ const personSchema = {
 
 <!-- Core meta -->
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="generator" content={Astro.generator} />
 <title>{pageTitle}</title>
 <meta name="description" content={description} />
 <meta name="author" content={SITE.name} />
 <meta name="theme-color" content="#09090b" id="theme-color-meta" />
 
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<!-- Icons: dark default, light variant for light-mode tabs, apple touch,
+     and a web manifest so installs look right on every platform -->
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon.svg"
+  media="(prefers-color-scheme: dark)"
+/>
+<link
+  rel="icon"
+  type="image/svg+xml"
+  href="/favicon-light.svg"
+  media="(prefers-color-scheme: light)"
+/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 <link rel="canonical" href={canonicalURL.href} />
 <link
   rel="alternate"
@@ -68,6 +85,31 @@ const personSchema = {
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
 {socialImageURL && <meta property="og:image" content={socialImageURL.href} />}
+{
+  socialImageURL && (
+    <>
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta
+        property="og:image:alt"
+        content={`${pageTitle}: preview card for ${SITE.name}'s site`}
+      />
+    </>
+  )
+}
+{
+  type === "article" && publishedTime && (
+    <meta
+      property="article:published_time"
+      content={publishedTime.toISOString()}
+    />
+  )
+}
+{
+  type === "article" && (
+    <meta property="article:author" content={SITE.name} />
+  )
+}
 
 <!-- Twitter/X -->
 <meta

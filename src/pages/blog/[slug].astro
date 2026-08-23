@@ -45,6 +45,8 @@ const readMinutes = readingMinutes(post.body);
   title={post.data.title}
   description={post.data.description}
   type="article"
+  ogImage={`/og/${post.id}.png`}
+  publishedTime={post.data.pubDate}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 

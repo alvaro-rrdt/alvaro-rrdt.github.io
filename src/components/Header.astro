@@ -28,7 +28,7 @@ const links = isHome ? sectionLinks : pageLinks;
   class="no-print fixed inset-x-0 top-0 z-40 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur"
 >
   <nav
-    class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6"
+    class="nav-safe-area mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6"
     aria-label="Main navigation"
   >
     <a
@@ -58,18 +58,20 @@ const links = isHome ? sectionLinks : pageLinks;
       <button
         type="button"
         data-palette-open
-        class="rounded-md border border-zinc-800 px-2 py-1.5 font-mono text-xs text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300"
+        class="min-h-11 rounded-md border border-zinc-800 px-2.5 py-2.5 font-mono text-xs text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300"
         aria-label="Open quick navigation"
       >
         <span class="kbd-fine">⌘K</span>
         <span class="kbd-coarse">search</span>
       </button>
 
-      <ThemeToggle />
+      <div class="flex min-h-11 items-center">
+        <ThemeToggle />
+      </div>
 
       <a
         href="/cv"
-        class="rounded-md border border-platform/40 bg-platform/10 px-3 py-1.5 font-mono text-sm text-platform transition-colors hover:bg-platform/20"
+        class="flex min-h-11 items-center rounded-md border border-platform/40 bg-platform/10 px-3 py-2.5 font-mono text-sm text-platform transition-colors hover:bg-platform/20"
       >
         cv
       </a>
@@ -80,16 +82,18 @@ const links = isHome ? sectionLinks : pageLinks;
       <button
         type="button"
         data-palette-open
-        class="rounded-md border border-zinc-800 px-2 py-1.5 font-mono text-xs text-zinc-400"
+        class="flex min-h-11 items-center rounded-md border border-zinc-800 px-2.5 py-2.5 font-mono text-xs text-zinc-400"
         aria-label="Open quick navigation"
       >
         <span class="kbd-fine">⌘K</span>
         <span class="kbd-coarse">search</span>
       </button>
-      <ThemeToggle />
+      <div class="flex min-h-11 items-center">
+        <ThemeToggle />
+      </div>
       <a
         href="/cv"
-        class="rounded-md border border-platform/40 bg-platform/10 px-2.5 py-1.5 font-mono text-sm text-platform"
+        class="flex min-h-11 items-center rounded-md border border-platform/40 bg-platform/10 px-2.5 py-2.5 font-mono text-sm text-platform"
       >
         cv
       </a>
@@ -99,7 +103,7 @@ const links = isHome ? sectionLinks : pageLinks;
   <!-- Mobile nav: horizontally scrollable chips, no JS needed -->
   <nav
     aria-label="Section shortcuts"
-    class="border-t border-zinc-800/60 bg-zinc-950/80 md:hidden"
+    class="chips-safe-area border-t border-zinc-800/60 bg-zinc-950/80 md:hidden"
   >
     <ul
       class="scrollbar-none flex items-center gap-2 overflow-x-auto px-4 py-2 font-mono text-xs text-zinc-400"
@@ -127,6 +131,24 @@ const links = isHome ? sectionLinks : pageLinks;
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  /* Notched phones in landscape: keep chrome clear of the sensor housing.
+     BaseHead sets viewport-fit=cover so these insets are available. */
+  @supports (padding: max(0px)) {
+    .nav-safe-area {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+    .chips-safe-area {
+      padding-left: max(1rem, env(safe-area-inset-left));
+      padding-right: max(1.5rem, env(safe-area-inset-right));
+    }
+    @media (min-width: 640px) {
+      .nav-safe-area {
+        padding-left: max(1.5rem, env(safe-area-inset-left));
+      }
+    }
   }
 
   /* Touch devices have no command key: relabel the palette trigger */
