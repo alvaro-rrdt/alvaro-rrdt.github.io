@@ -1,5 +1,6 @@
 ---
 import { SITE, SOCIALS } from "@/config";
+import { CV_PDF_READY } from "@/data/cv";
 
 /** Job title split on "·" so separators can be dimmed. */
 const titleParts = SITE.jobTitle.split(" · ");
@@ -76,14 +77,18 @@ const titleParts = SITE.jobTitle.split(" · ");
           ></path>
         </svg>
       </a>
-      <a
-        href={SITE.cvPath}
-        download
-        aria-label="Download CV as PDF"
-        class="rounded-lg border border-zinc-700 bg-zinc-900/80 px-4 py-3 font-mono text-sm text-zinc-300 transition-all hover:-translate-y-0.5 hover:border-platform/50 hover:text-platform"
-      >
-        ↓ pdf
-      </a>
+      {
+        CV_PDF_READY && (
+          <a
+            href={SITE.cvPath}
+            download
+            aria-label="Download CV as PDF"
+            class="rounded-lg border border-zinc-700 bg-zinc-900/80 px-4 py-3 font-mono text-sm text-zinc-300 transition-all hover:-translate-y-0.5 hover:border-platform/50 hover:text-platform"
+          >
+            ↓ pdf
+          </a>
+        )
+      }
       {
         SOCIALS.map((social) => (
           <a

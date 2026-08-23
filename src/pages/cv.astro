@@ -19,6 +19,17 @@ const contactLine = SOCIALS.map((social) => social.href
   .replace("https://www.", "")
   .replace("https://", "")
   .replace(/\/$/, ""));
+
+/**
+ * Placeholder entries still containing TODO never render; fill real
+ * education in src/data/cv.ts and the section appears automatically.
+ */
+const education = CV.education.filter(
+  (school) =>
+    ![school.degree, school.school, school.period].some((value) =>
+      value.includes("TODO"),
+    ),
+);
 ---
 
 <BaseLayout title="CV" description={`Curriculum vitae of ${SITE.name}, ${SITE.jobTitle.toLowerCase()}.`}>
@@ -142,22 +153,24 @@ const contactLine = SOCIALS.map((social) => social.href
       </section>
 
       <!-- Education -->
-      <section class="mt-8" aria-label="Education">
-        <h2 class="cv-section-label">Education</h2>
-        <div class="mt-4 space-y-3">
-          {
-            CV.education.map((school) => (
-              <div class="flex flex-wrap items-baseline justify-between gap-x-3">
-                <h3 class="font-semibold text-zinc-900">{school.degree}</h3>
-                <span class="font-mono text-xs text-zinc-500">
-                  {school.period}
-                </span>
-                <p class="w-full text-sm text-zinc-600">{school.school}</p>
-              </div>
-            ))
-          }
-        </div>
-      </section>
+      {
+        education.length > 0 && (
+          <section class="mt-8" aria-label="Education">
+            <h2 class="cv-section-label">Education</h2>
+            <div class="mt-4 space-y-3">
+              {education.map((school) => (
+                <div class="flex flex-wrap items-baseline justify-between gap-x-3">
+                  <h3 class="font-semibold text-zinc-900">{school.degree}</h3>
+                  <span class="font-mono text-xs text-zinc-500">
+                    {school.period}
+                  </span>
+                  <p class="w-full text-sm text-zinc-600">{school.school}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        )
+      }
 
       <!-- Certifications -->
       <section class="mt-8" aria-label="Certifications">

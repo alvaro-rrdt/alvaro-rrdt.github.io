@@ -7,6 +7,15 @@ const statusStyle: Record<string, { chip: string; glyph: string }> = {
   active: { chip: "border-security/40 bg-security/15 text-security", glyph: "●" },
   planned: { chip: "border-zinc-700 bg-zinc-950/50 text-zinc-400", glyph: "□" },
 };
+
+/**
+ * Placeholder rows still containing TODO never render; replace the TODO
+ * text in src/data/security.ts and they appear automatically.
+ */
+const studying = SECURITY.nowStudying.filter(
+  (item) => !item.label.includes("TODO"),
+);
+const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
 ---
 
 <Section id="security" prompt="~/hackthebox" title="Security track">
@@ -32,42 +41,46 @@ const statusStyle: Record<string, { chip: string; glyph: string }> = {
         and challenges for hands-on practice.
       </p>
 
-      <ul class="mt-4 space-y-2 font-mono text-sm">
-        {
-          SECURITY.nowStudying.map((item) => (
-            <li class="flex gap-2 text-zinc-300">
-              <span class="select-none text-security">▸</span>
-              {item.href ? (
-                <a
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="transition-colors hover:text-security"
-                >
-                  {item.label} ↗
-                </a>
-              ) : (
-                item.label
-              )}
-            </li>
-          ))
-        }
-      </ul>
+      {
+        studying.length > 0 && (
+          <ul class="mt-4 space-y-2 font-mono text-sm">
+            {studying.map((item) => (
+              <li class="flex gap-2 text-zinc-300">
+                <span class="select-none text-security">▸</span>
+                {item.href ? (
+                  <a
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="transition-colors hover:text-security"
+                  >
+                    {item.label} ↗
+                  </a>
+                ) : (
+                  item.label
+                )}
+              </li>
+            ))}
+          </ul>
+        )
+      }
 
-      <dl class="mt-auto grid grid-cols-3 gap-3 pt-6">
-        {
-          SECURITY.stats.map((stat) => (
-            <div class="rounded-lg border border-zinc-800 bg-zinc-950/60 p-3 text-center">
-              <dt class="order-2 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
-                {stat.label}
-              </dt>
-              <dd class="font-mono text-lg font-bold text-security">
-                {stat.value}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
+      {
+        stats.length > 0 && (
+          <dl class="mt-auto grid grid-cols-3 gap-3 pt-6">
+            {stats.map((stat) => (
+              <div class="rounded-lg border border-zinc-800 bg-zinc-950/60 p-3 text-center">
+                <dt class="order-2 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
+                  {stat.label}
+                </dt>
+                <dd class="font-mono text-lg font-bold text-security">
+                  {stat.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        )
+      }
     </article>
 
     <!-- Competitive -->

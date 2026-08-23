@@ -5,7 +5,8 @@ interface Props {
   /** Page title, rendered as `${title} · ${SITE.name}`. Omit on the homepage. */
   title?: string;
   description?: string;
-  /** OG image path relative to /public */
+  /** OG image path relative to /public. Defaults to SITE.ogImage; empty
+   *  means no image meta is emitted (no broken share cards). */
   image?: string;
   type?: "website" | "article";
 }
@@ -13,8 +14,7 @@ interface Props {
 const {
   title,
   description = SITE.description,
-  // TODO(phase-5): generate a real 1200×630 OG image into public/
-  image = "/og-image.png",
+  image = SITE.ogImage,
   type = "website",
 } = Astro.props;
 
@@ -24,7 +24,8 @@ const {
  */
 const siteOrigin = Astro.site ?? new URL(SITE.url);
 const canonicalURL = new URL(Astro.url.pathname, siteOrigin);
-const socialImageURL = new URL(image, siteOrigin);
+const socialImageURL = image ? new URL(image, siteOrigin) : null;
+const rssURL = new URL("/rss.xml", siteOrigin);
 const pageTitle = title
   ? `${title} · ${SITE.name}`
   : `${SITE.name} · ${SITE.jobTitle}`;
@@ -37,7 +38,7 @@ const personSchema = {
   jobTitle: "Software Engineer",
   description: SITE.description,
   email: `mailto:${SITE.email}`,
-  url: canonicalURL.href,
+  url: new URL(SITE.url).href,
   sameAs: SOCIALS.map((social) => social.href),
 };
 ---
@@ -53,6 +54,12 @@ const personSchema = {
 
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="canonical" href={canonicalURL.href} />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={`${SITE.name} · RSS`}
+  href={rssURL.href}
+/>
 
 <!-- Open Graph -->
 <meta property="og:type" content={type} />
@@ -60,12 +67,15 @@ const personSchema = {
 <meta property="og:url" content={canonicalURL.href} />
 <meta property="og:title" content={pageTitle} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={socialImageURL.href} />
+{socialImageURL && <meta property="og:image" content={socialImageURL.href} />}
 
 <!-- Twitter/X -->
-<meta name="twitter:card" content="summary_large_image" />
+<meta
+  name="twitter:card"
+  content={socialImageURL ? "summary_large_image" : "summary"}
+/>
 <meta name="twitter:title" content={pageTitle} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={socialImageURL.href} />
+{socialImageURL && <meta name="twitter:image" content={socialImageURL.href} />}
 
 <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

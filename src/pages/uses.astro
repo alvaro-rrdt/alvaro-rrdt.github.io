@@ -5,7 +5,7 @@ import { SITE } from "@/config";
 /**
  * Gear and tooling. TODO(phase-0): swap placeholders for your real setup.
  */
-const groups: { title: string; items: { name: string; note: string }[] }[] = [
+const RAW_GROUPS: { title: string; items: { name: string; note: string }[] }[] = [
   {
     title: "daily drivers",
     items: [
@@ -38,6 +38,15 @@ const groups: { title: string; items: { name: string; note: string }[] }[] = [
     ],
   },
 ];
+
+/**
+ * Placeholder items still containing TODO never render, and groups left
+ * empty disappear with them; replace the TODO text and they appear.
+ */
+const groups = RAW_GROUPS.map((group) => ({
+  ...group,
+  items: group.items.filter((item) => !item.name.includes("TODO")),
+})).filter((group) => group.items.length > 0);
 ---
 
 <BaseLayout
