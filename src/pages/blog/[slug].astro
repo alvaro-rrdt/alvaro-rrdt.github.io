@@ -57,8 +57,8 @@ const readMinutes = Math.max(1, Math.round(words / 220));
         <p class="font-mono text-sm text-zinc-500">
           $ cat
           <a href="/blog" class="text-platform hover:underline">~/blog</a>
-          <span class="text-zinc-600">/{post.data.category}</span>
-          <span class="ml-3 text-zinc-600">· {readMinutes} min read</span>
+          <span class="text-zinc-500">/{post.data.category}</span>
+          <span class="ml-3 text-zinc-500">· {readMinutes} min read</span>
         </p>
 
         <!-- Mobile TOC -->
@@ -134,7 +134,7 @@ const readMinutes = Math.max(1, Math.round(words / 220));
                 href={`/blog/${prev.id}`}
                 class="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 transition-colors hover:border-zinc-600"
               >
-                <span class="font-mono text-xs text-zinc-600">← older</span>
+                <span class="font-mono text-xs text-zinc-500">← older</span>
                 <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
                   {prev.data.title}
                 </p>
@@ -149,7 +149,7 @@ const readMinutes = Math.max(1, Math.round(words / 220));
                 href={`/blog/${next.id}`}
                 class="group rounded-xl border border-zinc-800 bg-zinc-900 p-4 text-right transition-colors hover:border-zinc-600"
               >
-                <span class="font-mono text-xs text-zinc-600">newer →</span>
+                <span class="font-mono text-xs text-zinc-500">newer →</span>
                 <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
                   {next.data.title}
                 </p>

@@ -13,8 +13,8 @@ const commands = [
   { label: "about", hint: "section", href: "/#about" },
   { label: "projects", hint: "section", href: "/#projects" },
   { label: "architecture", hint: "section", href: "/#architecture" },
-  { label: "writing", hint: "section", href: "/blog" },
-  { label: "experience", hint: "section", href: "/experience" },
+  { label: "writing", hint: "page", href: "/blog" },
+  { label: "experience", hint: "page", href: "/experience" },
   { label: "security track", hint: "section", href: "/#security" },
   { label: "certifications", hint: "section", href: "/#certifications" },
   { label: "cv viewer", hint: "page", href: "/cv" },
@@ -48,7 +48,7 @@ const commands = [
       placeholder="jump to…"
       autocomplete="off"
       spellcheck="false"
-      class="w-full border-b border-zinc-800 bg-transparent px-5 py-4 font-mono text-sm text-zinc-100 outline-none placeholder:text-zinc-600"
+      class="w-full border-b border-zinc-800 bg-transparent px-5 py-4 font-mono text-sm text-zinc-100 outline-none placeholder:text-zinc-500"
     />
     <ul
       id="palette-list"
@@ -56,7 +56,7 @@ const commands = [
       role="listbox"
     ></ul>
     <p
-      class="border-t border-zinc-800 px-5 py-2 font-mono text-[11px] text-zinc-600"
+      class="border-t border-zinc-800 px-5 py-2 font-mono text-[11px] text-zinc-500"
     >
       ↑↓ navigate · enter open · esc close
     </p>
@@ -96,7 +96,7 @@ const commands = [
       list.innerHTML = "";
       if (filtered.length === 0) {
         list.innerHTML =
-          '<li class="px-4 py-6 text-center font-mono text-sm text-zinc-600">no matches</li>';
+          '<li class="px-4 py-6 text-center font-mono text-sm text-zinc-500">no matches</li>';
         return;
       }
 
@@ -107,7 +107,7 @@ const commands = [
           "flex items-center justify-between gap-3 rounded-lg px-4 py-2.5 font-mono text-sm cursor-pointer";
         li.innerHTML = `
           <span class="text-zinc-200">${command.label}</span>
-          <span class="text-xs text-zinc-600">${command.hint}</span>`;
+          <span class="text-xs text-zinc-500">${command.hint}</span>`;
         li.addEventListener("click", () => {
           window.location.href = command.href;
         });

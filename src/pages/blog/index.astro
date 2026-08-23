@@ -22,45 +22,60 @@ const trackClass: Record<string, string> = {
       Writing
     </h1>
     <p class="mt-4 font-mono text-sm text-zinc-500">
-      <span class="text-platform">platform</span> war stories ·
-      <span class="text-security">security</span> write-ups · one feed
+      <a
+        href="/blog/category/platform"
+        class="text-platform transition-colors hover:underline"
+      >
+        platform
+      </a>{" "}
+      war stories ·{" "}
+      <a
+        href="/blog/category/security"
+        class="text-security transition-colors hover:underline"
+      >
+        security
+      </a>{" "}
+      write-ups · one feed
     </p>
 
     <ul class="mt-10">
       {
         posts.map((post) => (
-          <li>
-            <a
-              href={`/blog/${post.id}`}
-              class="group block border-b border-zinc-800/60 py-6"
-            >
-              <div class="flex items-start justify-between gap-4">
-                <h2 class="font-semibold text-zinc-100 transition-colors group-hover:text-platform">
-                  {post.data.title}
-                </h2>
-                <span
-                  class:list={[
-                    "shrink-0 rounded border px-2 py-0.5 font-mono text-xs",
-                    trackClass[post.data.category],
-                  ]}
+          /* Row is one big link via the stretched anchor; the chip is a
+             separate target leading to the category listing. */
+          <li class="group relative border-b border-zinc-800/60 py-6">
+            <div class="flex items-start justify-between gap-4">
+              <h2 class="font-semibold text-zinc-100 transition-colors group-hover:text-platform">
+                <a
+                  href={`/blog/${post.id}`}
+                  class="after:absolute after:inset-0"
                 >
-                  {post.data.category}
-                </span>
-              </div>
-              <p class="mt-1.5 text-sm leading-relaxed text-zinc-500">
-                {post.data.description}
-              </p>
-              <p class="mt-2 font-mono text-xs text-zinc-600">
-                <FormattedDate date={post.data.pubDate} />
-                {post.data.tags.map((tag) => ` · #${tag}`)}
-              </p>
-            </a>
+                  {post.data.title}
+                </a>
+              </h2>
+              <a
+                href={`/blog/category/${post.data.category}`}
+                class:list={[
+                  "relative z-10 shrink-0 rounded border px-2 py-0.5 font-mono text-xs underline-offset-2 hover:underline",
+                  trackClass[post.data.category],
+                ]}
+              >
+                {post.data.category}
+              </a>
+            </div>
+            <p class="mt-1.5 text-sm leading-relaxed text-zinc-500">
+              {post.data.description}
+            </p>
+            <p class="mt-2 font-mono text-xs text-zinc-500">
+              <FormattedDate date={post.data.pubDate} />
+              {post.data.tags.map((tag) => ` · #${tag}`)}
+            </p>
           </li>
         ))
       }
     </ul>
 
-    <p class="mt-8 font-mono text-sm text-zinc-600">
+    <p class="mt-8 font-mono text-sm text-zinc-500">
       // also available as <a href="/rss.xml" class="hover:text-platform">RSS</a>
     </p>
   </main>

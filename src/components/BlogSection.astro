@@ -14,35 +14,39 @@ const trackClass: Record<string, string> = {
 ---
 
 <Section id="writing" prompt="~/blog" title="Writing">
-  <div>
+  <ul>
     {
       posts.map((post) => (
-        <a
-          href={`/blog/${post.id}`}
-          class="group flex items-center justify-between gap-4 border-b border-zinc-800/60 py-5"
-        >
-          <div>
-            <h3 class="font-medium text-zinc-100 transition-colors group-hover:text-platform">
-              {post.data.title}
-            </h3>
-            <p class="mt-1 text-sm text-zinc-500">
-              <FormattedDate date={post.data.pubDate} />
-              {" · "}
-              {post.data.description}
-            </p>
+        /* Row is one big link via the stretched anchor; the chip is a
+           separate target leading to the category listing. */
+        <li class="group relative border-b border-zinc-800/60 py-5">
+          <div class="flex items-center justify-between gap-4">
+            <div>
+              <h3 class="font-medium text-zinc-100 transition-colors group-hover:text-platform">
+                <a href={`/blog/${post.id}`} class="after:absolute after:inset-0">
+                  {post.data.title}
+                </a>
+              </h3>
+              <p class="mt-1 text-sm text-zinc-500">
+                <FormattedDate date={post.data.pubDate} />
+                {" · "}
+                {post.data.description}
+              </p>
+            </div>
+            <a
+              href={`/blog/category/${post.data.category}`}
+              class:list={[
+                "relative z-10 shrink-0 rounded border px-2 py-0.5 font-mono text-xs underline-offset-2 hover:underline",
+                trackClass[post.data.category],
+              ]}
+            >
+              {post.data.category}
+            </a>
           </div>
-          <span
-            class:list={[
-              "shrink-0 rounded border px-2 py-0.5 font-mono text-xs",
-              trackClass[post.data.category],
-            ]}
-          >
-            {post.data.category}
-          </span>
-        </a>
+        </li>
       ))
     }
-  </div>
+  </ul>
   <a
     href="/blog"
     class="mt-6 inline-block font-mono text-sm text-zinc-500 transition-colors hover:text-platform"

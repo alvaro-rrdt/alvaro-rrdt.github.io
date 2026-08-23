@@ -45,8 +45,20 @@ Everything below is implemented and committed on GitButler branch
   print button with dedicated print stylesheet; download button appears only
   when CV_PDF_READY is true in src/data/cv.ts.
 - /uses page (gear list), themed 404, RSS at /rss.xml, sitemap-index + robots.txt.
-- Scroll UX: top reading-progress bar site-wide, desktop section rail with
-  active-section tracking, scroll-reveal on home sections.
+- Scroll UX: top reading-progress bar site-wide (rendered from BaseLayout),
+  desktop section rail with active-section tracking, scroll-reveal on home
+  sections.
+- Global chrome: Header (nav, ⌘K, theme toggle, CV link) and Footer render
+  from BaseLayout on every page, marked no-print so /cv prints clean.
+  Section links in shared chrome must use "/#anchor" form so they resolve
+  off the homepage.
+- Blog category chips are links to /blog/category/[category]; post rows use
+  a stretched-link pattern (row goes to the post, chip goes to the category).
+- Placeholder gating: data values containing "TODO" are filtered at render
+  (security stats/study list, CV education, /uses items), same idea as the
+  empty testimonials section. Replace the TODO text to publish a block.
+  The hero pdf button and BaseHead og:image/twitter:image are gated the same
+  way, by CV_PDF_READY and SITE.ogImage respectively.
 - ⌘K command palette site-wide (pages/sections/posts, keyboard nav, focus trap).
 - Light mode: toggle persists to localStorage, applied pre-paint. Works by
   overriding `--color-zinc-*` and accent vars under :root[data-theme="light"]
@@ -76,6 +88,9 @@ Everything below is implemented and committed on GitButler branch
    clean AND `find dist -name '*.js' | wc -l` still returns 0.
 7. Commits via GitButler on branch `portfolio-build`. Dev server via
    `astro dev --background`.
+8. Never ship visible TODO placeholder strings: components filter them at
+   render (see SecurityTrack, cv, uses). New placeholder data must follow
+   the same filter pattern until real values land.
 
 ## PENDING (needs the owner, then quick builds)
 
@@ -86,11 +101,14 @@ Everything below is implemented and committed on GitButler branch
 3. Real numbers in `src/data/security.ts`: machines owned, challenges solved,
    HTB rank, current machine/module, pro-lab statuses (Dante/Zephyr/Offshore).
 4. Education + language levels for /cv in `src/data/cv.ts`; updated public/cv.pdf;
-   flip CV_PDF_READY when done.
+   flip CV_PDF_READY when done (enables both the /cv download button and the
+   hero pdf button).
 5. Testimonials: awaiting quotes from Saab/Zinco colleagues; files go in
    `src/content/testimonials/`.
 6. Uptime Kuma status URL into STATUS_URL (config.ts) to activate StatusStrip.
-7. OG share image (1200x630) referenced by BaseHead as /og-image.png.
+7. OG share image (1200x630): drop the file at public/og-image.png and set
+   SITE.ogImage in src/config.ts. BaseHead only emits og:image/twitter:image
+   (and twitter:card summary_large_image) while that is set.
 8. Display-name check: "Alvaro Riccardi" used everywhere; confirm spelling/accent.
 
 ## DEPLOY (pipeline added 2026-08-25, owner setup steps pending)
