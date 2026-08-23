@@ -4,7 +4,6 @@ import { getPosts } from "@/lib/content";
 import { SITE } from "@/config";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostHeader from "@/components/PostHeader.astro";
-import ScrollProgress from "@/components/ScrollProgress.astro";
 
 export async function getStaticPaths() {
   const posts = (await getPosts()).reverse();
@@ -49,11 +48,9 @@ const readMinutes = Math.max(1, Math.round(words / 220));
   description={post.data.description}
   type="article"
 >
-  <ScrollProgress />
-
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
 
-  <main id="main" class="mx-auto max-w-6xl px-4 pt-20 pb-16 sm:px-6">
+  <main id="main" class="mx-auto max-w-6xl px-4 pt-24 pb-16 sm:px-6">
     <div class="xl:grid xl:grid-cols-[1fr_230px] xl:gap-14">
       <article class="mx-auto w-full max-w-3xl min-w-0">
         <!-- Breadcrumb -->

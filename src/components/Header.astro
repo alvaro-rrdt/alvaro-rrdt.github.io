@@ -3,23 +3,23 @@ import { SITE } from "@/config";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 
 const links = [
-  { href: "#about", label: "about" },
+  { href: "/#about", label: "about" },
   { href: "/blog", label: "blog" },
-  { href: "#experience", label: "experience" },
-  { href: "#security", label: "security" },
-  { href: "#certifications", label: "certs" },
+  { href: "/#experience", label: "experience" },
+  { href: "/#security", label: "security" },
+  { href: "/#certifications", label: "certs" },
 ];
 ---
 
 <header
-  class="fixed inset-x-0 top-0 z-40 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur"
+  class="no-print fixed inset-x-0 top-0 z-40 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur"
 >
   <nav
     class="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6"
     aria-label="Main navigation"
   >
     <a
-      href="#top"
+      href="/#top"
       class="shrink-0 font-mono text-sm font-semibold text-zinc-100 transition-colors hover:text-platform"
     >
       &gt;_{SITE.name.toLowerCase()}

@@ -1,7 +1,5 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Header from "@/components/Header.astro";
-import ScrollProgress from "@/components/ScrollProgress.astro";
 import ScrollRail from "@/components/ScrollRail.astro";
 import Hero from "@/components/Hero.astro";
 import StatusStrip from "@/components/StatusStrip.astro";
@@ -15,12 +13,9 @@ import CertBoard from "@/components/CertBoard.astro";
 import Skills from "@/components/Skills.astro";
 import Testimonials from "@/components/Testimonials.astro";
 import Beyond from "@/components/Beyond.astro";
-import Footer from "@/components/Footer.astro";
 ---
 
 <BaseLayout>
-  <Header />
-  <ScrollProgress />
   <ScrollRail />
   <main id="main">
     <Hero />
@@ -36,5 +31,4 @@ import Footer from "@/components/Footer.astro";
     <Beyond />
     <Testimonials />
   </main>
-  <Footer />
 </BaseLayout>
