@@ -23,8 +23,8 @@ export const CERTS: Cert[] = [
     fullName: "Certified Junior Cybersecurity Associate",
     issuer: "HackTheBox",
     status: "in-progress",
-    progress: 55,
-    note: "modules in progress",
+    progress: 31.8,
+    note: "5/20 modules",
     url: "https://academy.hackthebox.com/preview/certifications/htb-certified-junior-cybersecurity-associate",
   },
   {

@@ -123,8 +123,10 @@ Everything below is implemented and committed on GitButler branch
    Owner prefers an interview flow: ask questions, shape answers into pages.
 2. Project screenshots: drop files into `src/assets/projects/`, reference via
    `screenshot: filename.png` frontmatter. Cards auto-use them (glob + astro:assets).
-3. Real numbers in `src/data/security.ts`: machines owned, challenges solved,
-   HTB rank, current machine/module, pro-lab statuses (Dante/Zephyr/Offshore).
+3. HTB numbers in `src/data/security.ts`: machines owned, challenges solved,
+   rank, and the current machine/module once practice starts. CJCA progress
+   is real (31.8%, 5/20 modules, completed module list); update as you go.
+   Pro labs are honestly "planned" (none started).
 4. Education + language levels for /cv in `src/data/cv.ts`; updated public/cv.pdf;
    flip CV_PDF_READY when done (enables both the /cv download button and the
    hero pdf button).

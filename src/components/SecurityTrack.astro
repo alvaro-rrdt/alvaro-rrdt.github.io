@@ -79,6 +79,26 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
       }
 
       {
+        SECURITY.completedModules.length > 0 && (
+          <div class="mt-5 border-t border-zinc-800/60 pt-4">
+            <p class="font-mono text-xs text-zinc-500">
+              // modules completed
+            </p>
+            <ul class="mt-2.5 space-y-1.5 font-mono text-xs text-zinc-400">
+              {
+                SECURITY.completedModules.map((module) => (
+                  <li class="flex gap-2">
+                    <span class="select-none text-platform">✓</span>
+                    {module}
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+        )
+      }
+
+      {
         stats.length > 0 && (
           <dl class="mt-auto grid grid-cols-3 gap-3 pt-6">
             {stats.map((stat) => (

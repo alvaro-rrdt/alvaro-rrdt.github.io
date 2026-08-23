@@ -17,14 +17,22 @@ export const SECURITY = {
 
   /**
    * Current learning focus, shown as a live list.
-   * TODO(phase-0): replace placeholders with the actual module/machine names.
+   * TODO(phase-0): add the current machine/module once HTB practice starts.
    */
   nowStudying: [
     {
-      label: "CJCA path · modules in progress",
+      label: "CJCA path · 5/20 modules",
       href: "https://academy.hackthebox.com/preview/certifications/htb-certified-junior-cybersecurity-associate",
     },
-    { label: "TODO: current machine or module" },
+  ],
+
+  /** HTB Academy modules finished on the CJCA path so far. */
+  completedModules: [
+    "Introduction to Information Security",
+    "Network Foundations",
+    "Introduction to Networking",
+    "Linux Fundamentals",
+    "Introduction to Bash Scripting",
   ],
 
   /**
