@@ -15,8 +15,8 @@ export interface SocialLink {
 export const SITE = {
   name: "Alvaro Riccardi",
   /**
-   * Production origin. TODO(deploy phase): confirm final URL,
-   * either https://<user>.github.io or a custom domain.
+   * Production origin. Confirmed 2026-08-25: user-site repo, served from
+   * the root of https://alvaro-rrdt.github.io (no base path).
    */
   url: "https://alvaro-rrdt.github.io",
   jobTitle: "Software Engineer · Platform Engineering · Security-Minded",
@@ -48,7 +48,7 @@ export const SOCIALS: SocialLink[] = [
  * is a private Forgejo behind a tailnet, so public links point here instead.
  * Used e.g. for a "view source" footer link.
  */
-export const SOURCE_REPO_URL = "https://github.com/alvaro-rrdt/Personal-website";
+export const SOURCE_REPO_URL = "https://github.com/alvaro-rrdt/alvaro-rrdt.github.io";
 
 /**
  * Public status endpoint fetched ONCE at build time to bake the homepage

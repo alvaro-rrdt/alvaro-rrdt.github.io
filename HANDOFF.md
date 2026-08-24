@@ -11,9 +11,9 @@ Audience and goal: recruiters at FAANG-class software roles and platform
 engineering roles at top startups/scaleups. The HackTheBox security journey
 (certs, labs) is a differentiator, not a separate career track.
 
-Live URL is not decided yet. Nothing is deployed; all work happens locally
-and pushes to a private Forgejo (`origin`, branch `portfolio-build` via
-GitButler). Deploy target will be GitHub Pages, possibly mirrored from Forgejo.
+Live URL: https://alvaro-rrdt.github.io (user-site repo, root serving).
+Authoring stays local: pushes go to a private Forgejo (`origin`) which push-
+mirrors to the public GitHub repo; GitHub Actions builds and deploys.
 
 ## Stack
 
@@ -93,24 +93,38 @@ Everything below is implemented and committed on GitButler branch
 7. OG share image (1200x630) referenced by BaseHead as /og-image.png.
 8. Display-name check: "Alvaro Riccardi" used everywhere; confirm spelling/accent.
 
-## DEPLOY phase (explicitly deferred, owner not in a rush)
+## DEPLOY (pipeline added 2026-08-25, owner setup steps pending)
 
-1. Decide final origin: `https://alvaro-rrdt.github.io/personal-website/`
-   (current assumption in astro.config.mjs `site`) vs `<user>.github.io` repo
-   vs custom domain.
-2. CRITICAL: if serving from a subdirectory, set `base` in astro.config.mjs
-   AND prefix every internal link with import.meta.env.BASE_URL. All links are
-   currently root-relative ("/blog", "/cv", "/#about"); grep before shipping.
-3. Add `.github/workflows/deploy.yml`: actions/checkout@v7 ->
-   withastro/action@v6 -> actions/deploy-pages@v5, push trigger on main;
-   enable Pages Source = GitHub Actions.
-4. Mirroring question: origin is a tailnet-only Forgejo. Either mirror to the
-   public GitHub repo (https://github.com/alvaro-rrdt/Personal-website) or
-   push the GitButler branch there directly; decide with owner.
-5. Self-hosted analytics (Umami on the homelab) was agreed as post-launch.
+Done:
+- Decisions: user-site repo `alvaro-rrdt.github.io` (root serving, no `base`,
+  no link prefixing) + Forgejo push mirror for sync.
+- `.github/workflows/deploy.yml`: push to main -> astro check -> build via
+  withastro/action@v6 -> deploy-pages@v5. Manual workflow_dispatch enabled.
+- robots.txt sitemap URL fixed to root; SOURCE_REPO_URL points at
+  https://github.com/alvaro-rrdt/alvaro-rrdt.github.io.
+- Landing flow: finished work is landed on main with
+  `but land <top-branch> --whole-stack` (fast-forwards origin/main).
+
+Owner setup steps (one-time):
+1. GitHub: create EMPTY public repo `alvaro-rrdt/alvaro-rrdt.github.io`
+   (no README/license). Settings -> Pages -> Source: GitHub Actions.
+2. GitHub: fine-grained PAT, Contents read/write, scoped to that repo only.
+3. Forgejo: repo Settings -> Mirror settings -> push mirror to
+   https://github.com/alvaro-rrdt/alvaro-rrdt.github.io.git with the PAT,
+   "sync on commit" enabled.
+4. Trigger first mirror sync; Actions should build and the site goes live.
 
 ## Gotchas
 
+- Deploy builds from main only. Stack branches mirror to GitHub but never
+  deploy; land with `but land <top-branch> --whole-stack` to ship.
+- The Forgejo push mirror runs on a PAT. If deploys stop, check the mirror
+  status in Forgejo first (expired token is the usual cause).
+- Everything pushed to Forgejo becomes public via the mirror; the repo is
+  intentionally public source, so keep secrets out.
+- Custom domain later: add a CNAME file in public/ + DNS records + update
+  `site` in astro.config.mjs and SITE.url in src/config.ts. Root serving
+  means no base refactor ever.
 - TypeScript is pinned to ^6: TS 7 breaks @astrojs/check
   (assertCompatibleTypeScript throws). Revisit when Astro supports it.
 - Palette/BaseLayout inline scripts re-initialize on full page loads only.

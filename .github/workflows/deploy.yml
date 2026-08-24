@@ -1,0 +1,58 @@
+name: Deploy to GitHub Pages
+
+on:
+  # Every push to main deploys. Work-in-progress lives on GitButler stacks
+  # and only reaches main when a milestone is landed there.
+  push:
+    branches: [main]
+  # Allows manual runs from the Actions tab (also used for rollbacks).
+  workflow_dispatch:
+
+# contents: read to clone, pages+id-token to deploy
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push cancels the older run
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  check:
+    # Mirrors the local pre-commit gate so a broken main never deploys
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: npm ci
+      - name: Type check
+        run: npx astro check
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Install, build, and upload site
+        uses: withastro/action@v6
+        with:
+          node-version: 22
+          # package manager auto-detected from package-lock.json (npm)
+
+  deploy:
+    needs: [check, build]
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

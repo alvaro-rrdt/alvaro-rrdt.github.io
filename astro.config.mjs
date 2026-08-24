@@ -5,9 +5,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  // TODO(deploy phase): confirm final origin AND whether a `base` is needed
-  // (required when serving from a project subdirectory on github.io).
-  // If base gets added, prefix every internal link with import.meta.env.BASE_URL.
+  // Confirmed 2026-08-25: user-site repo alvaro-rrdt.github.io, served from
+  // the site root, so no `base` is needed and root-relative links are fine.
   site: 'https://alvaro-rrdt.github.io',
   integrations: [sitemap()],
   markdown: {

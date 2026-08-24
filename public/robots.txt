@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://alvaro-rrdt.github.io/personal-website/sitemap-index.xml
+Sitemap: https://alvaro-rrdt.github.io/sitemap-index.xml

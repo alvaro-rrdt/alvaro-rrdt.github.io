@@ -60,6 +60,16 @@ The `/cv` page renders from site data, so it is always current; the download
 button only appears once the PDF exists. The print button produces a clean
 paper PDF from the page itself at any time.
 
+## How a change goes live
+
+1. Edit, verify locally (`npx astro check`, `npm run build`)
+2. Commit via GitButler on a work branch
+3. When the milestone is ready to ship:
+   `but land <top-branch> --whole-stack`
+4. That lands the stack on main and pushes Forgejo, the mirror syncs to
+   GitHub, Actions builds, and https://alvaro-rrdt.github.io updates in a
+   minute or two. Nothing deploys until work lands on main.
+
 ## Dev commands
 
 ```bash
