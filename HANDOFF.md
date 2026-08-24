@@ -162,13 +162,19 @@ Done:
   `but land <top-branch> --whole-stack` (fast-forwards origin/main).
 
 Owner setup steps (one-time):
-1. GitHub: create EMPTY public repo `alvaro-rrdt/alvaro-rrdt.github.io`
-   (no README/license). Settings -> Pages -> Source: GitHub Actions.
-2. GitHub: fine-grained PAT, Contents read/write, scoped to that repo only.
-3. Forgejo: repo Settings -> Mirror settings -> push mirror to
-   https://github.com/alvaro-rrdt/alvaro-rrdt.github.io.git with the PAT,
-   "sync on commit" enabled.
-4. Trigger first mirror sync; Actions should build and the site goes live.
+1. GitHub: RENAME the existing mirrored repo
+   `alvaro-rrdt/Personal-website` to `alvaro-rrdt.github.io`
+   (Settings -> General -> Repository name; keeps history and settings,
+   old URLs redirect). Then Settings -> Pages -> Source: GitHub Actions.
+2. Forgejo: point the existing push mirror at the new name:
+   https://github.com/alvaro-rrdt/alvaro-rrdt.github.io.git
+   (edit it, or delete + re-add; keep sync-on-commit enabled; reuse the
+   PAT, but if sync starts failing 403 after the rename, re-issue it).
+3. Click Synchronize Now. The mirror fast-forwards main from the scaffold
+   commit to the full history, Actions builds, site goes live at
+   https://alvaro-rrdt.github.io.
+Renaming the Forgejo repo itself is optional; names do not need to match.
+If renamed, update the local remote URL to the new Forgejo path.
 
 ## Gotchas
 
