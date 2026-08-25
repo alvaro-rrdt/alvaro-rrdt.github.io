@@ -25,11 +25,19 @@ const year = new Date().getFullYear();
     </p>
     <a
       href={`mailto:${SITE.email}`}
-      class="mt-8 inline-flex items-center gap-2 rounded-lg bg-platform px-6 py-3.5 font-mono text-sm font-semibold text-zinc-950 transition-colors hover:bg-platform/85"
+      class="mt-8 inline-flex items-center gap-2 rounded-lg bg-platform px-6 py-3.5 font-mono text-sm font-semibold text-zinc-950 transition-colors hover:bg-platform/85 active:bg-platform/75"
     >
       {SITE.email}
       <span aria-hidden="true">→</span>
     </a>
+    <p class="mt-4 font-mono text-sm text-zinc-500">
+      <a
+        href="/contact"
+        class="transition-colors hover:text-platform"
+      >
+        or write directly on /contact
+      </a>
+    </p>
   </div>
 </section>
 

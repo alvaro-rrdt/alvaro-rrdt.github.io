@@ -62,3 +62,12 @@ export const SOURCE_REPO_URL = "https://github.com/alvaro-rrdt/alvaro-rrdt.githu
  * HTTP 200 when healthy.
  */
 export const STATUS_URL = "";
+
+/**
+ * Contact form endpoint: a Cloudflare Worker (worker/contact/) that
+ * forwards submissions to Telegram. Leave empty ("") until the worker is
+ * deployed; the /contact page then shows the email CTA instead of the
+ * form. Fill with the workers.dev URL after `wrangler deploy`.
+ * Example: "https://alvaro-contact.<subdomain>.workers.dev"
+ */
+export const CONTACT_ENDPOINT = "";

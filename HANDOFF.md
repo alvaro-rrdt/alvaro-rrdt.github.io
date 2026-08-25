@@ -48,7 +48,9 @@ Everything below is implemented and committed on GitButler branch
 - /cv: native HTML CV rendered from site data (paper-sheet styling on dark),
   print button with dedicated print stylesheet; download button appears only
   when CV_PDF_READY is true in src/data/cv.ts.
-- /uses page (gear list), themed 404, RSS at /rss.xml, sitemap-index + robots.txt.
+- /uses page (gear list), /now page (current focus, src/content/now.md),
+  /contact page (form gated by CONTACT_ENDPOINT, see below), themed 404,
+  RSS at /rss.xml, sitemap-index + robots.txt.
 - Scroll UX: top reading-progress bar site-wide (rendered from BaseLayout).
   The desktop section rail and scroll-reveal/stagger JS were removed with
   the minimalist pass; content is plain HTML, always visible without JS.
@@ -97,6 +99,14 @@ Everything below is implemented and committed on GitButler branch
   typing/ping animations. The one signature animation is the blinking
   caret on the header wordmark. Section shell: eyebrow path + heading,
   no numbers, no underline, no wash bands.
+- Mobile pattern (2026-08-25): below sm (640px) card grids become
+  borderless divided lists (`grid gap-0 divide-y sm:grid-cols-N
+  sm:gap-N sm:divide-y-0`, articles `py-4 ... sm:rounded-xl sm:border
+  sm:bg-zinc-900 sm:p-5`), chip rows collapse to plain `a · b · c` text,
+  status chips flatten to colored text. Buttons/rows carry active: states
+  for touch feedback. Homelab topology is a collapsed <details> on phones,
+  auto-opened on md+ by one inline script. New cards/sections MUST follow
+  this responsive pattern.
 - ⌘K command palette site-wide (pages/sections/posts, keyboard nav, focus trap).
 - Light mode: toggle persists to localStorage, applied pre-paint. Works by
   overriding `--color-zinc-*` and accent vars under :root[data-theme="light"]
@@ -198,6 +208,22 @@ Owner setup steps (one-time):
    (renames keep git redirects and the fine-grained PAT bound to the
    repo, so this is hygiene, not a hard requirement).
 
+## CONTACT FORM (worker + telegram, added 2026-08-25)
+
+Architecture: /contact form (native POST, honeypot, no JS) -> Cloudflare
+Worker (worker/contact/, plain JS, outside the Astro build and tsconfig
+exclude) -> Telegram Bot API -> owner's chat; 303 back to
+/contact?sent=1|?error=1, notice unhidden by a tiny inline script.
+
+- CONTACT_ENDPOINT in src/config.ts gates the form: empty = email CTA +
+  honest placeholder line (same pattern as STATUS_URL).
+- Secrets ONLY via `wrangler secret put` (TELEGRAM_BOT_TOKEN,
+  TELEGRAM_CHAT_ID); never in the repo.
+- Deploy + local-test recipe: worker/contact/README.md.
+- Owner setup pending: bot creation + deploy + fill CONTACT_ENDPOINT.
+- Future upgrades documented in the worker README: Turnstile, KV
+  per-IP rate limit.
+
 ## Gotchas
 
 - Deploy builds from main only. Stack branches mirror to GitHub but never
@@ -226,15 +252,18 @@ Owner setup steps (one-time):
 ## Key files map
 
 ```
-src/config.ts            identity, socials, email, cv path, status URL
+src/config.ts            identity, socials, email, cv path, status URL,
+                         contact endpoint
 src/content.config.ts    collection schemas
 src/lib/content.ts       getPosts() (draft-aware)
+src/content/now.md       /now page body (edit + bump updated)
 src/data/{certs,security,skills,cv}.ts
 src/components/          one component per homepage section + shared UI
 src/pages/               index, blog/*, experience/*, projects/[slug],
-                         cv, uses, rss.xml.ts, 404
+                         cv, uses, now, contact, rss.xml.ts, 404
 src/styles/global.css    fonts, tokens, light-mode overrides, reveal,
                          scrollbars, print styles
+worker/contact/          cloudflare worker: form -> telegram
 scripts/new-post.mjs     npm run new:post "Title" [category]
 CONTENT-GUIDE.md         how the owner publishes content
 ```

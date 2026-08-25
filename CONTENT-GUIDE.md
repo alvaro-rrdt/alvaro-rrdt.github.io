@@ -70,6 +70,20 @@ paper PDF from the page itself at any time.
    GitHub, Actions builds, and https://alvaro-rrdt.github.io updates in a
    minute or two. Nothing deploys until work lands on main.
 
+## Updating /now
+
+Edit `src/content/now.md` (learning / building / aiming for / away from
+the keyboard), bump the `updated` date in the frontmatter, ship. Refresh
+it whenever something changes; the page is meant to answer "what are you
+up to these days".
+
+## Contact form
+
+The /contact page posts to a Cloudflare Worker that forwards messages to
+Telegram. Until `CONTACT_ENDPOINT` in `src/config.ts` points at the
+deployed worker, the page shows the email CTA instead of the form.
+Worker setup: `worker/contact/README.md`.
+
 ## Dev commands
 
 ```bash

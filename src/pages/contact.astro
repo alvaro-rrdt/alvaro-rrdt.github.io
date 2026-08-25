@@ -1,0 +1,148 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE, CONTACT_ENDPOINT } from "@/config";
+---
+
+<BaseLayout
+  title="Contact"
+  description={`Get in touch with ${SITE.name}: contact form for recruiters and project ideas, direct email, socials.`}
+>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
+    <p class="font-mono text-sm text-zinc-500">$ cat ~/contact</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
+      Contact
+    </h1>
+    <p class="mt-4 max-w-xl leading-relaxed text-zinc-400">
+      Recruiting for a platform or backend role, or sitting on an
+      interesting project idea? Write me directly from here; it lands in
+      my Telegram within seconds.
+    </p>
+
+    <!-- Status notice: set by a tiny inline script from ?sent=1 / ?error=1
+         after the worker redirect. No JS: no notice, form still works. -->
+    <div
+      id="contact-notice"
+      class="mt-6 hidden rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 font-mono text-sm"
+      role="status"
+    >
+    </div>
+
+    {
+      CONTACT_ENDPOINT ? (
+        <form
+          method="POST"
+          action={CONTACT_ENDPOINT}
+          class="mt-8 space-y-5"
+        >
+          <div>
+            <label
+              for="contact-name"
+              class="block font-mono text-sm text-zinc-400"
+            >
+              name
+            </label>
+            <input
+              id="contact-name"
+              name="name"
+              type="text"
+              required
+              maxlength="100"
+              autocomplete="name"
+              class="mt-2 w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-base text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus:border-platform"
+              placeholder="Ada Lovelace"
+            />
+          </div>
+
+          <div>
+            <label
+              for="contact-email"
+              class="block font-mono text-sm text-zinc-400"
+            >
+              email
+            </label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              required
+              maxlength="200"
+              autocomplete="email"
+              class="mt-2 w-full rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-base text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus:border-platform"
+              placeholder="you@company.com"
+            />
+          </div>
+
+          <div>
+            <label
+              for="contact-message"
+              class="block font-mono text-sm text-zinc-400"
+            >
+              message
+            </label>
+            <textarea
+              id="contact-message"
+              name="message"
+              required
+              maxlength="5000"
+              rows="7"
+              class="mt-2 w-full resize-y rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 text-base text-zinc-100 outline-none transition-colors placeholder:text-zinc-600 focus:border-platform"
+              placeholder="Role, project, question..."
+            />
+          </div>
+
+          {/* Honeypot: humans never see it, bots fill it and get dropped */}
+          <div aria-hidden="true" class="absolute -left-[9999px]">
+            <label for="contact-website">website</label>
+            <input
+              id="contact-website"
+              name="website"
+              type="text"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </div>
+
+          <button
+            type="submit"
+            class="inline-flex min-h-11 items-center rounded-lg bg-platform px-5 py-3 font-mono text-sm font-semibold text-zinc-950 transition-colors hover:bg-platform/85 active:bg-platform/75"
+          >
+            send message →
+          </button>
+        </form>
+      ) : (
+        <p class="mt-8 rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-500">
+          // form goes live with the messaging worker: email works today
+        </p>
+      )
+    }
+
+    <p class="mt-8 font-mono text-sm text-zinc-500">
+      prefer email?
+      <a
+        href={`mailto:${SITE.email}`}
+        class="text-platform transition-colors hover:underline"
+      >
+        {SITE.email}
+      </a>
+    </p>
+  </main>
+
+  <script is:inline>
+    // Unhide the notice the worker redirect asked for (?sent=1 / ?error=1).
+    (() => {
+      const params = new URLSearchParams(window.location.search);
+      const notice = document.getElementById("contact-notice");
+      if (!notice) return;
+      if (params.get("sent") === "1") {
+        notice.classList.remove("hidden");
+        notice.classList.add("border-platform/40", "text-platform");
+        notice.textContent =
+          "// sent: it landed in my Telegram, I will reply soon";
+      } else if (params.get("error") === "1") {
+        notice.classList.remove("hidden");
+        notice.textContent =
+          "// send failed: check the fields, or email me directly below";
+      }
+    })();
+  </script>
+</BaseLayout>

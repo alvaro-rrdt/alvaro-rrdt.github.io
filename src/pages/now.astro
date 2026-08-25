@@ -1,0 +1,39 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/config";
+import { Content as NowContent, frontmatter } from "@/content/now.md";
+
+const updated = new Date(frontmatter.updated).toLocaleDateString("en-GB", {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+});
+---
+
+<BaseLayout
+  title="Now"
+  description={`What ${SITE.name} is learning, building and aiming for right now.`}
+>
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
+    <p class="font-mono text-sm text-zinc-500">$ cat ~/now.md</p>
+    <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
+      Now
+    </h1>
+    <p class="mt-2 font-mono text-xs text-zinc-500">updated {updated}</p>
+
+    <article
+      class="prose prose-invert mt-8 max-w-[62ch] prose-headings:font-semibold prose-headings:tracking-tight prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400 prose-code:before:hidden prose-code:after:hidden"
+    >
+      <NowContent />
+    </article>
+
+    <p class="mt-10">
+      <a
+        href="/contact"
+        class="font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
+      >
+        want to talk? /contact →
+      </a>
+    </p>
+  </main>
+</BaseLayout>
