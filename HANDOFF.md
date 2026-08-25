@@ -19,21 +19,25 @@ mirrors to the public GitHub repo; GitHub Actions builds and deploys.
 
 Astro 7.2 (static output), Tailwind CSS v4 via `@tailwindcss/vite`
 (CSS-first config, no tailwind.config), TypeScript strict, zero framework
-islands. Fonts self-hosted via Fontsource variable packages
-(Inter + JetBrains Mono). Sitemap integration. No standalone .js files ship:
-all interactivity is small inline scripts.
+islands. Typography: JetBrains Mono everywhere (Fontsource variable
+package, self-hosted; Inter was removed with the minimalist pass).
+Sitemap integration. No standalone .js files ship: all interactivity is
+small inline scripts.
 
 ## State: DONE
 
 Everything below is implemented and committed on GitButler branch
 `portfolio-build` (stack of commits on top of the Astro scaffold):
 
-- Homepage sections in order: Hero (CSS typing effect, availability badge,
-  fast-forward links) → build-time StatusStrip (inert until STATUS_URL set in
-  config.ts) → About → Projects → Architecture (hand-drawn SVG homelab
-  topology) → Writing preview → Experience timeline → Security track
-  (HTB learning + Pro Labs columns) → CertBoard → Skills → Beyond (human
-  section) → Testimonials (auto-hides while collection is empty) → Footer.
+- Homepage sections in order: Hero (name, role line, tagline with one
+  accent word, CV + email CTAs, quiet socials row) → build-time
+  StatusStrip (inert until STATUS_URL set in config.ts) → About (absorbed
+  the old Beyond section) → Selected work (project grid + homelab topology
+  as a sub-block; Architecture is now a partial inside Projects) → Writing
+  preview → Experience timeline → Security (HTB learning + pro labs cards,
+  then CertBoard as a sub-block partial) → Skills ("Toolbox", compact
+  two-column lists) → Testimonials (auto-hides while collection is empty)
+  → Footer.
 - Unified blog at /blog with categories: `platform` posts get postmortem
   chrome (severity/TTR chips), `security` posts get dossier chrome (machine,
   difficulty, os, techniques, spoiler banner). Category listing pages,
@@ -45,9 +49,9 @@ Everything below is implemented and committed on GitButler branch
   print button with dedicated print stylesheet; download button appears only
   when CV_PDF_READY is true in src/data/cv.ts.
 - /uses page (gear list), themed 404, RSS at /rss.xml, sitemap-index + robots.txt.
-- Scroll UX: top reading-progress bar site-wide (rendered from BaseLayout),
-  desktop section rail with active-section tracking, scroll-reveal on home
-  sections.
+- Scroll UX: top reading-progress bar site-wide (rendered from BaseLayout).
+  The desktop section rail and scroll-reveal/stagger JS were removed with
+  the minimalist pass; content is plain HTML, always visible without JS.
 - Global chrome: Header (nav, ⌘K, theme toggle, CV link) and Footer render
   from BaseLayout on every page, marked no-print so /cv prints clean.
   Section links in shared chrome must use "/#anchor" form so they resolve
@@ -67,12 +71,13 @@ Everything below is implemented and committed on GitButler branch
 - Footer ends with a contact band (email CTA) and links /uses; the ⌘K
   palette trigger relabels to "search" on touch devices (keyboard hint
   line hidden there too).
-- Mobile chip strip is context-aware: homepage shows section chips, all
-  other pages show page chips (home/blog/cv/uses) so posts never yank
-  readers to homepage anchors. Desktop nav keeps section links everywhere.
+- Mobile chip strip was removed with the minimalist pass: the header is a
+  single fixed 56px bar on every viewport (wordmark with blinking caret,
+  search, theme, cv); section jumping on mobile happens via the palette.
+  Desktop nav shows about/work/writing/experience/security everywhere.
 - Shareability: OG images generated at build time by astro-og-canvas
   (src/pages/og/[...route].ts): /og/default.png for the site plus one card
-  per post (/og/<post id>.png), emerald platform / amber security accent.
+  per post (/og/<post id>.png), single emerald accent, JetBrains Mono.
   BaseHead emits the full tag set (og:image dimensions/alt,
   article:published_time and article:author on posts). Icons: apple-touch-icon
   (180), icon-192/512, maskable 512 in public/site.webmanifest, favicon.svg
@@ -80,19 +85,18 @@ Everything below is implemented and committed on GitButler branch
 - Mobile fixes: palette input is 16px (no iOS focus zoom) with
   autocapitalize none / enterkeyhint go; opening it locks body scroll and
   sets main.inert; header controls are min-h-11 tap targets; viewport-fit
-  cover + safe-area padding keeps the chip strip clear of notches.
+  cover + safe-area padding keeps the fixed bar clear of notches.
 - Hero CTAs are View CV + [email] only; socials are a quiet mono text row
   (full set lives in footer/CV/contact band).
-- Visual system: sections are numbered (01-09) and accent-coded (emerald =
-  platform track: projects/architecture, amber = security track:
-  security/certs, neutral otherwise) via Section props (accent, index, wash).
-  Cards share one elevation language (border-zinc-700/60 + shadow-sm, lift +
-  shadow-lg on hover); chips/controls stay quiet (zinc-800). The hero has a
-  terminal-window visual (keep its whitespace-pre lines under ~32 chars or
-  they clip on small phones) and one accent word in the tagline. A subtle
-  fixed film-grain layer (.grain in global.css, print-excluded) and a
-  security-track amber glow add depth. Reveal cascades: [data-stagger]
-  containers stagger direct children, [data-reveal-delay] fades after N ms.
+- Visual system (minimalist pass, 2026-08-25): JetBrains Mono is the only
+  typeface (body 16px, 1.7 leading, prose capped at 62ch). Single emerald
+  accent for links, focus, highlights and the header/footer carets; no
+  amber anywhere, track identity lives in words not colors. Cards share one
+  quiet style (border-zinc-700/60, bg-zinc-900, hover:border-zinc-500), no
+  shadows, no hover lift/scale, no glows, no film grain, no dot-grid, no
+  typing/ping animations. The one signature animation is the blinking
+  caret on the header wordmark. Section shell: eyebrow path + heading,
+  no numbers, no underline, no wash bands.
 - ⌘K command palette site-wide (pages/sections/posts, keyboard nav, focus trap).
 - Light mode: toggle persists to localStorage, applied pre-paint. Works by
   overriding `--color-zinc-*` and accent vars under :root[data-theme="light"]
@@ -111,8 +115,9 @@ Everything below is implemented and committed on GitButler branch
 2. Personal data lives in `src/config.ts`; certs in `src/data/certs.ts`;
    HTB/security data in `src/data/security.ts`; skills in `src/data/skills.ts`;
    CV extras in `src/data/cv.ts`. Components read from these, never hardcode.
-3. Dark is default. To add colors that must work in both themes, use existing
-   zinc/platform/security utilities; if you need new raw hexes, add light-mode
+3. Dark is default. Single accent: platform emerald (dark #34d399, light
+   #059669). To add colors that must work in both themes, use existing
+   zinc/platform utilities; if you need new raw hexes, add light-mode
    overrides in global.css under `:root[data-theme="light"]`.
 4. Interactivity pattern: `<script is:inline>` delegated listeners or small
    observers, progressive enhancement only (anchors/forms must work without JS).
@@ -194,6 +199,9 @@ Owner setup steps (one-time):
   (assertCompatibleTypeScript throws). Revisit when Astro supports it.
 - Palette/BaseLayout inline scripts re-initialize on full page loads only.
   If Astro view transitions get added later, rewire them to `astro:page-load`.
+- Old homepage anchors (#architecture, #certifications, #beyond) were
+  removed by the section merge; the topology now lives under #projects and
+  certs under #security. Fix any external links pointing at the old ids.
 - The testimonials glob loader parses every .md in its folder: do not put
   READMEs inside collection directories.
 - ProjectCard image prop expects awaited ImageMetadata from import.meta.glob
