@@ -6,17 +6,17 @@
 import { CERTS } from "@/data/certs";
 ---
 
-<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+<div class="grid gap-0 divide-y divide-zinc-800 sm:grid-cols-2 sm:gap-4 sm:divide-y-0 lg:grid-cols-4">
   {
     CERTS.map((cert) => {
       const featured = cert.status === "in-progress";
       return (
         <article
           class:list={[
-            "group rounded-xl border bg-zinc-900 p-5 transition-colors",
+            "group flex flex-col py-4 transition-colors active:bg-zinc-900 sm:block sm:rounded-xl sm:border sm:bg-zinc-900 sm:p-5 sm:py-5 sm:hover:border-zinc-500",
             featured
-              ? "border-platform/40 sm:col-span-2 lg:col-span-2"
-              : "border-zinc-700/60 hover:border-zinc-500",
+              ? "sm:border-platform/40 sm:col-span-2 lg:col-span-2"
+              : "sm:border-zinc-700/60",
           ]}
         >
           <div class="flex items-baseline justify-between gap-2">

@@ -35,7 +35,7 @@ const writeupReady = (body?: string) =>
 ---
 
 <Section id="projects" prompt="~/projects" title="Selected work">
-  <div class="grid gap-6 sm:grid-cols-2">
+  <div class="grid gap-0 divide-y divide-zinc-800 sm:grid-cols-2 sm:gap-6 sm:divide-y-0">
     {
       projects.map((project) => (
         <ProjectCard
@@ -52,16 +52,35 @@ const writeupReady = (body?: string) =>
     }
   </div>
 
-  <!-- Homelab topology: the infrastructure behind the projects above -->
-  <div class="mt-16">
-    <p class="font-mono text-sm text-zinc-500" aria-hidden="true">
-      ~/homelab/topology.svg
-    </p>
-    <h3 class="mt-2 text-xl font-semibold tracking-tight text-zinc-50">
-      How it's wired
-    </h3>
+  <!-- Homelab topology: collapsed behind a tap target on phones (saves
+       ~400px of scroll and the horizontal-drag UX), auto-opened on md+
+       by the inline script below. No-JS: collapsed but clickable. -->
+  <details id="topology" class="group mt-14">
+    <summary
+      class="flex cursor-pointer select-none list-none items-baseline gap-3 [&::-webkit-details-marker]:hidden"
+    >
+      <span class="font-mono text-sm text-zinc-500" aria-hidden="true">
+        ~/homelab/topology.svg
+      </span>
+      <h3 class="text-xl font-semibold tracking-tight text-zinc-50">
+        How it's wired
+      </h3>
+      <span
+        class="ml-auto self-center font-mono text-zinc-500 transition-transform group-open:rotate-90 md:hidden"
+        aria-hidden="true"
+      >
+        ▸
+      </span>
+    </summary>
     <div class="mt-6">
       <Architecture />
     </div>
-  </div>
+  </details>
+
+  <script is:inline>
+    // Desktop widths start with the topology open; phones keep it collapsed
+    if (matchMedia("(min-width: 768px)").matches) {
+      document.getElementById("topology")?.setAttribute("open", "");
+    }
+  </script>
 </Section>
