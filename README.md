@@ -3,6 +3,9 @@
 Personal site of **Alvaro Riccardi**, software engineer focused on platform
 engineering with a practical cybersecurity edge.
 
+Live at **https://alvaro-rrdt.github.io**. Every push that lands on `main`
+is checked, built and deployed automatically by GitHub Actions.
+
 Built with Astro 7, Tailwind CSS v4 and TypeScript. Static output, zero
 standalone JavaScript: interactivity is small inline scripts only.
 
