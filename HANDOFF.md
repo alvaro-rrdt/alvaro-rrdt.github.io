@@ -162,19 +162,22 @@ Done:
   `but land <top-branch> --whole-stack` (fast-forwards origin/main).
 
 Owner setup steps (one-time):
-1. GitHub: RENAME the existing mirrored repo
-   `alvaro-rrdt/Personal-website` to `alvaro-rrdt.github.io`
-   (Settings -> General -> Repository name; keeps history and settings,
-   old URLs redirect). Then Settings -> Pages -> Source: GitHub Actions.
-2. Forgejo: point the existing push mirror at the new name:
-   https://github.com/alvaro-rrdt/alvaro-rrdt.github.io.git
-   (edit it, or delete + re-add; keep sync-on-commit enabled; reuse the
-   PAT, but if sync starts failing 403 after the rename, re-issue it).
-3. Click Synchronize Now. The mirror fast-forwards main from the scaffold
-   commit to the full history, Actions builds, site goes live at
+1. GitHub: rename the repo so it is EXACTLY `alvaro-rrdt.github.io`
+   (GitHub username + .github.io, NO dots in the username part).
+   First rename attempt used `alvaro.rm.rdt.github.io` (Forgejo-style
+   name with dots): GitHub treats that as a PROJECT site, serving under
+   /alvaro.rm.rdt.github.io/ while the build targets the root, so all
+   /_astro assets 404 and pages render unstyled (looks like raw
+   markdown, but the Actions build+deploy itself worked).
+2. After renaming: Settings -> Pages should show Source: GitHub Actions
+   (already true, the deploy job succeeded) and the site URL becomes
    https://alvaro-rrdt.github.io.
-Renaming the Forgejo repo itself is optional; names do not need to match.
-If renamed, update the local remote URL to the new Forgejo path.
+3. Actions tab -> Deploy to GitHub Pages -> Run workflow (manual run)
+   to redeploy the artifact under the root URL.
+4. Forgejo: update the push mirror remote URL to
+   https://github.com/alvaro-rrdt/alvaro-rrdt.github.io.git
+   (renames keep git redirects and the fine-grained PAT bound to the
+   repo, so this is hygiene, not a hard requirement).
 
 ## Gotchas
 
