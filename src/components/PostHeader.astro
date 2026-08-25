@@ -39,7 +39,7 @@ const isDossier = d.category === "security";
       <div class="mt-6 flex flex-wrap items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-4 py-3 font-mono text-xs">
         <span class="text-platform">STATUS: RESOLVED</span>
         {d.severity && (
-          <span class="rounded border border-security/30 bg-security/10 px-2 py-0.5 text-security">
+          <span class="rounded border border-zinc-600 bg-zinc-900 px-2 py-0.5 text-zinc-300">
             {d.severity}
           </span>
         )}
@@ -68,14 +68,14 @@ const isDossier = d.category === "security";
           </div>
           <div>
             <p class="text-zinc-500">category</p>
-            <p class="mt-0.5 text-security">security</p>
+            <p class="mt-0.5 text-zinc-200">security</p>
           </div>
         </div>
 
         {d.techniques.length > 0 && (
           <ul class="mt-3 flex flex-wrap gap-2">
             {d.techniques.map((technique) => (
-              <li class="rounded border border-security/30 bg-security/10 px-2 py-0.5 text-security">
+              <li class="rounded border border-zinc-700 bg-zinc-900 px-2 py-0.5 text-zinc-300">
                 {technique}
               </li>
             ))}
@@ -83,7 +83,7 @@ const isDossier = d.category === "security";
         )}
 
         {d.spoiler && (
-          <p class="mt-3 rounded border border-security/40 bg-security/10 px-3 py-2 font-mono text-xs text-security">
+          <p class="mt-3 rounded border border-zinc-600 bg-zinc-900 px-3 py-2 font-mono text-xs text-zinc-200">
             ⚠ SPOILERS: full solution walkthrough for a retired machine.
             Try it yourself first.
           </p>

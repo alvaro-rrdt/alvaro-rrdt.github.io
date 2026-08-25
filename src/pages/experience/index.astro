@@ -17,7 +17,7 @@ const showSummary = (summary: string) => !summary.includes("details coming soon"
   title="Experience"
   description="Where I've worked and what I owned, deeper than any CV bullet."
 >
-  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">$ cat ~/experience.log</p>
     <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
       Experience
@@ -29,7 +29,7 @@ const showSummary = (summary: string) => !summary.includes("details coming soon"
           <li>
             <a
               href={`/experience/${entry.id}`}
-              class="group block rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-zinc-500 hover:shadow-lg hover:shadow-black/40"
+              class="group block rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-colors hover:border-zinc-500"
             >
               <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                 <h2 class="font-semibold text-zinc-100 transition-colors group-hover:text-platform">
@@ -43,7 +43,7 @@ const showSummary = (summary: string) => !summary.includes("details coming soon"
                 </span>
               </div>
               {entry.data.award && (
-                <span class="mt-2 inline-block rounded border border-security/30 bg-security/10 px-2 py-0.5 font-mono text-xs text-security">
+                <span class="mt-2 inline-block rounded border border-platform/30 bg-platform/10 px-2 py-0.5 font-mono text-xs text-platform">
                   {entry.data.award}
                 </span>
               )}

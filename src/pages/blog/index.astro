@@ -5,18 +5,15 @@ import FormattedDate from "@/components/FormattedDate.astro";
 
 const posts = await getPosts();
 
-const trackClass: Record<string, string> = {
-  platform: "border-platform/30 bg-platform/10 text-platform",
-  security: "border-security/30 bg-security/10 text-security",
-  dev: "border-zinc-700 bg-zinc-900 text-zinc-400",
-};
+/** One quiet chip style for every category: identity lives in the label. */
+const categoryChip = "border-zinc-700 bg-zinc-900 text-zinc-400";
 ---
 
 <BaseLayout
   title="Writing"
   description="Infrastructure war stories and security write-ups by Alvaro Riccardi in one unified feed."
 >
-  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">$ ls ~/blog</p>
     <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
       Writing
@@ -31,7 +28,7 @@ const trackClass: Record<string, string> = {
       war stories ·{" "}
       <a
         href="/blog/category/security"
-        class="text-security transition-colors hover:underline"
+        class="text-platform transition-colors hover:underline"
       >
         security
       </a>{" "}
@@ -57,7 +54,7 @@ const trackClass: Record<string, string> = {
                 href={`/blog/category/${post.data.category}`}
                 class:list={[
                   "relative z-10 shrink-0 rounded border px-2 py-0.5 font-mono text-xs underline-offset-2 hover:underline",
-                  trackClass[post.data.category],
+                  categoryChip,
                 ]}
               >
                 {post.data.category}

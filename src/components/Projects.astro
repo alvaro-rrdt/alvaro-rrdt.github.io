@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import Architecture from "@/components/Architecture.astro";
 
 /** Projects, curated order. */
 const projects = (await getCollection("projects")).sort(
@@ -33,15 +34,8 @@ const writeupReady = (body?: string) =>
   !(body ?? "").includes("Write-up in progress");
 ---
 
-<Section
-  id="projects"
-  prompt="~/projects"
-  title="Selected work"
-  accent="platform"
-  index="02"
-  wash
->
-  <div class="grid gap-6 sm:grid-cols-2" data-stagger>
+<Section id="projects" prompt="~/projects" title="Selected work">
+  <div class="grid gap-6 sm:grid-cols-2">
     {
       projects.map((project) => (
         <ProjectCard
@@ -56,5 +50,18 @@ const writeupReady = (body?: string) =>
         />
       ))
     }
+  </div>
+
+  <!-- Homelab topology: the infrastructure behind the projects above -->
+  <div class="mt-16">
+    <p class="font-mono text-sm text-zinc-500" aria-hidden="true">
+      ~/homelab/topology.svg
+    </p>
+    <h3 class="mt-2 text-xl font-semibold tracking-tight text-zinc-50">
+      How it's wired
+    </h3>
+    <div class="mt-6">
+      <Architecture />
+    </div>
   </div>
 </Section>

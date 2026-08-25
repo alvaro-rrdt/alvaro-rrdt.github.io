@@ -14,11 +14,11 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
 
-const accentText = d.track === "platform" ? "text-platform" : "text-security";
+const accentText = "text-platform";
 ---
 
 <BaseLayout title={d.title} description={d.summary}>
-  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">
       $ cat
       <a href="/#projects" class="text-platform hover:underline">~/projects</a>

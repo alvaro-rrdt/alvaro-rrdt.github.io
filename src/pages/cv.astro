@@ -44,7 +44,7 @@ const cvRoles = roles.map((entry) => ({
 ---
 
 <BaseLayout title="CV" description={`Curriculum vitae of ${SITE.name}, ${SITE.jobTitle.toLowerCase()}.`}>
-  <main id="main" class="mx-auto max-w-4xl px-4 pb-20 pt-24 sm:px-6">
+  <main id="main" class="mx-auto max-w-4xl px-4 pb-20 pt-20 sm:px-6">
     <!-- Toolbar -->
     <div class="no-print mb-6 flex flex-wrap items-center justify-between gap-3">
       <p class="font-mono text-sm text-zinc-500">
@@ -58,7 +58,7 @@ const cvRoles = roles.map((entry) => ({
             <a
               href={SITE.cvPath}
               download
-              class="rounded-lg bg-platform px-4 py-2 font-mono text-sm font-semibold text-zinc-950 transition-all hover:-translate-y-0.5 hover:brightness-110"
+              class="rounded-lg bg-platform px-4 py-2 font-mono text-sm font-semibold text-zinc-950 transition-colors hover:bg-platform/85"
             >
               ↓ pdf
             </a>
@@ -80,7 +80,7 @@ const cvRoles = roles.map((entry) => ({
 
     <!-- The sheet -->
     <article
-      class="cv-sheet rounded-xl border border-zinc-200 bg-zinc-50 p-7 text-zinc-900 shadow-[0_24px_80px_-24px_rgb(0,0,0,0.8)] sm:p-12"
+      class="cv-sheet rounded-xl border border-zinc-200 bg-zinc-50 p-7 text-zinc-900 sm:p-12"
     >
       <!-- Header -->
       <header>

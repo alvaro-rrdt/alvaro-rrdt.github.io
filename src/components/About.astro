@@ -5,11 +5,11 @@ const facts = [
   "Software engineer by trade, platform engineer at heart",
   "Cloud: GCP & AWS · IaC: Terraform, plus Go/Pulumi at home",
   "AI-assisted development workflows, owned end to end",
-  "Spanish & Italian · open to relocation",
+  "Spanish & Italian · fresh graduate · open to relocation",
 ];
 ---
 
-<Section id="about" prompt="~/about.md" title="About" index="01">
+<Section id="about" prompt="~/about" title="About">
   <div class="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
     <div class="space-y-4 leading-relaxed text-zinc-400">
       <p>
@@ -29,10 +29,17 @@ const facts = [
         HackTheBox labs, because understanding how systems break is how you
         learn to keep them up.
       </p>
+      <p>
+        Beyond the terminal: skis in winter, a bouldering wall year-round,
+        and enthusiastic attempts at surfing that the ocean graciously does
+        not grade. The plan from here is simple: join strong teams, learn
+        the ropes properly, and eventually build ventures of my own. This
+        site is the public progress log.
+      </p>
     </div>
 
     <aside
-      class="rounded-xl border border-zinc-700/60 bg-zinc-900 p-5 shadow-sm shadow-black/30 font-mono text-sm"
+      class="rounded-xl border border-zinc-700/60 bg-zinc-900 p-5 font-mono text-sm"
       aria-label="Quick facts"
     >
       <p class="text-zinc-500">$ facts --brief</p>
@@ -40,7 +47,7 @@ const facts = [
         {
           facts.map((fact) => (
             <li class="flex gap-2 text-zinc-300">
-              <span class="select-none text-platform">→</span>
+              <span class="select-none text-zinc-600">→</span>
               {fact}
             </li>
           ))

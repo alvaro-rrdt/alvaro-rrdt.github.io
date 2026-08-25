@@ -16,7 +16,7 @@ const d = entry.data;
 ---
 
 <BaseLayout title={`${d.company} · ${d.role}`} description={d.summary}>
-  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">
       $ cat
       <a href="/experience" class="text-platform hover:underline">~/experience</a>
@@ -37,7 +37,7 @@ const d = entry.data;
 
     {
       d.award && (
-        <span class="mt-4 inline-block rounded border border-security/30 bg-security/10 px-2.5 py-1 font-mono text-xs text-security">
+        <span class="mt-4 inline-block rounded border border-platform/30 bg-platform/10 px-2.5 py-1 font-mono text-xs text-platform">
           {d.award}
         </span>
       )

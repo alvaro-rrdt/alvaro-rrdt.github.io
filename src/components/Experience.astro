@@ -15,7 +15,7 @@ const summaryOf = (summary: string) =>
   summary.includes("details coming soon") ? null : summary;
 ---
 
-<Section id="experience" prompt="~/experience.log" title="Experience" index="05">
+<Section id="experience" prompt="~/experience.log" title="Experience">
   <ol class="relative space-y-12 border-l border-zinc-800 pl-8">
     {
       roles.map((entry) => (
@@ -33,7 +33,7 @@ const summaryOf = (summary: string) =>
               {entry.data.role}
             </span>
             {entry.data.award && (
-              <span class="rounded border border-security/30 bg-security/10 px-2 py-0.5 font-mono text-xs text-security">
+              <span class="rounded border border-platform/30 bg-platform/10 px-2 py-0.5 font-mono text-xs text-platform">
                 {entry.data.award}
               </span>
             )}

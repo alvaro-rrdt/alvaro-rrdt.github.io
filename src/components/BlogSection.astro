@@ -6,14 +6,11 @@ import FormattedDate from "@/components/FormattedDate.astro";
 /** Latest three published posts, newest first. */
 const posts = (await getPosts()).slice(0, 3);
 
-const trackClass: Record<string, string> = {
-  platform: "border-platform/30 bg-platform/10 text-platform",
-  security: "border-security/30 bg-security/10 text-security",
-  dev: "border-zinc-700 bg-zinc-900 text-zinc-400",
-};
+/** One quiet chip style for every category: identity lives in the label. */
+const categoryChip = "border-zinc-700 bg-zinc-900 text-zinc-400";
 ---
 
-<Section id="writing" prompt="~/blog" title="Writing" index="04" wash>
+<Section id="writing" prompt="~/blog" title="Writing">
   <ul>
     {
       posts.map((post) => (
@@ -39,7 +36,7 @@ const trackClass: Record<string, string> = {
               href={`/blog/category/${post.data.category}`}
               class:list={[
                 "relative z-10 shrink-0 rounded border px-2 py-0.5 font-mono text-xs underline-offset-2 hover:underline",
-                trackClass[post.data.category],
+                categoryChip,
               ]}
             >
               {post.data.category}

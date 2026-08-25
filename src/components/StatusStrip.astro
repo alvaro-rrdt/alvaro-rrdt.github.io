@@ -25,11 +25,11 @@ if (STATUS_URL) {
         <span
           class:list={[
             "inline-block size-2 shrink-0 rounded-full",
-            strip.ok ? "bg-platform" : "bg-security",
+            strip.ok ? "bg-platform" : "bg-zinc-400",
           ]}
           aria-hidden="true"
         />
-        <span class={strip.ok ? "text-platform" : "text-security"}>
+        <span class={strip.ok ? "text-platform" : "text-zinc-300"}>
           {strip.ok ? "all systems operational" : "degraded: investigating"}
         </span>
         <span class="hidden text-zinc-600 sm:inline">

@@ -1,40 +1,30 @@
----
-import Section from "@/components/Section.astro";
----
-
 <!--
   Hand-crafted inline SVG topology of the homelab. Crisp at any DPI,
-  zero JS, no image assets. Colors mirror the theme tokens:
-  emerald #34d399 (platform), amber #fbbf24 (security/boundary).
+  zero JS, no image assets. Single accent: emerald #34d399, everything
+  else rides the zinc scale. Rendered as a partial inside the Selected
+  work section (no Section wrapper of its own).
 -->
-<Section
-  id="architecture"
-  prompt="~/homelab/topology.svg"
-  title="How it's wired"
-  accent="platform"
-  index="03"
->
-  <div class="topology overflow-x-auto rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 shadow-sm shadow-black/30 sm:p-6">
-    <svg
-      viewBox="0 0 960 500"
-      class="h-auto w-full min-w-[720px]"
-      role="img"
-      aria-label="Homelab topology: devices connect over a Tailscale tailnet to a k3s cluster on Hetzner provisioned by Pulumi. A Forgejo GitOps repo drives ArgoCD deployments, and workloads back up nightly to a Hetzner Storage Box."
-    >
-      <title>Homelab topology</title>
+<div class="topology overflow-x-auto rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 sm:p-6">
+  <svg
+    viewBox="0 0 960 500"
+    class="h-auto w-full min-w-[720px]"
+    role="img"
+    aria-label="Homelab topology: devices connect over a Tailscale tailnet to a k3s cluster on Hetzner provisioned by Pulumi. A Forgejo GitOps repo drives ArgoCD deployments, and workloads back up nightly to a Hetzner Storage Box."
+  >
+    <title>Homelab topology</title>
 
-      <defs>
-        <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#34d399"></path>
-        </marker>
-        <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-          <path d="M0,0 L10,5 L0,10 z" fill="#fbbf24"></path>
-        </marker>
-      </defs>
+    <defs>
+      <marker id="arrow-emerald" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#34d399"></path>
+      </marker>
+      <marker id="arrow-zinc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10 z" fill="#71717a"></path>
+      </marker>
+    </defs>
 
-      <!-- Tailnet trust boundary -->
-      <rect x="196" y="64" width="600" height="372" rx="12" fill="none" stroke="#fbbf24" stroke-opacity="0.45" stroke-dasharray="6 6"></rect>
-      <text x="214" y="90" fill="#fbbf24" fill-opacity="0.8" font-family="ui-monospace, Menlo, monospace" font-size="12">tailnet · tailscale mesh (wg)</text>
+    <!-- Tailnet trust boundary -->
+    <rect x="196" y="64" width="600" height="372" rx="12" fill="none" stroke="#71717a" stroke-opacity="0.45" stroke-dasharray="6 6"></rect>
+    <text x="214" y="90" fill="#71717a" fill-opacity="0.8" font-family="ui-monospace, Menlo, monospace" font-size="12">tailnet · tailscale mesh (wg)</text>
 
       <!-- Client -->
       <rect x="24" y="206" width="128" height="64" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
@@ -71,7 +61,7 @@ import Section from "@/components/Section.astro";
       <text x="568" y="336" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">uptime-kuma</text>
 
       <!-- Backups -->
-      <path d="M664,290 C720,290 764,246 816,240" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-amber)"></path>
+      <path d="M664,290 C720,290 764,246 816,240" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></path>
       <text x="694" y="272" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">nightly restic</text>
       <rect x="820" y="210" width="122" height="58" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
       <text x="881" y="234" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">storage box</text>
@@ -80,7 +70,7 @@ import Section from "@/components/Section.astro";
       <!-- Pulumi provisioning -->
       <rect x="280" y="448" width="170" height="40" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
       <text x="365" y="473" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">pulumi (go) iac</text>
-      <line x1="365" y1="448" x2="365" y2="410" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-amber)"></line>
+      <line x1="365" y1="448" x2="365" y2="410" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></line>
       <text x="374" y="434" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">provisions hetzner</text>
     </svg>
   </div>
@@ -90,7 +80,6 @@ import Section from "@/components/Section.astro";
   <p class="mt-4 font-mono text-sm text-zinc-600">
     // secrets never leave the cluster unencrypted: SOPS + age, keys in the tailnet only
   </p>
-</Section>
 
 <style is:global>
   /*
@@ -122,10 +111,7 @@ import Section from "@/components/Section.astro";
   :root[data-theme="light"] .topology [stroke="#34d399"] {
     stroke: #059669;
   }
-  :root[data-theme="light"] .topology [fill="#fbbf24"] {
-    fill: #b45309;
-  }
-  :root[data-theme="light"] .topology [stroke="#fbbf24"] {
-    stroke: #b45309;
+  :root[data-theme="light"] .topology [stroke="#71717a"] {
+    stroke: #a1a1aa;
   }
 </style>

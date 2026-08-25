@@ -16,25 +16,18 @@ const { category } = Astro.props;
 const posts = (await getPosts()).filter(
   (post) => post.data.category === category,
 );
-
-const accent =
-  category === "security"
-    ? "text-security"
-    : category === "platform"
-      ? "text-platform"
-      : "text-zinc-300";
 ---
 
 <BaseLayout
   title={`${category} writing`}
   description={`All ${category} posts by Alvaro Riccardi.`}
 >
-  <main id="main" class="mx-auto max-w-3xl px-6 pt-24 pb-16">
+  <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">
-      $ ls ~/blog/<span class={accent}>{category}</span>
+      $ ls ~/blog/<span class="text-platform">{category}</span>
     </p>
     <h1 class="mt-2 text-3xl font-bold capitalize tracking-tight text-zinc-50">
-      <span class:list={[accent]}>{category}</span> writing
+      <span class="text-platform">{category}</span> writing
     </h1>
 
     <ul class="mt-10">

@@ -2,26 +2,14 @@
 import { SITE } from "@/config";
 import ThemeToggle from "@/components/ThemeToggle.astro";
 
-/** Homepage chips jump to sections; everywhere else they jump between
- *  pages, so reading a post never yanks you back to the homepage. */
-const isHome = Astro.url.pathname === "/";
-
-const sectionLinks = [
+/** One nav set on every page: section anchors on /, pages elsewhere. */
+const navLinks = [
   { href: "/#about", label: "about" },
-  { href: "/blog", label: "blog" },
+  { href: "/#projects", label: "work" },
+  { href: "/blog", label: "writing" },
   { href: "/#experience", label: "experience" },
   { href: "/#security", label: "security" },
-  { href: "/#certifications", label: "certs" },
 ];
-
-const pageLinks = [
-  { href: "/", label: "home" },
-  { href: "/blog", label: "blog" },
-  { href: "/cv", label: "cv" },
-  { href: "/uses", label: "uses" },
-];
-
-const links = isHome ? sectionLinks : pageLinks;
 ---
 
 <header
@@ -35,14 +23,16 @@ const links = isHome ? sectionLinks : pageLinks;
       href="/#top"
       class="shrink-0 font-mono text-sm font-semibold text-zinc-100 transition-colors hover:text-platform"
     >
-      &gt;_{SITE.name.toLowerCase()}
+      &gt;_alvaro<span class="hidden min-[400px]:inline">-riccardi</span><span
+        class="wordmark-caret"
+        aria-hidden="true"></span>
     </a>
 
     <!-- Desktop nav -->
     <div class="hidden items-center gap-4 md:flex">
       <ul class="flex items-center gap-1 font-mono text-sm text-zinc-400">
         {
-          sectionLinks.map((link) => (
+          navLinks.map((link) => (
             <li>
               <a
                 href={link.href}
@@ -77,7 +67,7 @@ const links = isHome ? sectionLinks : pageLinks;
       </a>
     </div>
 
-    <!-- Mobile controls -->
+    <!-- Mobile controls: the palette covers section jumping -->
     <div class="flex items-center gap-1 md:hidden">
       <button
         type="button"
@@ -93,54 +83,19 @@ const links = isHome ? sectionLinks : pageLinks;
       </div>
       <a
         href="/cv"
-        class="flex min-h-11 items-center rounded-md border border-platform/40 bg-platform/10 px-2.5 py-2.5 font-mono text-sm text-platform"
+        class="flex min-h-11 items-center rounded-md border border-platform/40 bg-platform/10 px-3 py-2.5 font-mono text-sm text-platform"
       >
         cv
       </a>
     </div>
   </nav>
-
-  <!-- Mobile nav: horizontally scrollable chips, no JS needed -->
-  <nav
-    aria-label="Section shortcuts"
-    class="chips-safe-area border-t border-zinc-800/60 bg-zinc-950/80 md:hidden"
-  >
-    <ul
-      class="scrollbar-none flex items-center gap-2 overflow-x-auto px-4 py-2 font-mono text-xs text-zinc-400"
-    >
-      {
-        links.map((link) => (
-          <li class="shrink-0">
-            <a
-              href={link.href}
-              class="inline-block rounded-full border border-zinc-800 bg-zinc-900/80 px-3 py-1.5 transition-colors hover:border-platform/50 hover:text-platform"
-            >
-              {link.label}
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </nav>
 </header>
 
 <style>
-  /* Hide the scrollbar on the mobile chip strip while keeping it scrollable */
-  .scrollbar-none {
-    scrollbar-width: none;
-  }
-  .scrollbar-none::-webkit-scrollbar {
-    display: none;
-  }
-
   /* Notched phones in landscape: keep chrome clear of the sensor housing.
      BaseHead sets viewport-fit=cover so these insets are available. */
   @supports (padding: max(0px)) {
     .nav-safe-area {
-      padding-left: max(1rem, env(safe-area-inset-left));
-      padding-right: max(1.5rem, env(safe-area-inset-right));
-    }
-    .chips-safe-area {
       padding-left: max(1rem, env(safe-area-inset-left));
       padding-right: max(1.5rem, env(safe-area-inset-right));
     }
@@ -161,6 +116,25 @@ const links = isHome ? sectionLinks : pageLinks;
     }
     .kbd-coarse {
       display: inline;
+    }
+  }
+
+  /* The one signature animation: a blinking terminal cursor on the
+     wordmark. Reduced-motion handling comes from the global rule that
+     freezes all animations. */
+  .wordmark-caret {
+    display: inline-block;
+    width: 0.55ch;
+    height: 1em;
+    translate: 0 0.14em;
+    margin-left: 0.3ch;
+    background: var(--color-platform);
+    animation: wordmark-caret-blink 0.9s step-end infinite;
+  }
+
+  @keyframes wordmark-caret-blink {
+    50% {
+      opacity: 0;
     }
   }
 </style>

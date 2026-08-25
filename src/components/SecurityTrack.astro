@@ -1,10 +1,11 @@
 ---
 import Section from "@/components/Section.astro";
+import CertBoard from "@/components/CertBoard.astro";
 import { SECURITY } from "@/data/security";
 
 const statusStyle: Record<string, { chip: string; glyph: string }> = {
   completed: { chip: "border-platform/30 bg-platform/10 text-platform", glyph: "✓" },
-  active: { chip: "border-security/40 bg-security/15 text-security", glyph: "●" },
+  active: { chip: "border-platform/30 bg-platform/10 text-platform", glyph: "●" },
   planned: { chip: "border-zinc-700 bg-zinc-950/50 text-zinc-400", glyph: "□" },
 };
 
@@ -18,24 +19,11 @@ const studying = SECURITY.nowStudying.filter(
 const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
 ---
 
-<Section
-  id="security"
-  prompt="~/hackthebox"
-  title="Security track"
-  accent="security"
-  index="06"
-  wash
->
-  <!-- Amber glow echoing the hero's emerald one, marking the security track -->
-  <div
-    class="pointer-events-none absolute right-0 top-24 size-[420px] rounded-full bg-security/[0.07] blur-[120px]"
-    aria-hidden="true"
-  ></div>
-
-  <div class="relative grid gap-6 lg:grid-cols-2" data-stagger>
+<Section id="security" prompt="~/security" title="Security">
+  <div class="grid gap-6 lg:grid-cols-2">
     <!-- Learning -->
     <article
-      class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-security/40 hover:shadow-lg hover:shadow-black/40"
+      class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-colors hover:border-zinc-500"
     >
       <div class="flex items-baseline justify-between gap-3">
         <h3 class="font-semibold text-zinc-50">Learning</h3>
@@ -43,7 +31,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
           href={SECURITY.profileUrl}
           target="_blank"
           rel="noopener noreferrer"
-          class="font-mono text-xs text-zinc-500 transition-colors hover:text-security"
+          class="font-mono text-xs text-zinc-500 transition-colors hover:text-platform"
         >
           htb profile ↗
         </a>
@@ -59,13 +47,13 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
           <ul class="mt-4 space-y-2 font-mono text-sm">
             {studying.map((item) => (
               <li class="flex gap-2 text-zinc-300">
-                <span class="select-none text-security">▸</span>
+                <span class="select-none text-zinc-500">▸</span>
                 {item.href ? (
                   <a
                     href={item.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="transition-colors hover:text-security"
+                    class="transition-colors hover:text-platform"
                   >
                     {item.label} ↗
                   </a>
@@ -106,7 +94,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
                 <dt class="order-2 font-mono text-[10px] uppercase tracking-wider text-zinc-500">
                   {stat.label}
                 </dt>
-                <dd class="font-mono text-lg font-bold text-security">
+                <dd class="font-mono text-lg font-bold text-zinc-50">
                   {stat.value}
                 </dd>
               </div>
@@ -118,7 +106,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
 
     <!-- Competitive -->
     <article
-      class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 shadow-sm shadow-black/30 transition-all hover:-translate-y-0.5 hover:border-security/40 hover:shadow-lg hover:shadow-black/40"
+      class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-colors hover:border-zinc-500"
     >
       <div class="flex items-baseline justify-between gap-3">
         <h3 class="font-semibold text-zinc-50">Pro labs</h3>
@@ -156,13 +144,19 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
           })
         }
       </ul>
-
-      <a
-        href="#certifications"
-        class="mt-auto pt-5 font-mono text-sm text-zinc-500 transition-colors hover:text-security"
-      >
-        certification journey ↓
-      </a>
     </article>
+  </div>
+
+  <!-- Certification journey: the second half of the security track -->
+  <div class="mt-16">
+    <p class="font-mono text-sm text-zinc-500" aria-hidden="true">
+      ~/certs --list
+    </p>
+    <h3 class="mt-2 text-xl font-semibold tracking-tight text-zinc-50">
+      Certification journey
+    </h3>
+    <div class="mt-6">
+      <CertBoard />
+    </div>
   </div>
 </Section>
