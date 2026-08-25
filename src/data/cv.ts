@@ -5,26 +5,20 @@
 export const CV = {
   /** Short profile paragraph at the top of the sheet. */
   profile:
-    "Fresh-graduate software engineer focused on platform engineering: cloud infrastructure on GCP and AWS with Terraform, GitOps delivery with ArgoCD, and reliability habits sharpened on a self-hosted k3s homelab. Security-minded by practice, with active HackTheBox certification work.",
+    "Infrastructure and platform engineer, most comfortable today in Python and Go, with production experience managing cloud environments as code (GCP, AWS, Terraform), container orchestration (Kubernetes), CI/CD and observability tooling (Datadog, Prometheus, Grafana), and a security mindset throughout. Diagnosed a critical failover flaw in a mission-critical VoIP system at Saab and designed its cloud-native Active/Active replacement on AWS EKS, work that won the Danish National Academies' Best Engineering Internship of the Year. Outside of work I run a self-hosted homelab to sharpen platform engineering and SRE skills hands on, with full write-ups and postmortems on this site.",
 
-  /**
-   * TODO(phase-0): fill in real education once you share it.
-   */
   education: [
     {
-      degree: "Degree name (TODO)",
-      school: "University (TODO)",
-      period: "TODO years",
+      degree: "Bachelor of Software Development (Professional Bachelor)",
+      school: "Business Academy Southwest",
+      period: "2021 - Oct 2025",
     },
   ],
 
-  /**
-   * TODO(phase-0): confirm proficiency levels.
-   */
   languages: [
     { name: "Spanish", level: "Native" },
-    { name: "Italian", level: "Native" },
-    { name: "English", level: "Professional" },
+    { name: "English", level: "C2 spoken, C1 written" },
+    { name: "Italian", level: "Learning" },
   ],
 };
 

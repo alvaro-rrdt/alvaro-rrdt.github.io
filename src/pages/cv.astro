@@ -89,6 +89,10 @@ const cvRoles = roles.map((entry) => ({
         </h1>
         <p class="mt-1 font-mono text-sm text-emerald-700">{SITE.jobTitle}</p>
         <p class="mt-2 font-mono text-xs text-zinc-500">
+          <span>{SITE.location}</span>
+          <span class="mx-2 text-zinc-300">·</span>
+          <span>{SITE.phone}</span>
+          <span class="mx-2 text-zinc-300">·</span>
           <a href={`mailto:${SITE.email}`} class="hover:text-emerald-700">
             {SITE.email}
           </a>

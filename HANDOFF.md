@@ -105,7 +105,11 @@ Everything below is implemented and committed on GitButler branch
   Person site-wide and Article on posts, sitemap, robots.txt.
 - A11y: skip link, focus-visible ring, aria labels, reduced-motion handling,
   AA contrast for both accents in both themes.
-- Public email in footer/CV/palette/JSON-LD. Public GitHub mirror link
+- Hero carries a "work in progress" notice at the very top (owner's
+  request, honest signal): the portfolio is under active development.
+- Public email in footer/CV/palette/JSON-LD; phone + location (Madrid)
+  in config.ts, shown in the hero availability line and on the CV sheet.
+  Public GitHub mirror link
   (SOURCE_REPO_URL in config.ts).
 
 ## Conventions (do not break)
@@ -137,22 +141,32 @@ Everything below is implemented and committed on GitButler branch
 
 1. Blog post bodies (3 seeded stubs) and experience deep-dive prose.
    Owner prefers an interview flow: ask questions, shape answers into pages.
+   NOTE: experience frontmatter (companies, roles, periods, locations,
+   summaries, highlights, tech) is REAL, extracted from the Aug 2026 CV;
+   only the deep-dive page bodies are still stubs. Saab award is real:
+   Best Engineering Internship of the Year, Danish National Academies,
+   plus public endorsement from Saab's Head of Platform Engineering.
 2. Project screenshots: drop files into `src/assets/projects/`, reference via
    `screenshot: filename.png` frontmatter. Cards auto-use them (glob + astro:assets).
 3. HTB numbers in `src/data/security.ts`: machines owned, challenges solved,
    rank, and the current machine/module once practice starts. CJCA progress
    is real (31.8%, 5/20 modules, completed module list); update as you go.
    Pro labs are honestly "planned" (none started).
-4. Education + language levels for /cv in `src/data/cv.ts`; updated public/cv.pdf;
-   flip CV_PDF_READY when done (enables both the /cv download button and the
-   hero pdf button).
+4. DONE 2026-08-25: education + language levels filled in src/data/cv.ts
+   from the CV (Bachelor of Software Development, Business Academy
+   Southwest, 2021 - Oct 2025; Spanish native, English C2/C1, Italian
+   learning). Still pending: updated public/cv.pdf and flipping
+   CV_PDF_READY (enables the /cv download and hero pdf buttons).
 5. Testimonials: awaiting quotes from Saab/Zinco colleagues; files go in
-   `src/content/testimonials/`.
+   `src/content/testimonials/`. CV says references available on request,
+   including Zinco's CTO and VP of Engineering.
 6. Uptime Kuma status URL into STATUS_URL (config.ts) to activate StatusStrip.
 7. DONE 2026-08-23: OG images now generate at build time (astro-og-canvas).
    Optional owner polish: tweak title/subtitle styling in
    src/pages/og/[...route].ts if the default look is not to taste.
-8. Display-name check: "Alvaro Riccardi" used everywhere; confirm spelling/accent.
+8. Display-name check: site uses "Alvaro Riccardi"; full legal name is
+   "Alvaro Riccardi Roca de Togores" (CV, Aug 2026). Short form is
+   intentional for the site; owner to confirm.
 
 ## DEPLOY (pipeline added 2026-08-25, owner setup steps pending)
 

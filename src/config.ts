@@ -19,11 +19,15 @@ export const SITE = {
    * the root of https://alvaro-rrdt.github.io (no base path).
    */
   url: "https://alvaro-rrdt.github.io",
-  jobTitle: "Software Engineer · Platform Engineering · Security-Minded",
+  jobTitle: "Platform Engineer · Cloud Infrastructure & Reliability · Security-Minded",
+  /** Where I am based, shown in the hero and on the CV sheet. */
+  location: "Madrid, Spain",
+  /** Public phone number for the CV sheet only (recruiters). */
+  phone: "+34 623 965 701",
   tagline:
     "I build reliable systems by day and take them apart in HackTheBox labs by night.",
   description:
-    "Personal site of Alvaro Riccardi, software engineer focused on platform engineering, cloud infrastructure and reliability, with a practical cybersecurity edge.",
+    "Personal site of Alvaro Riccardi, platform engineer focused on cloud infrastructure and reliability with a security mindset: GCP and AWS as code, Kubernetes, and a self-hosted homelab with full write-ups.",
   /** Path served from /public. TODO(launch): replace with the real CV. */
   cvPath: "/cv.pdf",
   /** Public contact address, shown in footer/CV/palette. */
