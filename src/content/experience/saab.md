@@ -25,4 +25,8 @@ highlights:
 tech: [AWS EKS, Terraform, Ansible, Docker, SIPp, Prometheus, Grafana]
 ---
 
+![New employees in front of the Saab Technologies sign at the Sønderborg entrance](../../assets/experience/saab-entrance.jpeg)
+
+*The new-employee photo by the entrance in Sønderborg.*
+
 > ✍️ **Deep-dive in progress.**
