@@ -156,6 +156,12 @@ Everything below is implemented and committed on GitButler branch
    only the deep-dive page bodies are still stubs. Saab award is real:
    Best Engineering Internship of the Year, Danish National Academies,
    plus public endorsement from Saab's Head of Platform Engineering.
+   Saab context (owner, 2026-08-27): the internship ran in Saab's
+   DEPLOYMENT department; his mentor was the system architect and head
+   of that department and attended the award ceremony to represent him;
+   the internship was the final project of his AP degree in Computer
+   Science (Sønderborg, 2.5 years), which came before the Bachelor of
+   Software Development (Esbjerg).
 2. Project screenshots: drop files into `src/assets/projects/`, reference via
    `screenshot: filename.png` frontmatter. Cards auto-use them (glob + astro:assets).
 3. HTB numbers in `src/data/security.ts`: machines owned, challenges solved,
@@ -177,6 +183,11 @@ Everything below is implemented and committed on GitButler branch
 8. Display-name check: site uses "Alvaro Riccardi"; full legal name is
    "Alvaro Riccardi Roca de Togores" (CV, Aug 2026). Short form is
    intentional for the site; owner to confirm.
+9. Saab deep-dive (/experience/saab): add diagrams of the work (VoIP
+   failover analysis, load-test results, Active/Active target
+   architecture) and photos from the internship (deployment department,
+   Sønderborg) and the award ceremony. Owner reminder, 2026-08-27;
+   also noted as YAML comments in saab.md frontmatter.
 
 ## DEPLOY (pipeline added 2026-08-25, owner setup steps pending)
 
