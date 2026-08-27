@@ -22,11 +22,14 @@ highlights:
   - "Designed a cloud-native Active/Active alternative on AWS EKS, using a Network Load Balancer with session affinity to preserve long-lived UDP call state and allow horizontal scaling."
   - "Presented the technical case to the deployment department; the internship ran as the final project of my AP degree in Computer Science."
   - "Won Best Engineering Internship of the Year from the Danish National Academies, plus a public endorsement from Saab's Head of Platform Engineering; my mentor, the system architect who headed the deployment department, joined the award ceremony to represent me."
+  - "Learned the on-prem security environment of a defense company: multiple workshops on physical and digital security, from facility access discipline to handling sensitive systems and data."
 tech: [AWS EKS, Terraform, Ansible, Docker, SIPp, Prometheus, Grafana]
 ---
 
 ![New employees in front of the Saab Technologies sign at the Sønderborg entrance; I am the seventh from the left](../../assets/experience/saab-entrance.jpeg)
 
 *The new-employee photo by the entrance in Sønderborg. I am the seventh from the left.*
+
+> 🔒 **NDA note:** specifics beyond what appears here are limited by an ongoing NDA. Everything shared on this page is openly shareable.
 
 > ✍️ **Deep-dive in progress.**
