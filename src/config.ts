@@ -22,6 +22,12 @@ export const SITE = {
   jobTitle: "Platform Engineer · Cloud Infrastructure & Reliability · Security-Minded",
   /** Where I am based, shown in the hero and on the CV sheet. */
   location: "Madrid, Spain",
+  /**
+   * Geographic scope of the job search, shown in the hero availability
+   * line next to the location. Switzerland listed separately from Europe
+   * because it falls outside the EU citizenship shown on the CV.
+   */
+  availabilityScope: "Europe & Switzerland",
   /** Public phone number for the CV sheet only (recruiters). */
   phone: "+34 623 965 701",
   tagline:
