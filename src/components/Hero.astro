@@ -1,16 +1,24 @@
 ---
 import { SITE, SOCIALS } from "@/config";
 import { CV_PDF_READY } from "@/data/cv";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 
 /** Job title split on "·" so separators can be dimmed. */
-const titleParts = SITE.jobTitle.split(" · ");
+const titleParts = SITE.jobTitle[locale].split(" · ");
 
 /**
  * One accent word in the tagline. Falls back to the plain string if the
  * word is ever absent from SITE.tagline.
  */
-const accentWord = "reliable";
-const [beforeAccent, afterAccent] = SITE.tagline.split(accentWord);
+const accentWord = T.hero.accent;
+const [beforeAccent, afterAccent] = SITE.tagline[locale].split(accentWord);
 const hasAccent = afterAccent !== undefined;
 ---
 
@@ -19,17 +27,16 @@ const hasAccent = afterAccent !== undefined;
   <div class="mx-auto w-full max-w-5xl px-6">
     <div class="max-w-2xl">
       <p class="font-mono text-xs text-zinc-500 sm:text-sm">
-        <span class="sm:hidden">// ongoing development</span>
+        <span class="sm:hidden">{T.hero.wipShort}</span>
         <span class="hidden sm:inline">
-          // work in progress: this portfolio is under active development,
-          content and polish land incrementally
+          {T.hero.wip}
         </span>
       </p>
 
       <p class="mt-5 font-mono text-sm text-zinc-400">
         <span class="mr-2 text-platform" aria-hidden="true">●</span>
-        open to opportunities<span class="hidden sm:inline">
-          &nbsp;· {SITE.location} · {SITE.availabilityScope}</span>
+        {T.hero.openTo}<span class="hidden sm:inline">
+          &nbsp;· {SITE.location[locale]} · {SITE.availabilityScope[locale]}</span>
       </p>
 
       <h1 class="mt-6 text-balance text-4xl font-semibold tracking-tight text-zinc-50 sm:text-6xl">
@@ -59,7 +66,7 @@ const hasAccent = afterAccent !== undefined;
               {afterAccent}
             </>
           ) : (
-            SITE.tagline
+            SITE.tagline[locale]
           )
         }
       </p>
@@ -69,7 +76,7 @@ const hasAccent = afterAccent !== undefined;
           href="/cv"
           class="inline-flex items-center gap-2 rounded-lg bg-platform px-5 py-3 font-mono text-sm font-semibold text-zinc-950 transition-colors hover:bg-platform/85 active:bg-platform/75"
         >
-          View CV
+          {T.hero.viewCv}
         </a>
         <a
           href={`mailto:${SITE.email}`}

@@ -2,6 +2,14 @@
 import Section from "@/components/Section.astro";
 import CertBoard from "@/components/CertBoard.astro";
 import { SECURITY } from "@/data/security";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 
 const statusStyle: Record<string, { chip: string; glyph: string }> = {
   completed: {
@@ -28,14 +36,14 @@ const studying = SECURITY.nowStudying.filter(
 const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
 ---
 
-<Section id="security" prompt="~/security" title="Security">
+<Section id="security" prompt="~/security" title={T.security.title}>
   <div class="grid gap-12 lg:grid-cols-2 lg:gap-6">
     <!-- Learning -->
     <article
       class="flex flex-col py-2 transition-colors active:bg-zinc-900 sm:rounded-xl sm:border sm:border-zinc-700/60 sm:bg-zinc-900 sm:p-6 sm:py-6 sm:hover:border-zinc-500"
     >
       <div class="flex items-baseline justify-between gap-3">
-        <h3 class="font-semibold text-zinc-50">Learning</h3>
+        <h3 class="font-semibold text-zinc-50">{T.security.learning}</h3>
         <a
           href={SECURITY.profileUrl}
           target="_blank"
@@ -47,8 +55,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
       </div>
 
       <p class="mt-2 text-sm leading-relaxed text-zinc-400">
-        Structured study through the HackTheBox academy paths, plus machines
-        and challenges for hands-on practice.
+        {T.security.learningBlurb}
       </p>
 
       {
@@ -79,7 +86,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
         SECURITY.completedModules.length > 0 && (
           <div class="mt-5 border-t border-zinc-800/60 pt-4">
             <p class="font-mono text-xs text-zinc-500">
-              // modules completed
+              {T.security.modulesCompleted}
             </p>
             <ul class="mt-2.5 space-y-1.5 font-mono text-xs text-zinc-400">
               {
@@ -118,13 +125,12 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
       class="flex flex-col py-2 transition-colors active:bg-zinc-900 sm:rounded-xl sm:border sm:border-zinc-700/60 sm:bg-zinc-900 sm:p-6 sm:py-6 sm:hover:border-zinc-500"
     >
       <div class="flex items-baseline justify-between gap-3">
-        <h3 class="font-semibold text-zinc-50">Pro labs</h3>
-        <span class="font-mono text-xs text-zinc-500">competitive</span>
+        <h3 class="font-semibold text-zinc-50">{T.security.proLabs}</h3>
+        <span class="font-mono text-xs text-zinc-500">{T.security.competitive}</span>
       </div>
 
       <p class="mt-2 text-sm leading-relaxed text-zinc-400">
-        Multi-machine corporate networks, typically full Active Directory
-        environments. The goal is simple and brutal: own everything.
+        {T.security.proLabsBlurb}
       </p>
 
       <ul class="mt-4 space-y-0 divide-y divide-zinc-800 sm:space-y-3 sm:divide-y-0">
@@ -146,7 +152,7 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
                     style.chip,
                   ]}
                 >
-                  {style.glyph} {lab.status}
+                  {style.glyph} {T.security.status[lab.status]}
                 </span>
               </li>
             );
@@ -162,10 +168,10 @@ const stats = SECURITY.stats.filter((stat) => !stat.value.includes("TODO"));
       ~/certs --list
     </p>
     <h3 class="mt-2 text-xl font-semibold tracking-tight text-zinc-50">
-      Certification journey
+      {T.security.certJourney}
     </h3>
     <div class="mt-6">
-      <CertBoard />
+      <CertBoard locale={locale} />
     </div>
   </div>
 </Section>

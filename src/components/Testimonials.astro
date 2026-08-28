@@ -1,6 +1,14 @@
 ---
 import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 
 const quotes = (
   await getCollection("testimonials", ({ data }) => !data.draft)
@@ -9,7 +17,7 @@ const quotes = (
 
 {
   quotes.length > 0 && (
-    <Section id="testimonials" prompt="~/references" title="Kind words">
+    <Section id="testimonials" prompt="~/references" title={T.testimonials.title}>
       <div class="grid gap-4 sm:grid-cols-2">
         {quotes.map((entry) => (
           <figure class="flex flex-col rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-colors hover:border-zinc-500">

@@ -5,6 +5,7 @@ import Palette from "@/components/Palette.astro";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import ScrollProgress from "@/components/ScrollProgress.astro";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
 
 interface Props {
   title?: string;
@@ -15,13 +16,17 @@ interface Props {
   ogImage?: string;
   /** Article publish date forwarded to BaseHead */
   publishedTime?: Date;
+  /** Page locale: html lang, chrome strings and toggle state */
+  locale?: Locale;
 }
 
-const { title, description, type, ogImage, publishedTime } = Astro.props;
+const { title, description, type, ogImage, publishedTime, locale = DEFAULT_LOCALE } =
+  Astro.props;
+const T = t(locale);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <BaseHead
       title={title}
@@ -29,6 +34,7 @@ const { title, description, type, ogImage, publishedTime } = Astro.props;
       type={type}
       image={ogImage}
       publishedTime={publishedTime}
+      locale={locale}
     />
     <script is:inline>
       // Apply stored theme before first paint to avoid a flash of wrong theme
@@ -48,17 +54,17 @@ const { title, description, type, ogImage, publishedTime } = Astro.props;
       href="#main"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-zinc-900 focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-platform"
     >
-      Skip to content
+      {T.skipToContent}
     </a>
 
-    <Header />
+    <Header locale={locale} />
     <ScrollProgress />
 
     <slot />
 
-    <Footer />
+    <Footer locale={locale} />
 
-    <Palette />
+    <Palette locale={locale} />
 
     <script is:inline>
       // Theme toggle (delegated so any [data-theme-toggle] button works)

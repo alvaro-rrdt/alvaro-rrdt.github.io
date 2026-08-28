@@ -15,7 +15,8 @@ const posts = await getPosts();
 const pages: Record<string, { title: string; subtitle: string }> = {
   default: {
     title: SITE.name,
-    subtitle: SITE.jobTitle,
+    // OG cards are shared artifacts: always English
+    subtitle: SITE.jobTitle.en,
   },
   ...Object.fromEntries(
     posts.map((post) => [

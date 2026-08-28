@@ -19,21 +19,40 @@ export const SITE = {
    * the root of https://alvaro-rrdt.github.io (no base path).
    */
   url: "https://alvaro-rrdt.github.io",
-  jobTitle: "Platform Engineer · Cloud Infrastructure & Reliability · Security-Minded",
-  /** Where I am based, shown in the hero and on the CV sheet. */
-  location: "Madrid, Spain",
   /**
-   * Geographic scope of the job search, shown in the hero availability
-   * line next to the location. Switzerland listed separately from Europe
-   * because it falls outside the EU citizenship shown on the CV.
+   * Localized identity strings. English is the source of truth; es/it
+   * translations live here so every consumer stays in sync (UI
+   * chrome strings that are NOT personal data live in src/i18n/ui.ts).
    */
-  availabilityScope: "Europe & Switzerland",
+  jobTitle: {
+    en: "Platform Engineer · Cloud Infrastructure & Reliability · Security-Minded",
+    es: "Ingeniero de Plataformas · Infraestructura Cloud y Fiabilidad · Mentalidad de Seguridad",
+    it: "Ingegnere di Piattaforme · Infrastruttura Cloud e Affidabilità · Orientato alla Sicurezza",
+  },
+  /** Where I am based, shown in the hero and on the CV sheet. */
+  location: {
+    en: "Madrid, Spain",
+    es: "Madrid, España",
+    it: "Madrid, Spagna",
+  },
+  /** Geographic scope of the job search, shown in the hero availability line. */
+  availabilityScope: {
+    en: "Europe & Switzerland",
+    es: "Europa y Suiza",
+    it: "Europa e Svizzera",
+  },
   /** Public phone number for the CV sheet only (recruiters). */
   phone: "+34 623 965 701",
-  tagline:
-    "I build reliable systems by day and take them apart in HackTheBox labs by night.",
-  description:
-    "Personal site of Alvaro Riccardi, platform engineer focused on cloud infrastructure and reliability with a security mindset: GCP and AWS as code, Kubernetes, and a self-hosted homelab with full write-ups.",
+  tagline: {
+    en: "I build reliable systems by day and take them apart in HackTheBox labs by night.",
+    es: "De día construyo sistemas fiables y de noche los desmonto en los laboratorios de HackTheBox.",
+    it: "Di giorno costruisco sistemi affidabili e di notte li smonto nei lab di HackTheBox.",
+  },
+  description: {
+    en: "Personal site of Alvaro Riccardi, platform engineer focused on cloud infrastructure and reliability with a security mindset: GCP and AWS as code, Kubernetes, and a self-hosted homelab with full write-ups.",
+    es: "Web personal de Alvaro Riccardi, ingeniero de plataformas enfocado en infraestructura cloud y fiabilidad con mentalidad de seguridad: GCP y AWS como código, Kubernetes y un homelab autoalojado con write-ups completos.",
+    it: "Sito personale di Alvaro Riccardi, ingegnere di piattaforme focalizzato su infrastruttura cloud e affidabilità con mentalità security: GCP e AWS come codice, Kubernetes e un homelab self-hosted con write-up completi.",
+  },
   /** Path served from /public. TODO(launch): replace with the real CV. */
   cvPath: "/cv.pdf",
   /** Public contact address, shown in footer/CV/palette. */

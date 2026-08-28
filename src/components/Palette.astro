@@ -1,28 +1,42 @@
 ---
 import { getPosts } from "@/lib/content";
 import { SITE } from "@/config";
+import { DEFAULT_LOCALE, localePath, t, type Locale } from "@/i18n";
 
-const posts = (await getPosts()).map((post) => ({
-  label: post.data.title,
-  hint: post.data.category,
-  href: `/blog/${post.id}`,
-}));
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
+const home = localePath("/", locale);
+const C = T.palette.cmd;
+const H = T.palette.hint;
+
+const posts =
+  locale === "en"
+    ? (await getPosts()).map((post) => ({
+        label: post.data.title,
+        hint: post.data.category,
+        href: `/blog/${post.id}`,
+      }))
+    : [];
 
 const commands = [
-  { label: "home", hint: "page", href: "/" },
-  { label: "about", hint: "section", href: "/#about" },
-  { label: "selected work", hint: "section", href: "/#projects" },
-  { label: "writing", hint: "page", href: "/blog" },
-  { label: "experience", hint: "page", href: "/experience" },
-  { label: "security", hint: "section", href: "/#security" },
-  { label: "toolbox", hint: "section", href: "/#skills" },
-  { label: "cv viewer", hint: "page", href: "/cv" },
-  { label: "uses", hint: "page", href: "/uses" },
-  { label: "now", hint: "page", href: "/now" },
-  { label: "contact", hint: "page", href: "/contact" },
+  { label: C.home, hint: H.page, href: home },
+  { label: C.about, hint: H.section, href: `${home}#about` },
+  { label: C.selectedWork, hint: H.section, href: `${home}#projects` },
+  { label: C.writing, hint: H.page, href: "/blog" },
+  { label: C.experience, hint: H.page, href: localePath("/experience", locale) },
+  { label: C.security, hint: H.section, href: `${home}#security` },
+  { label: C.toolbox, hint: H.section, href: `${home}#skills` },
+  { label: C.cvViewer, hint: H.page, href: "/cv" },
+  { label: C.uses, hint: H.page, href: "/uses" },
+  { label: C.now, hint: H.page, href: "/now" },
+  { label: C.contact, hint: H.page, href: "/contact" },
   {
     label: `email ${SITE.email}`,
-    hint: "contact",
+    hint: H.contact,
     href: `mailto:${SITE.email}`,
   },
   ...posts,
@@ -32,6 +46,7 @@ const commands = [
 <div
   id="palette"
   data-commands={JSON.stringify(commands)}
+  data-no-matches={T.palette.noMatches}
   class="fixed inset-0 z-[70] hidden bg-zinc-950/70 backdrop-blur-sm"
 >
   <!-- click-away layer -->
@@ -40,18 +55,18 @@ const commands = [
   <div
     role="dialog"
     aria-modal="true"
-    aria-label="Quick navigation"
+    aria-label={T.palette.dialogAria}
     class="relative mx-auto mt-[12vh] w-[min(92vw,34rem)] overflow-hidden rounded-xl border border-zinc-700 bg-zinc-900 shadow-2xl"
   >
     <input
       id="palette-input"
       type="text"
       role="combobox"
-      aria-label="Search pages, sections and posts"
+      aria-label={T.palette.inputAria}
       aria-expanded="true"
       aria-controls="palette-list"
       aria-autocomplete="list"
-      placeholder="jump to…"
+      placeholder={T.palette.placeholder}
       autocomplete="off"
       autocapitalize="none"
       enterkeyhint="go"
@@ -66,7 +81,7 @@ const commands = [
     <p
       class="palette-hint border-t border-zinc-800 px-5 py-2 font-mono text-[11px] text-zinc-500"
     >
-      ↑↓ navigate · enter open · esc close
+      {T.palette.hintLine}
     </p>
   </div>
 </div>
@@ -82,10 +97,9 @@ const commands = [
 
 <script is:inline>
   (() => {
-    const COMMANDS = JSON.parse(
-      document.getElementById("palette").dataset.commands,
-    );
     const root = document.getElementById("palette");
+    const COMMANDS = JSON.parse(root.dataset.commands);
+    const NO_MATCHES = root.dataset.noMatches ?? "no matches";
     const input = document.getElementById("palette-input");
     const list = document.getElementById("palette-list");
 
@@ -119,8 +133,7 @@ const commands = [
 
       list.innerHTML = "";
       if (filtered.length === 0) {
-        list.innerHTML =
-          '<li class="px-4 py-6 text-center font-mono text-sm text-zinc-500">no matches</li>';
+        list.innerHTML = `<li class="px-4 py-6 text-center font-mono text-sm text-zinc-500">${NO_MATCHES}</li>`;
         return;
       }
 

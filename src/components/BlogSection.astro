@@ -2,6 +2,14 @@
 import { getPosts, readingMinutes } from "@/lib/content";
 import Section from "@/components/Section.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 
 /** Latest three published posts, newest first. */
 const posts = (await getPosts()).slice(0, 3);
@@ -10,7 +18,7 @@ const posts = (await getPosts()).slice(0, 3);
 const categoryChip = "border-zinc-700 bg-zinc-900 text-zinc-400";
 ---
 
-<Section id="writing" prompt="~/blog" title="Writing">
+<Section id="writing" prompt="~/blog" title={T.writing.title}>
   <ul>
     {
       posts.map((post) => (
@@ -27,7 +35,7 @@ const categoryChip = "border-zinc-700 bg-zinc-900 text-zinc-400";
               <p class="mt-1 text-sm text-zinc-500">
                 <FormattedDate date={post.data.pubDate} />
                 {" · "}
-                {readingMinutes(post.body)} min read
+                {readingMinutes(post.body)} {T.writing.minRead}
                 {" · "}
                 {post.data.description}
               </p>
@@ -50,6 +58,6 @@ const categoryChip = "border-zinc-700 bg-zinc-900 text-zinc-400";
     href="/blog"
     class="mt-6 inline-block font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
   >
-    view all posts →
+    {T.writing.viewAll}
   </a>
 </Section>

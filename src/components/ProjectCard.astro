@@ -13,6 +13,14 @@ interface Props {
   image?: ImageMetadata | null;
   /** False while the project body is still a "Write-up in progress" stub. */
   writeupReady?: boolean;
+  /** Localized UI strings, supplied by Projects.astro */
+  labels?: {
+    liveInHomelab?: string;
+    liveInHomelabTitle?: string;
+    techAria?: string;
+    writeupInProgress?: string;
+    readWriteup?: string;
+  };
 }
 
 const {
@@ -23,8 +31,18 @@ const {
   synced = false,
   image = null,
   writeupReady = true,
+  labels = {},
 } = Astro.props;
 // `track` stays in the schema for content ordering; visuals are single-accent.
+const L = {
+  liveInHomelab: labels.liveInHomelab ?? "✓ live in homelab",
+  liveInHomelabTitle:
+    labels.liveInHomelabTitle ??
+    "Deployed and running live in my self-hosted homelab",
+  techAria: labels.techAria ?? "Technologies used",
+  writeupInProgress: labels.writeupInProgress ?? "write-up in progress",
+  readWriteup: labels.readWriteup ?? "read write-up →",
+};
 ---
 
 <!-- Mobile: borderless divided row (container in Projects.astro supplies the
@@ -55,9 +73,9 @@ const {
         synced && (
           <span
             class="mt-0.5 shrink-0 font-mono text-[11px] text-platform sm:mt-0 sm:rounded sm:border sm:border-platform/30 sm:bg-platform/10 sm:px-1.5 sm:py-0.5"
-            title="Deployed and running live in my self-hosted homelab"
+            title={L.liveInHomelabTitle}
           >
-            ✓ live in homelab
+            {L.liveInHomelab}
           </span>
         )
       }
@@ -68,7 +86,7 @@ const {
     </p>
 
     <!-- Chips on sm+, plain text line on phones -->
-    <ul class="mt-4 hidden flex-wrap gap-2 sm:flex" aria-label="Technologies used">
+    <ul class="mt-4 hidden flex-wrap gap-2 sm:flex" aria-label={L.techAria}>
       {
         stack.map((tech) => (
           <li class="rounded border border-zinc-700/70 px-2 py-0.5 font-mono text-xs text-zinc-400">
@@ -87,14 +105,14 @@ const {
           href={href}
           class="mt-4 inline-block font-mono text-sm text-platform transition-colors hover:text-platform/80"
         >
-          read write-up →
+          {L.readWriteup}
         </a>
       )
     }
     {
       href && !writeupReady && (
         <span class="mt-4 inline-block font-mono text-sm text-zinc-500">
-          write-up in progress
+          {L.writeupInProgress}
         </span>
       )
     }

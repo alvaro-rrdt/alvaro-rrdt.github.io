@@ -1,10 +1,24 @@
 ---
 import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
+import {
+  DEFAULT_LOCALE,
+  experienceSlug,
+  localePath,
+  t,
+  type Locale,
+} from "@/i18n";
 
-/** Roles, most recent first (order ascending). */
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
+
+/** Roles in this locale, most recent first (order ascending). */
 const roles = (
-  await getCollection("experience")
+  await getCollection("experience", (entry) => entry.data.locale === locale)
 ).sort((a, b) => a.data.order - b.data.order);
 
 /**
@@ -13,9 +27,11 @@ const roles = (
  */
 const summaryOf = (summary: string) =>
   summary.includes("details coming soon") ? null : summary;
+
+const detailBase = localePath("/experience", locale);
 ---
 
-<Section id="experience" prompt="~/experience.log" title="Experience">
+<Section id="experience" prompt="~/experience.log" title={T.experience.title}>
   <ol class="relative space-y-12 border-l border-zinc-800 pl-6 sm:pl-8">
     {
       roles.map((entry) => (
@@ -51,10 +67,10 @@ const summaryOf = (summary: string) =>
           }
 
           <a
-            href={`/experience/${entry.id}`}
+            href={`${detailBase}/${experienceSlug(entry.id)}`}
             class="mt-3 inline-block font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
           >
-            read the full story →
+            {T.experience.readStory}
           </a>
         </li>
       ))
@@ -62,9 +78,9 @@ const summaryOf = (summary: string) =>
   </ol>
 
   <a
-    href="/experience"
+    href={detailBase}
     class="mt-10 inline-block font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
   >
-    browse all roles →
+    {T.experience.browseAll}
   </a>
 </Section>

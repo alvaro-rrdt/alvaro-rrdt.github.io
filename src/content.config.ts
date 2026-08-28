@@ -31,7 +31,14 @@ const blog = defineCollection({
 
 /** One entry per employer; `order` ascending = most recent first. */
 const experience = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/experience" }),
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/experience",
+    // "saab.md" keeps id "saab"; "saab.es.md" becomes "saab.es" so the
+    // English ids (and therefore /experience URLs) never change. The
+    // locale itself rides in frontmatter.
+    generateId: ({ entry }) => entry.replace(/\.md$/, ""),
+  }),
   schema: z.object({
     company: z.string(),
     role: z.string(),
@@ -39,6 +46,8 @@ const experience = defineCollection({
     location: z.string().optional(),
     order: z.number(),
     award: z.string().optional(),
+    /** Entry language; untranslated locales fall back to nothing here. */
+    locale: z.enum(["en", "es", "it"]).default("en"),
     summary: z.string(),
     highlights: z.array(z.string()).default([]),
     tech: z.array(z.string()).default([]),
@@ -60,6 +69,9 @@ const projects = defineCollection({
     order: z.number(),
     synced: z.boolean().default(false),
     track: z.enum(["platform", "security"]).default("platform"),
+    /** Localized summaries; English `summary` is the fallback. */
+    summary_es: z.string().optional(),
+    summary_it: z.string().optional(),
   }),
 });
 

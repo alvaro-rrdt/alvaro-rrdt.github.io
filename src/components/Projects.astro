@@ -3,11 +3,30 @@ import { getCollection } from "astro:content";
 import Section from "@/components/Section.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
 import Architecture from "@/components/Architecture.astro";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 
 /** Projects, curated order. */
 const projects = (await getCollection("projects")).sort(
   (a, b) => a.data.order - b.data.order,
 );
+
+/** Localized summary with English fallback (summary_es / summary_it). */
+const summaryFor = (data: {
+  summary: string;
+  summary_es?: string;
+  summary_it?: string;
+}): string => {
+  if (locale === "es" && data.summary_es) return data.summary_es;
+  if (locale === "it" && data.summary_it) return data.summary_it;
+  return data.summary;
+};
 
 /**
  * Screenshot lookup: drop files into src/assets/projects/ and reference
@@ -34,19 +53,26 @@ const writeupReady = (body?: string) =>
   !(body ?? "").includes("Write-up in progress");
 ---
 
-<Section id="projects" prompt="~/projects" title="Selected work">
+<Section id="projects" prompt="~/projects" title={T.projects.title}>
   <div class="grid gap-0 divide-y divide-zinc-800 sm:grid-cols-2 sm:gap-6 sm:divide-y-0">
     {
       projects.map((project) => (
         <ProjectCard
           title={project.data.title}
-          description={project.data.summary}
+          description={summaryFor(project.data)}
           stack={project.data.stack}
           track={project.data.track}
           synced={project.data.synced}
           href={`/projects/${project.id}`}
           image={resolveImage(project.data.screenshot)}
           writeupReady={writeupReady(project.body)}
+          labels={{
+            liveInHomelab: T.projects.liveInHomelab,
+            liveInHomelabTitle: T.projects.liveInHomelabTitle,
+            techAria: T.projects.techAria,
+            writeupInProgress: T.projects.writeupInProgress,
+            readWriteup: T.projects.readWriteup,
+          }}
         />
       ))
     }
@@ -63,7 +89,7 @@ const writeupReady = (body?: string) =>
         ~/homelab/topology.svg
       </span>
       <h3 class="text-xl font-semibold tracking-tight text-zinc-50">
-        How it's wired
+        {T.projects.howWired}
       </h3>
       <span
         class="ml-auto self-center font-mono text-zinc-500 transition-transform group-open:rotate-90 lg:hidden"

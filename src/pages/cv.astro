@@ -43,7 +43,7 @@ const cvRoles = roles.map((entry) => ({
 }));
 ---
 
-<BaseLayout title="CV" description={`Curriculum vitae of ${SITE.name}, ${SITE.jobTitle.toLowerCase()}.`}>
+<BaseLayout title="CV" description={`Curriculum vitae of ${SITE.name}, ${SITE.jobTitle.en.toLowerCase()}.`}>
   <main id="main" class="mx-auto max-w-4xl px-4 pb-20 pt-20 sm:px-6">
     <!-- Toolbar -->
     <div class="no-print mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -87,9 +87,9 @@ const cvRoles = roles.map((entry) => ({
         <h1 class="text-3xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
           {SITE.name}
         </h1>
-        <p class="mt-1 font-mono text-sm text-emerald-700">{SITE.jobTitle}</p>
+        <p class="mt-1 font-mono text-sm text-emerald-700">{SITE.jobTitle.en}</p>
         <p class="mt-2 font-mono text-xs text-zinc-500">
-          <span>{SITE.location}</span>
+          <span>{SITE.location.en}</span>
           <span class="mx-2 text-zinc-300">·</span>
           <span>{SITE.phone}</span>
           <span class="mx-2 text-zinc-300">·</span>

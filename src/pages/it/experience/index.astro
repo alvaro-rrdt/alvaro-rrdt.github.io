@@ -1,27 +1,26 @@
 ---
 import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { experienceSlug } from "@/i18n";
+import { experienceSlug, t } from "@/i18n";
 
+const T = t("it");
 const roles = (
-  await getCollection("experience", (entry) => entry.data.locale === "en")
+  await getCollection("experience", (entry) => entry.data.locale === "it")
 ).sort((a, b) => a.data.order - b.data.order);
 
 /**
  * Placeholder summaries ("details coming soon") never render; fill the
  * real summary in the entry frontmatter and it appears automatically.
  */
-const showSummary = (summary: string) => !summary.includes("details coming soon");
+const showSummary = (summary: string) =>
+  !summary.includes("details coming soon");
 ---
 
-<BaseLayout
-  title="Experience"
-  description="Where I've worked and what I owned, deeper than any CV bullet."
->
+<BaseLayout locale="it" title={T.experience.indexTitle} description={T.experience.indexDescription}>
   <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">$ cat ~/experience.log</p>
     <h1 class="mt-2 text-3xl font-bold tracking-tight text-zinc-50">
-      Experience
+      {T.experience.indexTitle}
     </h1>
 
     <ul class="mt-10 space-y-4">
@@ -29,7 +28,7 @@ const showSummary = (summary: string) => !summary.includes("details coming soon"
         roles.map((entry) => (
           <li>
             <a
-              href={`/experience/${experienceSlug(entry.id)}`}
+              href={`/it/experience/${experienceSlug(entry.id)}`}
               class="group block rounded-xl border border-zinc-700/60 bg-zinc-900 p-6 transition-colors hover:border-zinc-500"
             >
               <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
@@ -54,7 +53,7 @@ const showSummary = (summary: string) => !summary.includes("details coming soon"
                 </p>
               )}
               <p class="mt-4 font-mono text-sm text-zinc-500 transition-colors group-hover:text-platform">
-                read the full story →
+                {T.experience.readStory}
               </p>
             </a>
           </li>

@@ -117,6 +117,18 @@ Everything below is implemented and committed on GitButler branch
   AA contrast for both accents in both themes.
 - Hero carries a "work in progress" notice at the very top (owner's
   request, honest signal): the portfolio is under active development.
+- i18n (2026-08-28): English at the root (all original URLs unchanged),
+  Spanish under /es, Italian under /it, via Astro's i18n routing
+  (`prefixDefaultLocale: false`, static output, no auto-redirect).
+  Locale pages exist for the homepage and the experience section only
+  (listing + deep dives); everything else (blog, /cv, /uses, /now,
+  /contact, projects deep dives, RSS, OG images) stays English-only and
+  the header toggle falls back to the locale home there. Header toggle
+  is pure build-time links (no JS): current locale omitted, other two
+  shown as `es` / `it` mono codes. BaseHead emits hreflang + x-default
+  alternates only for paths with locale equivalents. 33 pages build.
+  Translations are agent-drafted: owner (native ES) should skim the
+  Spanish, and review the Italian more carefully.
 - Public email in footer/CV/palette/JSON-LD; phone + location (Madrid)
   in config.ts, shown in the hero availability line and on the CV sheet.
   Public GitHub mirror link
@@ -129,19 +141,30 @@ Everything below is implemented and committed on GitButler branch
 2. Personal data lives in `src/config.ts`; certs in `src/data/certs.ts`;
    HTB/security data in `src/data/security.ts`; skills in `src/data/skills.ts`;
    CV extras in `src/data/cv.ts`. Components read from these, never hardcode.
-3. Dark is default. Single accent: platform emerald (dark #34d399, light
+3. i18n rule: English is the source of truth. UI chrome strings live in
+   `src/i18n/ui.ts` and MUST be added to all three dictionaries at once
+   (TypeScript enforces the shape). Personal copy (jobTitle, tagline,
+   description, location, availabilityScope) is a locale map in
+   `src/config.ts`. Experience translations are sibling files
+   (`saab.es.md` with `locale: es` in frontmatter); project summaries use
+   optional `summary_es` / `summary_it` frontmatter with English
+   fallback. New locale page sections must be added to
+   `LOCALIZED_SECTIONS` in `src/i18n/index.ts` or the toggle and
+   hreflang will not point at them. /cv, blog posts, OG images and RSS
+   stay English-only for now.
+4. Dark is default. Single accent: platform emerald (dark #34d399, light
    #059669). To add colors that must work in both themes, use existing
    zinc/platform utilities; if you need new raw hexes, add light-mode
    overrides in global.css under `:root[data-theme="light"]`.
-4. Interactivity pattern: `<script is:inline>` delegated listeners or small
+5. Interactivity pattern: `<script is:inline>` delegated listeners or small
    observers, progressive enhancement only (anchors/forms must work without JS).
-5. Blog drafts (`draft: true`) are visible during `astro dev` but excluded
+6. Blog drafts (`draft: true`) are visible during `astro dev` but excluded
    from production builds (helper: `src/lib/content.ts` getPosts()).
-6. Gates before every commit: `npx astro check` clean AND `npm run build`
+7. Gates before every commit: `npx astro check` clean AND `npm run build`
    clean AND `find dist -name '*.js' | wc -l` still returns 0.
-7. Commits via GitButler on branch `portfolio-build`. Dev server via
+8. Commits via GitButler on branch `portfolio-build`. Dev server via
    `astro dev --background`.
-8. Never ship visible TODO placeholder strings: components filter them at
+9. Never ship visible TODO placeholder strings: components filter them at
    render (see SecurityTrack, cv, uses). New placeholder data must follow
    the same filter pattern until real values land. The same goes for
    "details coming soon" experience summaries and "Write-up in progress"
@@ -236,6 +259,15 @@ exclude) -> Telegram Bot API -> owner's chat; 303 back to
   per-IP rate limit.
 
 ## Gotchas
+
+- i18n: GitHub Pages serves only the root /404.html, so locale 404s
+  would never render; do not create src/pages/es/404.astro. The header
+  toggle and hreflang rely on LOCALIZED_SECTIONS: adding a new locale
+  section without updating that set leaves the toggle pointing at the
+  locale home (safe) but no hreflang. Experience ids carry the locale
+  suffix ("saab.es"); always map ids through experienceSlug() when
+  building URLs, and keep the "en" locale filter in the English
+  experience pages or translated entries leak into English URLs.
 
 - Deploy builds from main only. Stack branches mirror to GitHub but never
   deploy; land with `but land <top-branch> --whole-stack` to ship.

@@ -1,15 +1,51 @@
 ---
 import { SITE } from "@/config";
 import ThemeToggle from "@/components/ThemeToggle.astro";
+import {
+  DEFAULT_LOCALE,
+  hasLocalizedVersion,
+  localePath,
+  LOCALES,
+  stripLocale,
+  t,
+  type Locale,
+} from "@/i18n";
 
-/** One nav set on every page: section anchors on /, pages elsewhere. */
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
+
+/**
+ * One nav set on every page: section anchors on the locale home, pages
+ * elsewhere. ./writing stays on the English blog until posts are
+ * translated (the toggle covers the way back).
+ */
+const home = localePath("/", locale);
 const navLinks = [
-  { href: "/#about", label: "about" },
-  { href: "/#projects", label: "work" },
-  { href: "/blog", label: "writing" },
-  { href: "/#experience", label: "experience" },
-  { href: "/#security", label: "security" },
+  { href: `${home}#about`, label: T.nav.about },
+  { href: `${home}#projects`, label: T.nav.work },
+  { href: "/blog", label: T.nav.writing },
+  { href: localePath("/experience", locale), label: T.nav.experience },
+  { href: `${home}#security`, label: T.nav.security },
 ];
+
+/**
+ * Language links for the two locales this page is NOT in. Built from the
+ * current path at build time, so no JS is needed: untranslated sections
+ * (blog, /cv, /uses...) fall back to the locale home instead of a 404.
+ */
+const languageLinks = LOCALES.filter((candidate) => candidate !== locale).map(
+  (target) => ({
+    locale: target,
+    href: hasLocalizedVersion(Astro.url.pathname)
+      ? localePath(stripLocale(Astro.url.pathname), target)
+      : localePath("/", target),
+    aria: T.langSwitch[target],
+  }),
+);
 ---
 
 <header
@@ -17,10 +53,10 @@ const navLinks = [
 >
   <nav
     class="nav-safe-area mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:px-6"
-    aria-label="Main navigation"
+    aria-label={T.nav.aria}
   >
     <a
-      href="/#top"
+      href={`${home}#top`}
       class="shrink-0 whitespace-nowrap text-[11px] font-mono font-semibold text-zinc-100 transition-colors hover:text-platform min-[360px]:text-xs sm:text-sm"
     >
       &gt;_alvaro-riccardi<span
@@ -45,18 +81,42 @@ const navLinks = [
         }
       </ul>
 
+      <!-- Language switch: quiet mono codes, current locale omitted -->
+      <div
+        class="flex items-center gap-1 font-mono text-xs text-zinc-500"
+        aria-label={T.langSwitch.label}
+        role="group"
+      >
+        {
+          languageLinks.map((link, index) => (
+            <>
+              {index > 0 && <span aria-hidden="true">/</span>}
+              <a
+                href={link.href}
+                lang={link.locale}
+                aria-label={link.aria}
+                title={link.aria}
+                class="rounded px-1 py-0.5 transition-colors hover:text-platform"
+              >
+                {link.locale}
+              </a>
+            </>
+          ))
+        }
+      </div>
+
       <button
         type="button"
         data-palette-open
         class="min-h-11 rounded-md border border-zinc-800 px-2.5 py-2.5 font-mono text-xs text-zinc-500 transition-colors hover:border-zinc-600 hover:text-zinc-300"
-        aria-label="Open quick navigation"
+        aria-label={T.palette.openAria}
       >
         <span class="kbd-fine">⌘K</span>
-        <span class="kbd-coarse">search</span>
+        <span class="kbd-coarse">{T.palette.search}</span>
       </button>
 
       <div class="flex min-h-11 items-center">
-        <ThemeToggle />
+        <ThemeToggle label={T.themeToggle} />
       </div>
 
       <a
@@ -69,17 +129,39 @@ const navLinks = [
 
     <!-- Mobile controls: the palette covers section jumping -->
     <div class="flex items-center gap-1 md:hidden">
+      <div
+        class="flex items-center gap-1 font-mono text-xs text-zinc-500"
+        aria-label={T.langSwitch.label}
+        role="group"
+      >
+        {
+          languageLinks.map((link, index) => (
+            <>
+              {index > 0 && <span aria-hidden="true">/</span>}
+              <a
+                href={link.href}
+                lang={link.locale}
+                aria-label={link.aria}
+                title={link.aria}
+                class="rounded px-1 py-0.5 transition-colors hover:text-platform"
+              >
+                {link.locale}
+              </a>
+            </>
+          ))
+        }
+      </div>
       <button
         type="button"
         data-palette-open
         class="flex min-h-11 items-center rounded-md border border-zinc-800 px-2.5 py-2.5 font-mono text-xs text-zinc-400"
-        aria-label="Open quick navigation"
+        aria-label={T.palette.openAria}
       >
         <span class="kbd-fine">⌘K</span>
-        <span class="kbd-coarse">search</span>
+        <span class="kbd-coarse">{T.palette.search}</span>
       </button>
       <div class="flex min-h-11 items-center">
-        <ThemeToggle />
+        <ThemeToggle label={T.themeToggle} />
       </div>
       <a
         href="/cv"

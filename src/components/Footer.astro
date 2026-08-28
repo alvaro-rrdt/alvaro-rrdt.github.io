@@ -1,5 +1,13 @@
 ---
 import { SITE, SOCIALS, SOURCE_REPO_URL } from "@/config";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 
 const year = new Date().getFullYear();
 ---
@@ -7,7 +15,7 @@ const year = new Date().getFullYear();
 <!-- Contact band: oversized terminal line, the last beat of the page -->
 <section
   class="no-print border-t border-zinc-800/60"
-  aria-label="Contact"
+  aria-label={T.footer.contactAria}
 >
   <div class="mx-auto max-w-5xl px-6 py-20 text-center sm:py-24">
     <p
@@ -20,8 +28,7 @@ const year = new Date().getFullYear();
       ></span>
     </p>
     <p class="mx-auto mt-6 max-w-md text-balance leading-relaxed text-zinc-400">
-      Hiring for a platform or backend role, or curious about the homelab?
-      My inbox is open.
+      {T.footer.hireSub}
     </p>
     <a
       href={`mailto:${SITE.email}`}
@@ -35,7 +42,7 @@ const year = new Date().getFullYear();
         href="/contact"
         class="transition-colors hover:text-platform"
       >
-        or write directly on /contact
+        {T.footer.orWrite}
       </a>
     </p>
   </div>
@@ -46,7 +53,9 @@ const year = new Date().getFullYear();
     <div class="flex flex-col justify-between gap-6 sm:flex-row sm:items-center">
       <div>
         <p class="font-mono text-sm text-zinc-300">&gt;_ {SITE.name}</p>
-        <p class="mt-1 font-mono text-xs text-zinc-500">{SITE.jobTitle}</p>
+        <p class="mt-1 font-mono text-xs text-zinc-500">
+          {SITE.jobTitle[locale]}
+        </p>
       </div>
 
       <ul class="flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-xs text-zinc-500">
@@ -89,7 +98,7 @@ const year = new Date().getFullYear();
             rel="noopener noreferrer"
             class="transition-colors hover:text-platform"
           >
-            view source
+            {T.footer.viewSource}
           </a>
         </li>
       </ul>
@@ -97,7 +106,7 @@ const year = new Date().getFullYear();
 
     <div class="flex flex-wrap items-center justify-between gap-2 border-t border-zinc-800/60 pt-5 font-mono text-xs text-zinc-500">
       <p>© {year} {SITE.name}</p>
-      <p>built with astro · static first · self hosted git</p>
+      <p>{T.footer.builtWith}</p>
     </div>
   </div>
 </footer>

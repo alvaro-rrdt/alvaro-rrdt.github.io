@@ -1,55 +1,32 @@
 ---
 import Section from "@/components/Section.astro";
+import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
 
-const facts = [
-  "Platform engineer, most comfortable in Python and Go",
-  "Cloud as code: GCP & AWS with Terraform · Kubernetes · GitOps",
-  "Observability: Datadog, Prometheus, Grafana",
-  "Spanish & Italian citizen (EU) · Madrid · open to relocate",
-];
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
 ---
 
-<Section id="about" prompt="~/about" title="About">
+<Section id="about" prompt="~/about" title={T.about.title}>
   <div class="grid gap-10 lg:grid-cols-[1fr_320px] lg:items-start">
     <div class="space-y-4 leading-relaxed text-zinc-400">
-      <p>
-        I'm a platform engineer who gravitates toward the layer where systems
-        stay up: infrastructure as code, Kubernetes, CI/CD and observability.
-        At Saab I diagnosed a critical failover flaw in a mission-critical,
-        on-prem VoIP system and designed its cloud-native Active/Active
-        replacement on AWS EKS. The work won Best Engineering Internship of
-        the Year from the Danish National Academies and a public endorsement
-        from Saab's Head of Platform Engineering.
-      </p>
-      <p>
-        Day to day that means GCP and AWS managed as code with Terraform,
-        quality gates in CI, Datadog and Prometheus telling me the truth
-        about production, and AI-assisted development used daily (agents
-        included), building genuine fluency rather than surface-level use.
-      </p>
-      <p>
-        Off the clock I run a tailnet-only homelab and work through
-        HackTheBox labs, because understanding how systems break is how you
-        learn to keep them up. Full write-ups and postmortems land on this
-        site as they happen. Still early in my career, and genuinely
-        motivated to keep improving: new tools when they help, teammates who
-        know more than I do whenever I can find them.
-      </p>
-      <p>
-        Beyond the terminal: skis in winter, a bouldering wall year-round,
-        and enthusiastic attempts at surfing that the ocean graciously does
-        not grade.
-      </p>
+      <p>{T.about.p1}</p>
+      <p>{T.about.p2}</p>
+      <p>{T.about.p3}</p>
+      <p>{T.about.p4}</p>
     </div>
 
     <aside
       class="p-0 font-mono text-sm sm:rounded-xl sm:border sm:border-zinc-700/60 sm:bg-zinc-900 sm:p-5"
-      aria-label="Quick facts"
+      aria-label={T.about.title}
     >
       <p class="text-zinc-500">$ facts --brief</p>
       <ul class="mt-3 space-y-2.5">
         {
-          facts.map((fact) => (
+          T.about.facts.map((fact) => (
             <li class="flex gap-2 text-zinc-300">
               <span class="select-none text-zinc-600">→</span>
               {fact}

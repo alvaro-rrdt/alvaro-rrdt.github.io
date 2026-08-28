@@ -3,12 +3,18 @@
  * Dark is the brand default. Choice persists in localStorage and applies
  * before first paint via the inline script in BaseLayout.
  */
+interface Props {
+  /** Accessible name, localized by the header */
+  label?: string;
+}
+
+const { label = "Toggle color theme" } = Astro.props;
 ---
 
 <button
   type="button"
   data-theme-toggle
-  aria-label="Toggle color theme"
+  aria-label={label}
   class="rounded-md p-2 text-zinc-400 transition-colors hover:bg-zinc-900 hover:text-platform"
 >
   <!-- moon: visible in light mode, clicking returns to dark -->

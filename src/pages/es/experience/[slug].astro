@@ -1,14 +1,15 @@
 ---
 import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { experienceSlug } from "@/i18n";
 
 export async function getStaticPaths() {
   const entries = await getCollection(
     "experience",
-    (entry) => entry.data.locale === "en",
+    (entry) => entry.data.locale === "es",
   );
   return entries.map((entry) => ({
-    params: { slug: entry.id },
+    params: { slug: experienceSlug(entry.id) },
     props: { entry },
   }));
 }
@@ -18,12 +19,12 @@ const { Content } = await render(entry);
 const d = entry.data;
 ---
 
-<BaseLayout title={`${d.company} · ${d.role}`} description={d.summary}>
+<BaseLayout locale="es" title={`${d.company} · ${d.role}`} description={d.summary}>
   <main id="main" class="mx-auto max-w-3xl px-6 pt-20 pb-16">
     <p class="font-mono text-sm text-zinc-500">
       $ cat
-      <a href="/experience" class="text-platform hover:underline">~/experience</a>
-      <span class="text-zinc-500">/{entry.id}</span>
+      <a href="/es/experience" class="text-platform hover:underline">~/experience</a>
+      <span class="text-zinc-500">/{experienceSlug(entry.id)}</span>
     </p>
 
     <h1 class="mt-3 text-balance text-3xl font-bold tracking-tight text-zinc-50 sm:text-4xl">
