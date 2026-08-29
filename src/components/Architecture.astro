@@ -6,10 +6,10 @@
 -->
 <div class="topology overflow-x-auto rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 sm:p-6">
   <svg
-    viewBox="0 0 960 500"
+    viewBox="0 0 960 576"
     class="h-auto w-full min-w-[720px]"
     role="img"
-    aria-label="Homelab topology: devices connect over a Tailscale tailnet to a k3s cluster on Hetzner provisioned by Pulumi. A Forgejo GitOps repo drives ArgoCD deployments, and workloads back up nightly to a Hetzner Storage Box."
+    aria-label="Homelab topology: devices connect over a Tailscale tailnet to a k3s cluster on Hetzner provisioned by Pulumi. A Forgejo GitOps repo drives ArgoCD deployments; workloads include forgejo, postgres, openwebui, vaultwarden, immich, filebrowser, prometheus and grafana. Syncthing syncs files between devices and the server, and backups go nightly to a Hetzner Storage Box."
   >
     <title>Homelab topology</title>
 
@@ -23,60 +23,89 @@
     </defs>
 
     <!-- Tailnet trust boundary -->
-    <rect x="196" y="64" width="600" height="372" rx="12" fill="none" stroke="#71717a" stroke-opacity="0.45" stroke-dasharray="6 6"></rect>
-    <text x="214" y="90" fill="#71717a" fill-opacity="0.8" font-family="ui-monospace, Menlo, monospace" font-size="12">tailnet · tailscale mesh (wg)</text>
+    <rect x="232" y="64" width="560" height="452" rx="12" fill="none" stroke="#71717a" stroke-opacity="0.45" stroke-dasharray="6 6"></rect>
+    <text x="250" y="90" fill="#71717a" fill-opacity="0.8" font-family="ui-monospace, Menlo, monospace" font-size="12">tailnet · tailscale mesh (wg)</text>
 
-      <!-- Client -->
-      <rect x="24" y="206" width="128" height="64" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="88" y="232" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">any device</text>
-      <text x="88" y="250" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">tailnet client</text>
-      <line x1="152" y1="238" x2="232" y2="238" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
-      <text x="158" y="258" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">encrypted</text>
+    <!-- Client -->
+    <rect x="24" y="250" width="128" height="64" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="88" y="276" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">any device</text>
+    <text x="88" y="294" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">tailnet client</text>
 
-      <!-- GitOps repo -->
-      <rect x="260" y="96" width="180" height="40" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="350" y="121" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">gitops repo (forgejo)</text>
-      <line x1="350" y1="136" x2="350" y2="204" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-emerald)"></line>
-      <text x="360" y="176" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">watches main</text>
+    <!-- Traffic into the tailnet -->
+    <line x1="152" y1="282" x2="232" y2="282" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
+    <text x="158" y="272" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">encrypted</text>
 
-      <!-- k3s cluster -->
-      <rect x="236" y="148" width="452" height="256" rx="10" fill="#131316" stroke="#52525b"></rect>
-      <text x="252" y="174" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">k3s <tspan fill="#71717a" font-size="10">· single region, hetzner</tspan></text>
+    <!-- Syncthing mesh: host-level, P2P between devices and server -->
+    <path d="M152,306 C200,360 220,440 278,494" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-start="url(#arrow-emerald)" marker-end="url(#arrow-emerald)"></path>
+    <text x="158" y="404" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">file sync</text>
+    <rect x="280" y="476" width="140" height="36" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="350" y="498" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">syncthing</text>
 
-      <!-- ArgoCD -->
-      <rect x="260" y="208" width="176" height="56" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="348" y="241" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="13">ArgoCD</text>
+    <!-- GitOps repo -->
+    <rect x="300" y="100" width="180" height="40" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="390" y="125" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">gitops repo · forgejo</text>
+    <line x1="390" y1="140" x2="390" y2="200" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-emerald)"></line>
+    <text x="398" y="176" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">watches main</text>
 
-      <line x1="436" y1="236" x2="468" y2="240" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
-      <text x="438" y="226" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">sync ✓</text>
+    <!-- k3s cluster -->
+    <rect x="256" y="204" width="512" height="252" rx="10" fill="#131316" stroke="#52525b"></rect>
+    <text x="272" y="230" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">k3s <tspan fill="#71717a" font-size="10">· single region, hetzner</tspan></text>
 
-      <!-- Workloads -->
-      <rect x="472" y="186" width="192" height="190" rx="8" fill="none" stroke="#3f3f46" stroke-dasharray="4 4"></rect>
-      <text x="484" y="204" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">workloads</text>
-      <rect x="488" y="214" width="160" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="568" y="236" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">forgejo</text>
-      <rect x="488" y="264" width="160" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="568" y="286" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">postgres</text>
-      <rect x="488" y="314" width="160" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="568" y="336" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">uptime-kuma</text>
+    <!-- ArgoCD -->
+    <rect x="276" y="252" width="110" height="48" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="331" y="281" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="13">ArgoCD</text>
+    <line x1="386" y1="276" x2="414" y2="276" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
+    <text x="386" y="264" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">sync ✓</text>
 
-      <!-- Backups -->
-      <path d="M664,290 C720,290 764,246 816,240" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></path>
-      <text x="694" y="272" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">nightly restic</text>
-      <rect x="820" y="210" width="122" height="58" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="881" y="234" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">storage box</text>
-      <text x="881" y="252" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">off-cluster</text>
+    <!-- Workloads: 2 x 4 grid -->
+    <rect x="420" y="244" width="336" height="204" rx="8" fill="none" stroke="#3f3f46" stroke-dasharray="4 4"></rect>
+    <text x="432" y="260" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">workloads</text>
 
-      <!-- Pulumi provisioning -->
-      <rect x="280" y="448" width="170" height="40" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-      <text x="365" y="473" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">pulumi (go) iac</text>
-      <line x1="365" y1="448" x2="365" y2="410" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></line>
-      <text x="374" y="434" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">provisions hetzner</text>
-    </svg>
-  </div>
-  <p class="mt-4 font-mono text-sm text-zinc-600">
-    // secrets never leave the cluster unencrypted: SOPS + age, keys in the tailnet only
-  </p>
+    <rect x="432" y="270" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="508" y="291" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">forgejo</text>
+    <rect x="596" y="270" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="672" y="291" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">immich</text>
+
+    <rect x="432" y="314" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="508" y="335" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">postgres</text>
+    <rect x="596" y="314" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="672" y="335" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">filebrowser</text>
+
+    <rect x="432" y="358" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="508" y="379" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">openwebui</text>
+    <rect x="596" y="358" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="672" y="379" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="12">prometheus</text>
+
+    <rect x="432" y="402" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="508" y="423" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">vaultwarden</text>
+    <rect x="596" y="402" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="672" y="423" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="12">grafana</text>
+
+    <!-- Backups -->
+    <path d="M768,330 C800,330 788,252 818,242" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></path>
+    <text x="776" y="296" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">nightly restic</text>
+    <rect x="820" y="210" width="122" height="58" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="881" y="234" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">storage box</text>
+    <text x="881" y="252" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">off-cluster</text>
+
+    <!-- Pulumi provisioning -->
+    <rect x="560" y="532" width="180" height="36" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="650" y="554" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">pulumi (go) iac</text>
+    <line x1="650" y1="532" x2="650" y2="462" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></line>
+    <text x="658" y="500" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">provisions hetzner</text>
+
+    <!-- Legend -->
+    <line x1="24" y1="540" x2="52" y2="540" stroke="#71717a" stroke-width="1.5"></line>
+    <text x="58" y="544" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">traffic</text>
+    <line x1="120" y1="540" x2="148" y2="540" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4"></line>
+    <text x="154" y="544" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">gitops / sync</text>
+    <line x1="252" y1="540" x2="280" y2="540" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4"></line>
+    <text x="286" y="544" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">backup / provision</text>
+  </svg>
+</div>
+<p class="mt-4 font-mono text-sm text-zinc-600">
+  // secrets never leave the cluster unencrypted: SOPS + age, keys in the tailnet only
+</p>
 
 <style is:global>
   /*
