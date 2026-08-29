@@ -96,7 +96,6 @@ const en = {
   footer: {
     contactAria: "Contact",
     hireSub: "Hiring for a platform or backend role, or curious about the homelab? My inbox is open.",
-    orWrite: "or write directly on /contact",
     builtWith: "built with astro · static first · self hosted git",
     viewSource: "view source",
   },
@@ -124,7 +123,6 @@ const en = {
       cvViewer: "cv viewer",
       uses: "uses",
       now: "now",
-      contact: "contact",
     },
   },
 };
@@ -221,7 +219,6 @@ const es: Dictionary = {
   footer: {
     contactAria: "Contacto",
     hireSub: "¿Contratas para un rol de plataforma o backend, o tienes curiosidad por el homelab? Mi bandeja de entrada está abierta.",
-    orWrite: "o escríbeme directamente en /contact",
     builtWith: "hecho con astro · static first · git autoalojado",
     viewSource: "ver código fuente",
   },
@@ -249,7 +246,6 @@ const es: Dictionary = {
       cvViewer: "visor cv",
       uses: "uses",
       now: "now",
-      contact: "contacto",
     },
   },
 };
@@ -344,7 +340,6 @@ const it: Dictionary = {
   footer: {
     contactAria: "Contatti",
     hireSub: "Stai assumendo per un ruolo platform o backend, o sei curioso dell'homelab? La mia casella è aperta.",
-    orWrite: "oppure scrivimi direttamente su /contact",
     builtWith: "costruito con astro · static first · git self-hosted",
     viewSource: "vedi il sorgente",
   },
@@ -372,7 +367,6 @@ const it: Dictionary = {
       cvViewer: "visualizza cv",
       uses: "uses",
       now: "now",
-      contact: "contatti",
     },
   },
 };

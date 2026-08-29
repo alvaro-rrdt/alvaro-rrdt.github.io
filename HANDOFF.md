@@ -49,8 +49,7 @@ Everything below is implemented and committed on GitButler branch
   print button with dedicated print stylesheet; download button appears only
   when CV_PDF_READY is true in src/data/cv.ts.
 - /uses page (gear list), /now page (current focus, src/content/now.md),
-  /contact page (form gated by CONTACT_ENDPOINT, see below), themed 404,
-  RSS at /rss.xml, sitemap-index + robots.txt.
+  themed 404, RSS at /rss.xml, sitemap-index + robots.txt.
 - Scroll UX: top reading-progress bar site-wide (rendered from BaseLayout).
   The desktop section rail and scroll-reveal/stagger JS were removed with
   the minimalist pass; content is plain HTML, always visible without JS.
@@ -122,7 +121,7 @@ Everything below is implemented and committed on GitButler branch
   (`prefixDefaultLocale: false`, static output, no auto-redirect).
   Locale pages exist for the homepage and the experience section only
   (listing + deep dives); everything else (blog, /cv, /uses, /now,
-  /contact, projects deep dives, RSS, OG images) stays English-only and
+  projects deep dives, RSS, OG images) stays English-only and
   the header toggle falls back to the locale home there. Header toggle
   is pure build-time links (no JS): current locale omitted, other two
   shown as `es` / `it` mono codes. BaseHead emits hreflang + x-default
@@ -242,21 +241,14 @@ Owner setup steps (one-time):
    (renames keep git redirects and the fine-grained PAT bound to the
    repo, so this is hygiene, not a hard requirement).
 
-## CONTACT FORM (worker + telegram, added 2026-08-25)
+## CONTACT (simplified 2026-08-29)
 
-Architecture: /contact form (native POST, honeypot, no JS) -> Cloudflare
-Worker (worker/contact/, plain JS, outside the Astro build and tsconfig
-exclude) -> Telegram Bot API -> owner's chat; 303 back to
-/contact?sent=1|?error=1, notice unhidden by a tiny inline script.
-
-- CONTACT_ENDPOINT in src/config.ts gates the form: empty = email CTA +
-  honest placeholder line (same pattern as STATUS_URL).
-- Secrets ONLY via `wrangler secret put` (TELEGRAM_BOT_TOKEN,
-  TELEGRAM_CHAT_ID); never in the repo.
-- Deploy + local-test recipe: worker/contact/README.md.
-- Owner setup pending: bot creation + deploy + fill CONTACT_ENDPOINT.
-- Future upgrades documented in the worker README: Turnstile, KV
-  per-IP rate limit.
+The Telegram-bot + Cloudflare-Worker contact form was removed entirely
+by owner decision (overengineered; prefers plain contact points).
+Deleted: worker/contact/, src/pages/contact.astro, CONTACT_ENDPOINT in
+src/config.ts. Contact is now: email button + LinkedIn button in the
+footer contact band (LinkedIn URL comes from SOCIALS in config.ts),
+plus the LinkedIn link on /now. Do not reintroduce a form.
 
 ## Gotchas
 
@@ -306,7 +298,7 @@ src/pages/               index, blog/*, experience/*, projects/[slug],
                          cv, uses, now, contact, rss.xml.ts, 404
 src/styles/global.css    fonts, tokens, light-mode overrides, reveal,
                          scrollbars, print styles
-worker/contact/          cloudflare worker: form -> telegram
+worker/                   (empty: the contact-form worker was removed)
 scripts/new-post.mjs     npm run new:post "Title" [category]
 CONTENT-GUIDE.md         how the owner publishes content
 ```

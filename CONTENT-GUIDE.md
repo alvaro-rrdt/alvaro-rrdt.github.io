@@ -77,12 +77,11 @@ the keyboard), bump the `updated` date in the frontmatter, ship. Refresh
 it whenever something changes; the page is meant to answer "what are you
 up to these days".
 
-## Contact form
+## Contact
 
-The /contact page posts to a Cloudflare Worker that forwards messages to
-Telegram. Until `CONTACT_ENDPOINT` in `src/config.ts` points at the
-deployed worker, the page shows the email CTA instead of the form.
-Worker setup: `worker/contact/README.md`.
+There is no contact form. The site lists the owner's email and LinkedIn
+in the footer contact band (both locales' pages included). Recruiters
+reach out directly; nothing to deploy or maintain.
 
 ## Dev commands
 
