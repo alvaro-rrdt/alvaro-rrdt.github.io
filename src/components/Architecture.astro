@@ -3,13 +3,18 @@
   zero JS, no image assets. Single accent: emerald #34d399, everything
   else rides the zinc scale. Rendered as a partial inside the Selected
   work section (no Section wrapper of its own).
+
+  Layout tells the architecture story in layers:
+  client -> traefik ingress -> [gitops plane | workloads] with
+  observability + storage panels below, syncthing at the host level,
+  storage box off-cluster, pulumi underneath provisioning it all.
 -->
 <div class="topology overflow-x-auto rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 sm:p-6">
   <svg
-    viewBox="0 0 960 576"
-    class="h-auto w-full min-w-[720px]"
+    viewBox="0 0 1000 690"
+    class="h-auto w-full min-w-[760px]"
     role="img"
-    aria-label="Homelab topology: devices connect over a Tailscale tailnet to a k3s cluster on Hetzner provisioned by Pulumi. A Forgejo GitOps repo drives ArgoCD deployments; workloads include forgejo, postgres, openwebui, vaultwarden, immich, filebrowser, prometheus and grafana. Syncthing syncs files between devices and the server, and backups go nightly to a Hetzner Storage Box."
+    aria-label="Homelab topology: devices reach a Traefik ingress over a Tailscale tailnet into a k3s cluster on Hetzner, provisioned by Pulumi. A GitOps plane of Forgejo, Renovate, act_runner and ArgoCD keeps the cluster declarative. Workloads: openwebui with searxng, immich, vaultwarden, actualbudget, filebrowser, uptime-kuma, postgres. Observability runs Prometheus, Grafana and Alertmanager; storage is local-path plus an S3 CSI driver, with nightly restic backups to an off-cluster Storage Box. Syncthing syncs files between devices and the server."
   >
     <title>Homelab topology</title>
 
@@ -23,84 +28,125 @@
     </defs>
 
     <!-- Tailnet trust boundary -->
-    <rect x="232" y="64" width="560" height="452" rx="12" fill="none" stroke="#71717a" stroke-opacity="0.45" stroke-dasharray="6 6"></rect>
+    <rect x="232" y="64" width="640" height="568" rx="12" fill="none" stroke="#71717a" stroke-opacity="0.45" stroke-dasharray="6 6"></rect>
     <text x="250" y="90" fill="#71717a" fill-opacity="0.8" font-family="ui-monospace, Menlo, monospace" font-size="12">tailnet · tailscale mesh (wg)</text>
 
     <!-- Client -->
-    <rect x="24" y="250" width="128" height="64" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="88" y="276" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">any device</text>
-    <text x="88" y="294" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">tailnet client</text>
+    <rect x="24" y="150" width="128" height="64" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="88" y="176" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">any device</text>
+    <text x="88" y="194" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">tailnet client</text>
 
-    <!-- Traffic into the tailnet -->
-    <line x1="152" y1="282" x2="232" y2="282" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
-    <text x="158" y="272" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">encrypted</text>
+    <!-- Traffic: client -> traefik ingress -->
+    <line x1="152" y1="184" x2="296" y2="184" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
+    <text x="190" y="174" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">encrypted · wg</text>
 
-    <!-- Syncthing mesh: host-level, P2P between devices and server -->
-    <path d="M152,306 C200,360 220,440 278,494" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-start="url(#arrow-emerald)" marker-end="url(#arrow-emerald)"></path>
-    <text x="158" y="404" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">file sync</text>
-    <rect x="280" y="476" width="140" height="36" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="350" y="498" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">syncthing</text>
+    <!-- Ingress layer -->
+    <rect x="300" y="160" width="230" height="48" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="415" y="180" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">traefik</text>
+    <text x="415" y="198" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">ingress · LoadBalancer · coredns</text>
+    <line x1="415" y1="208" x2="415" y2="224" stroke="#71717a" stroke-width="1.5" marker-end="url(#arrow-zinc)"></line>
 
-    <!-- GitOps repo -->
-    <rect x="300" y="100" width="180" height="40" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="390" y="125" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">gitops repo · forgejo</text>
-    <line x1="390" y1="140" x2="390" y2="200" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-emerald)"></line>
-    <text x="398" y="176" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">watches main</text>
+    <!-- Syncthing: host-level P2P sync with devices -->
+    <path d="M88,214 C90,420 150,598 256,604" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-start="url(#arrow-emerald)" marker-end="url(#arrow-emerald)"></path>
+    <text x="98" y="440" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">file sync</text>
+    <rect x="260" y="584" width="150" height="40" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="335" y="604" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">syncthing</text>
+    <text x="335" y="618" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">p2p · host level</text>
 
     <!-- k3s cluster -->
-    <rect x="256" y="204" width="512" height="252" rx="10" fill="#131316" stroke="#52525b"></rect>
-    <text x="272" y="230" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">k3s <tspan fill="#71717a" font-size="10">· single region, hetzner</tspan></text>
+    <rect x="256" y="228" width="600" height="340" rx="10" fill="#131316" stroke="#52525b"></rect>
+    <text x="272" y="254" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="13">k3s <tspan fill="#71717a" font-size="10">· single region, hetzner</tspan></text>
 
-    <!-- ArgoCD -->
-    <rect x="276" y="252" width="110" height="48" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="331" y="281" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="13">ArgoCD</text>
-    <line x1="386" y1="276" x2="414" y2="276" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
-    <text x="386" y="264" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">sync ✓</text>
+    <!-- GitOps plane -->
+    <rect x="272" y="270" width="280" height="200" rx="8" fill="none" stroke="#34d399" stroke-opacity="0.4" stroke-dasharray="4 4"></rect>
+    <text x="284" y="286" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="10">gitops plane</text>
 
-    <!-- Workloads: 2 x 4 grid -->
-    <rect x="420" y="244" width="336" height="204" rx="8" fill="none" stroke="#3f3f46" stroke-dasharray="4 4"></rect>
-    <text x="432" y="260" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">workloads</text>
+    <rect x="288" y="298" width="120" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="348" y="319" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">forgejo</text>
 
-    <rect x="432" y="270" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="508" y="291" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">forgejo</text>
-    <rect x="596" y="270" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="672" y="291" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">immich</text>
+    <rect x="288" y="368" width="120" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="348" y="389" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="12">ArgoCD</text>
 
-    <rect x="432" y="314" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="508" y="335" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">postgres</text>
-    <rect x="596" y="314" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="672" y="335" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">filebrowser</text>
+    <line x1="348" y1="332" x2="348" y2="364" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-emerald)"></line>
+    <text x="356" y="352" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">reconciles</text>
 
-    <rect x="432" y="358" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="508" y="379" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">openwebui</text>
-    <rect x="596" y="358" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="672" y="379" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="12">prometheus</text>
+    <rect x="424" y="298" width="116" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="482" y="319" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">act_runner</text>
 
-    <rect x="432" y="402" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="508" y="423" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">vaultwarden</text>
-    <rect x="596" y="402" width="152" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="672" y="423" text-anchor="middle" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="12">grafana</text>
+    <rect x="424" y="368" width="116" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="482" y="389" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">renovate</text>
 
-    <!-- Backups -->
-    <path d="M768,330 C800,330 788,252 818,242" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></path>
-    <text x="776" y="296" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">nightly restic</text>
-    <rect x="820" y="210" width="122" height="58" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="881" y="234" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">storage box</text>
-    <text x="881" y="252" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">off-cluster</text>
+    <text x="412" y="442" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">renovate bumps · act_runner builds · argocd ships</text>
+
+    <!-- Workloads -->
+    <rect x="568" y="270" width="272" height="200" rx="8" fill="none" stroke="#3f3f46" stroke-dasharray="4 4"></rect>
+    <text x="580" y="286" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">workloads</text>
+
+    <rect x="580" y="294" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="642" y="315" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">openwebui</text>
+    <rect x="708" y="294" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="770" y="315" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">vaultwarden</text>
+
+    <rect x="580" y="336" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="642" y="357" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">searxng</text>
+    <rect x="708" y="336" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="770" y="357" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">filebrowser</text>
+
+    <rect x="580" y="378" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="642" y="399" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">immich</text>
+    <rect x="708" y="378" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="770" y="399" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">uptime-kuma</text>
+
+    <rect x="580" y="420" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="642" y="441" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">actualbudget</text>
+    <rect x="708" y="420" width="124" height="34" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="770" y="441" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">postgres</text>
+
+    <!-- GitOps plane -> workloads sync -->
+    <line x1="552" y1="360" x2="568" y2="360" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrow-emerald)"></line>
+    <text x="543" y="346" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">sync ✓</text>
+
+    <!-- Observability panel -->
+    <rect x="272" y="484" width="280" height="72" rx="8" fill="none" stroke="#34d399" stroke-opacity="0.4" stroke-dasharray="4 4"></rect>
+    <text x="284" y="500" fill="#34d399" font-family="ui-monospace, Menlo, monospace" font-size="10">observability</text>
+
+    <rect x="284" y="506" width="80" height="28" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="324" y="524" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="10">prometheus</text>
+    <rect x="372" y="506" width="80" height="28" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="412" y="524" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="10">grafana</text>
+    <rect x="460" y="506" width="80" height="28" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="500" y="524" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="10">alertmgr</text>
+    <text x="412" y="548" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">+ kube-state-metrics · node-exporter</text>
+
+    <!-- Storage classes panel -->
+    <rect x="568" y="484" width="272" height="72" rx="8" fill="none" stroke="#3f3f46" stroke-dasharray="4 4"></rect>
+    <text x="580" y="500" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">storage classes</text>
+
+    <rect x="580" y="506" width="120" height="28" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="640" y="524" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="10">local-path</text>
+    <rect x="708" y="506" width="120" height="28" rx="6" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="768" y="524" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="10">csi-s3 (S3)</text>
+
+    <!-- Backups: nightly restic to the off-cluster Storage Box -->
+    <path d="M856,330 C880,330 884,310 904,302" fill="none" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></path>
+    <text x="852" y="292" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">nightly restic</text>
+    <rect x="908" y="280" width="88" height="56" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="952" y="304" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="11">storage box</text>
+    <text x="952" y="322" text-anchor="middle" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">off-cluster</text>
 
     <!-- Pulumi provisioning -->
-    <rect x="560" y="532" width="180" height="36" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
-    <text x="650" y="554" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">pulumi (go) iac</text>
-    <line x1="650" y1="532" x2="650" y2="462" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></line>
-    <text x="658" y="500" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">provisions hetzner</text>
+    <rect x="740" y="644" width="180" height="36" rx="8" fill="#18181b" stroke="#3f3f46"></rect>
+    <text x="830" y="666" text-anchor="middle" fill="#d4d4d8" font-family="ui-monospace, Menlo, monospace" font-size="12">pulumi (go) iac</text>
+    <line x1="830" y1="644" x2="830" y2="618" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#arrow-zinc)"></line>
+    <text x="838" y="662" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="9">provisions hetzner</text>
 
     <!-- Legend -->
-    <line x1="24" y1="540" x2="52" y2="540" stroke="#71717a" stroke-width="1.5"></line>
-    <text x="58" y="544" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">traffic</text>
-    <line x1="120" y1="540" x2="148" y2="540" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4"></line>
-    <text x="154" y="544" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">gitops / sync</text>
-    <line x1="252" y1="540" x2="280" y2="540" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4"></line>
-    <text x="286" y="544" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">backup / provision</text>
+    <line x1="24" y1="656" x2="52" y2="656" stroke="#71717a" stroke-width="1.5"></line>
+    <text x="58" y="660" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">traffic</text>
+    <line x1="120" y1="656" x2="148" y2="656" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4 4"></line>
+    <text x="154" y="660" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">gitops / sync</text>
+    <line x1="256" y1="656" x2="284" y2="656" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4 4"></line>
+    <text x="290" y="660" fill="#71717a" font-family="ui-monospace, Menlo, monospace" font-size="10">backup / provision</text>
   </svg>
 </div>
 <p class="mt-4 font-mono text-sm text-zinc-600">
