@@ -1,15 +1,8 @@
 ---
 import { SITE } from "@/config";
 import ThemeToggle from "@/components/ThemeToggle.astro";
-import {
-  DEFAULT_LOCALE,
-  hasLocalizedVersion,
-  localePath,
-  LOCALES,
-  stripLocale,
-  t,
-  type Locale,
-} from "@/i18n";
+import LanguageMenu from "@/components/LanguageMenu.astro";
+import { DEFAULT_LOCALE, localePath, t, type Locale } from "@/i18n";
 
 interface Props {
   locale?: Locale;
@@ -21,7 +14,7 @@ const T = t(locale);
 /**
  * One nav set on every page: section anchors on the locale home, pages
  * elsewhere. ./writing stays on the English blog until posts are
- * translated (the toggle covers the way back).
+ * translated (the language menu covers the way back).
  */
 const home = localePath("/", locale);
 const navLinks = [
@@ -31,21 +24,6 @@ const navLinks = [
   { href: localePath("/experience", locale), label: T.nav.experience },
   { href: `${home}#security`, label: T.nav.security },
 ];
-
-/**
- * Language links for the two locales this page is NOT in. Built from the
- * current path at build time, so no JS is needed: untranslated sections
- * (blog, /cv, /uses...) fall back to the locale home instead of a 404.
- */
-const languageLinks = LOCALES.filter((candidate) => candidate !== locale).map(
-  (target) => ({
-    locale: target,
-    href: hasLocalizedVersion(Astro.url.pathname)
-      ? localePath(stripLocale(Astro.url.pathname), target)
-      : localePath("/", target),
-    aria: T.langSwitch[target],
-  }),
-);
 ---
 
 <header
@@ -81,29 +59,8 @@ const languageLinks = LOCALES.filter((candidate) => candidate !== locale).map(
         }
       </ul>
 
-      <!-- Language switch: quiet mono codes, current locale omitted -->
-      <div
-        class="flex items-center gap-1 font-mono text-xs text-zinc-500"
-        aria-label={T.langSwitch.label}
-        role="group"
-      >
-        {
-          languageLinks.map((link, index) => (
-            <>
-              {index > 0 && <span aria-hidden="true">/</span>}
-              <a
-                href={link.href}
-                lang={link.locale}
-                aria-label={link.aria}
-                title={link.aria}
-                class="rounded px-1 py-0.5 transition-colors hover:text-platform"
-              >
-                {link.locale}
-              </a>
-            </>
-          ))
-        }
-      </div>
+      <!-- Language switch: native details dropdown, endonym labels -->
+      <LanguageMenu locale={locale} />
 
       <button
         type="button"
@@ -129,28 +86,7 @@ const languageLinks = LOCALES.filter((candidate) => candidate !== locale).map(
 
     <!-- Mobile controls: the palette covers section jumping -->
     <div class="flex items-center gap-1 md:hidden">
-      <div
-        class="flex items-center gap-1 font-mono text-xs text-zinc-500"
-        aria-label={T.langSwitch.label}
-        role="group"
-      >
-        {
-          languageLinks.map((link, index) => (
-            <>
-              {index > 0 && <span aria-hidden="true">/</span>}
-              <a
-                href={link.href}
-                lang={link.locale}
-                aria-label={link.aria}
-                title={link.aria}
-                class="rounded px-1 py-0.5 transition-colors hover:text-platform"
-              >
-                {link.locale}
-              </a>
-            </>
-          ))
-        }
-      </div>
+      <LanguageMenu locale={locale} />
       <button
         type="button"
         data-palette-open
@@ -172,6 +108,24 @@ const languageLinks = LOCALES.filter((candidate) => candidate !== locale).map(
     </div>
   </nav>
 </header>
+
+<script is:inline>
+  // Language menu polish: close on outside click or Escape. Without JS
+  // the menu still toggles natively and every entry is a plain link.
+  document.addEventListener("click", (event) => {
+    document
+      .querySelectorAll("details[data-lang-menu][open]")
+      .forEach((menu) => {
+        if (!menu.contains(event.target)) menu.removeAttribute("open");
+      });
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    document
+      .querySelectorAll("details[data-lang-menu][open]")
+      .forEach((menu) => menu.removeAttribute("open"));
+  });
+</script>
 
 <style>
   /* Notched phones in landscape: keep chrome clear of the sensor housing.

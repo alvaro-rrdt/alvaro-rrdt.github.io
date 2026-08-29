@@ -1,0 +1,89 @@
+---
+/**
+ * Language switcher: a native <details> dropdown listing every locale by
+ * its endonym, with a check on the current one. Build-time links only:
+ * untranslated sections fall back to the locale home (see i18n helpers).
+ * No JS required; Header adds outside-click/Escape polish.
+ */
+import {
+  DEFAULT_LOCALE,
+  hasLocalizedVersion,
+  LANGUAGE_NAMES,
+  localePath,
+  LOCALES,
+  stripLocale,
+  t,
+  type Locale,
+} from "@/i18n";
+
+interface Props {
+  locale?: Locale;
+}
+
+const { locale = DEFAULT_LOCALE } = Astro.props;
+const T = t(locale);
+
+const items = LOCALES.map((target) => ({
+  locale: target,
+  name: LANGUAGE_NAMES[target],
+  current: target === locale,
+  href: hasLocalizedVersion(Astro.url.pathname)
+    ? localePath(stripLocale(Astro.url.pathname), target)
+    : localePath("/", target),
+  aria:
+    target === locale
+      ? `${T.langSwitch.label}: ${LANGUAGE_NAMES[locale]}`
+      : T.langSwitch[target],
+}));
+---
+
+<details class="group relative" data-lang-menu>
+  <summary
+    class="flex min-h-11 cursor-pointer list-none select-none items-center gap-1.5 rounded-md border border-zinc-800 px-2.5 py-2.5 font-mono text-xs text-zinc-400 transition-colors hover:border-zinc-600 hover:text-zinc-300 [&::-webkit-details-marker]:hidden"
+    aria-label={T.langSwitch.label}
+  >
+    {locale}
+    <span
+      class="text-[10px] text-zinc-500 transition-transform group-open:rotate-180"
+      aria-hidden="true"
+    >
+      ▾
+    </span>
+  </summary>
+
+  <div
+    class="absolute right-0 top-full z-50 mt-2 w-44 overflow-hidden rounded-lg border border-zinc-700 bg-zinc-900 shadow-2xl"
+  >
+    <p
+      class="border-b border-zinc-800 px-3 py-2 font-mono text-[10px] uppercase tracking-wider text-zinc-500"
+    >
+      {T.langSwitch.label}
+    </p>
+    <ul>
+      {
+        items.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              lang={item.locale}
+              hreflang={item.locale}
+              aria-label={item.aria}
+              title={item.aria}
+              class:list={[
+                "flex items-center gap-2 px-3 py-2.5 font-mono text-sm transition-colors",
+                item.current
+                  ? "bg-zinc-800/60 text-platform"
+                  : "text-zinc-300 hover:bg-zinc-800 hover:text-platform",
+              ]}
+            >
+              <span class="w-4 shrink-0" aria-hidden="true">
+                {item.current && "✓"}
+              </span>
+              {item.name}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</details>

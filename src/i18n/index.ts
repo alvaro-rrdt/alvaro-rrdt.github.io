@@ -17,6 +17,16 @@ export const DEFAULT_LOCALE: Locale = "en";
 export const isLocale = (value: string | undefined): value is Locale =>
   (LOCALES as readonly string[]).includes(value ?? "");
 
+/**
+ * Endonyms for the language menu: always shown in their own language,
+ * never translated.
+ */
+export const LANGUAGE_NAMES: Record<Locale, string> = {
+  en: "English",
+  es: "Español",
+  it: "Italiano",
+};
+
 /** Dictionary accessor: `const T = t(locale); T.hero.openTo` */
 export const t = (locale: Locale): Dictionary => ui[locale];
 
