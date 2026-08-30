@@ -76,13 +76,9 @@ pestañas.
 
 *Las tool calls: searxng buscando, playwright leyendo las páginas.*
 
-![La respuesta de la IA sobre el precio de crowdstrike, primera parte](../../assets/blog/crowdstrike-2-ai-reply.png)
+![La respuesta de la IA sobre el precio de crowdstrike: impulsores, casos bull y bear, y las 34 fuentes consultadas](../../assets/blog/crowdstrike-2-ai-reply.png)
 
-*La respuesta: el movimiento, los impulsores, los números.*
-
-![El final de la respuesta de la IA sobre crowdstrike](../../assets/blog/crowdstrike-3-reply-end.png)
-
-*El final de la respuesta: fuentes y cierre.*
+*La respuesta: qué movió el precio, el veredicto bull vs bear y las 34 fuentes detrás.*
 
 La segunda es continua: estoy aplicando a startups y scaleups, y antes
 de ilusionarme con una empresa quiero sus números financieros y quién

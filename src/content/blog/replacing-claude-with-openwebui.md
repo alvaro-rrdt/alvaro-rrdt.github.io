@@ -68,13 +68,9 @@ used to mean opening twenty tabs.
 
 *The tool calls: searxng searching, playwright reading the pages.*
 
-![The AI reply on crowdstrike's price move, first part](../../assets/blog/crowdstrike-2-ai-reply.png)
+![The AI reply on crowdstrike's price move: drivers, bull and bear cases, and the 34 sources it pulled](../../assets/blog/crowdstrike-2-ai-reply.png)
 
-*The reply: the move, the drivers, the numbers.*
-
-![The end of the AI reply on crowdstrike](../../assets/blog/crowdstrike-3-reply-end.png)
-
-*The end of the reply: sources and wrap-up.*
+*The reply: what drove the move, the bull vs bear verdict, and the 34 sources behind it.*
 
 The second is ongoing: I am applying to startups and scaleups, and
 before I get excited about a company I want its financial numbers and

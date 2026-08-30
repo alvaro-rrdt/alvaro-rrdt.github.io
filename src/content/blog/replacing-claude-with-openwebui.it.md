@@ -76,13 +76,9 @@ venti tab.
 
 *Le tool call: searxng cerca, playwright legge le pagine.*
 
-![La risposta dell'IA sul prezzo di crowdstrike, prima parte](../../assets/blog/crowdstrike-2-ai-reply.png)
+![La risposta dell'IA sul prezzo di crowdstrike: driver, casi bull e bear, e le 34 fonti consultate](../../assets/blog/crowdstrike-2-ai-reply.png)
 
-*La risposta: il movimento, i driver, i numeri.*
-
-![La fine della risposta dell'IA su crowdstrike](../../assets/blog/crowdstrike-3-reply-end.png)
-
-*La fine della risposta: fonti e chiusura.*
+*La risposta: cosa ha mosso il prezzo, il verdetto bull vs bear e le 34 fonti dietro.*
 
 Il secondo è in corso: sto candidandomi a startup e scaleup, e prima di
 entusiasmarmi per un'azienda voglio i suoi numeri finanziari e chi
