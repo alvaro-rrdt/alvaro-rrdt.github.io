@@ -64,6 +64,18 @@ pages that actually render the numbers, and the model laid out the move
 alongside the news that drove it. The kind of multi-step research that
 used to mean opening twenty tabs.
 
+![openwebui tool calls for the crowdstrike research: searxng searching and playwright loading pages](../../assets/blog/crowdstrike-1-tool-calls.png)
+
+*The tool calls: searxng searching, playwright reading the pages.*
+
+![The AI reply on crowdstrike's price move, first part](../../assets/blog/crowdstrike-2-ai-reply.png)
+
+*The reply: the move, the drivers, the numbers.*
+
+![The end of the AI reply on crowdstrike](../../assets/blog/crowdstrike-3-reply-end.png)
+
+*The end of the reply: sources and wrap-up.*
+
 The second is ongoing: I am applying to startups and scaleups, and
 before I get excited about a company I want its financial numbers and
 who backs whom. Investors, rounds, runway. The same pipeline digs

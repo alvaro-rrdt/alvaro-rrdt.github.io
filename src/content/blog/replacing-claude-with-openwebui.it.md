@@ -72,6 +72,18 @@ modello ha esposto il movimento insieme alle notizie che lo hanno
 guidato. Quel tipo di ricerca multi-step che prima significava aprire
 venti tab.
 
+![Tool call di openwebui per la ricerca su crowdstrike: searxng cerca e playwright carica le pagine](../../assets/blog/crowdstrike-1-tool-calls.png)
+
+*Le tool call: searxng cerca, playwright legge le pagine.*
+
+![La risposta dell'IA sul prezzo di crowdstrike, prima parte](../../assets/blog/crowdstrike-2-ai-reply.png)
+
+*La risposta: il movimento, i driver, i numeri.*
+
+![La fine della risposta dell'IA su crowdstrike](../../assets/blog/crowdstrike-3-reply-end.png)
+
+*La fine della risposta: fonti e chiusura.*
+
 Il secondo è in corso: sto candidandomi a startup e scaleup, e prima di
 entusiasmarmi per un'azienda voglio i suoi numeri finanziari e chi
 sostiene chi. Investitori, round, runway. Lo stesso pipeline scava tra

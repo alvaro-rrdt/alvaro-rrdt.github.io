@@ -72,6 +72,18 @@ presentó el movimiento junto a las noticias que lo impulsaron. Ese tipo
 de investigación en varios pasos que antes significaba abrir veinte
 pestañas.
 
+![Tool calls de openwebui para la investigación de crowdstrike: searxng buscando y playwright cargando páginas](../../assets/blog/crowdstrike-1-tool-calls.png)
+
+*Las tool calls: searxng buscando, playwright leyendo las páginas.*
+
+![La respuesta de la IA sobre el precio de crowdstrike, primera parte](../../assets/blog/crowdstrike-2-ai-reply.png)
+
+*La respuesta: el movimiento, los impulsores, los números.*
+
+![El final de la respuesta de la IA sobre crowdstrike](../../assets/blog/crowdstrike-3-reply-end.png)
+
+*El final de la respuesta: fuentes y cierre.*
+
 La segunda es continua: estoy aplicando a startups y scaleups, y antes
 de ilusionarme con una empresa quiero sus números financieros y quién
 respalda a quién. Inversores, rondas, runway. El mismo pipeline excava
