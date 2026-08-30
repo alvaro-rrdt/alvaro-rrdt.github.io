@@ -56,7 +56,8 @@ fixed monthly AI subscription is a bad deal when usage is spiky.
 The deepseek platform is pay as you go: I load credits and spend them
 when I want. Compared to the fixed twenty euros, it runs me about half or
 less even with heavy usage, and there is no five hour window. Small
-difference on paper, big difference in a student budget.
+difference on paper, big difference for a fresh graduate in between
+interviews.
 
 ## Why this matters beyond me
 
@@ -65,8 +66,20 @@ search now replace my claude workflow: the same access from any device
 over tailnet, data that never leaves my network, and a cost that follows
 usage instead of a calendar.
 
+I saw the fixed-cost side up close: at a previous employer, every single
+employee had a Claude seat at a flat twenty euros a month. Multiply that
+per seat and the bill gets serious, and I am convinced a properly
+implemented version of this setup would cut that cost considerably.
+
 At company scale this pattern works, if done properly: openwebui behind
 authentik for SSO, models billed as credits or self-hosted, and search on
 an internal searxng instance. The saving multiplies per employee, and the
 data stays inside the perimeter. That is a platform engineering project
 worth making, not a hack.
+
+The honest tradeoffs: things like cowork-style collaboration and how
+intuitive Claude Desktop feels set a high bar for any replacement. But
+the direction is clear. Governments are already moving to self-hosted,
+openwebui-style deployments, and the EU keeps reinforcing the open source
+ecosystem. It is a matter of time before flat-rate AI seats become
+unsustainable and the open alternatives take off.

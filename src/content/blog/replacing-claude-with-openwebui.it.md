@@ -63,7 +63,8 @@ picchi.
 La piattaforma deepseek è pay as you go: carico crediti e li spendo
 quando voglio. Rispetto ai venti euro fissi, mi costa la metà o meno
 anche con un uso intenso, e non c'è finestra di cinque ore. Piccola
-differenza sulla carta, grande differenza in un budget da studente.
+differenza sulla carta, grande differenza per un neolaureato tra
+colloqui.
 
 ## Perché ha importanza oltre me
 
@@ -72,8 +73,22 @@ web propria sostituiscono il mio flusso di lavoro claude: lo stesso
 accesso da qualsiasi dispositivo via tailnet, dati che non escono mai
 dalla mia rete e un costo che segue l'uso invece del calendario.
 
+Ho visto da vicino il lato dei costi fissi: in una precedente
+esperienza lavorativa, ogni dipendente aveva un posto Claude a venti
+euro al mese fissi. Moltiplicalo per posto e la fattura diventa seria,
+e sono convinto che una versione di questo setup implementata bene
+ridurrebbe quel costo in modo considerevole.
+
 A livello aziendale questo schema funziona, se fatto bene: openwebui
 dietro authentik per SSO, modelli a crediti o self-hosted, e la ricerca
 su un'istanza searxng interna. Il risparmio si moltiplica per ogni
 dipendente, e i dati restano dentro il perimetro. È un progetto di
 platform engineering che ne vale la pena, non un ripiego.
+
+I tradeoff onesti: cose come la collaborazione in stile cowork e quanto
+sia intuitivo Claude Desktop mettono l'asticella alta per qualsiasi
+sostituto. Ma la direzione è chiara. I governi si stanno già spostando
+su deployment self-hosted in stile openwebui, e l'UE continua a
+rafforzare l'ecosistema open source. È solo questione di tempo prima
+che i posti AI a canone fisso diventino insostenibili e le alternative
+open decollino.

@@ -62,8 +62,8 @@ suscripción mensual fija de IA es un mal trato cuando el uso es irregular.
 La plataforma de deepseek es de pago por uso: cargo créditos y los gasto
 cuando quiero. Frente a los veinte euros fijos, me cuesta la mitad o
 menos incluso con un uso abundante, y no hay ventana de cinco horas.
-Pequeña diferencia sobre el papel, gran diferencia en un presupuesto de
-estudiante.
+Pequeña diferencia sobre el papel, gran diferencia para un recién
+graduado entre entrevistas.
 
 ## Por qué esto importa más allá de mí
 
@@ -72,9 +72,23 @@ búsqueda web propia sustituyen mi flujo de trabajo de claude: el mismo
 acceso desde cualquier dispositivo por tailnet, datos que nunca salen de
 mi red y un coste que sigue al uso en lugar de al calendario.
 
+Vi el lado del coste fijo de cerca: en un anterior empleador, cada
+empleado tenía un puesto de Claude a veinte euros fijos al mes.
+Multiplica eso por puesto y la factura se pone seria, y estoy convencido
+de que una versión de esta configuración bien implementada recortaría
+ese coste considerablemente.
+
 A escala de empresa este patrón funciona, si se hace bien: openwebui
 detrás de authentik para SSO, modelos facturados por créditos o
 autoalojados, y la búsqueda sobre una instancia interna de searxng. El
 ahorro se multiplica por cada empleado, y los datos se quedan dentro del
 perímetro. Es un proyecto de platform engineering que merece la pena, no
 un parche.
+
+Los tradeoffs honestos: cosas como la colaboración estilo cowork y lo
+intuitivo que es Claude Desktop marcan un listón alto para cualquier
+sustituto. Pero la dirección es clara. Los gobiernos ya se están pasando
+a despliegues autoalojados tipo openwebui, y la UE sigue reforzando el
+ecosistema de código abierto. Es cuestión de tiempo que los puestos de
+IA a tarifa plana se vuelvan insostenibles y las alternativas abiertas
+despeguen.
