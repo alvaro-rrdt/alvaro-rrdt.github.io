@@ -80,6 +80,7 @@ const hasAccent = afterAccent !== undefined;
         </a>
         <a
           href={`mailto:${SITE.email}`}
+          data-umami-event="email_click"
           class="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-platform active:border-zinc-400"
         >
           [email]
@@ -90,6 +91,7 @@ const hasAccent = afterAccent !== undefined;
               href={SITE.cvPath}
               download
               aria-label="Download CV as PDF"
+              data-umami-event="cv_download"
               class="rounded-lg border border-zinc-700 bg-zinc-900 px-4 py-3 font-mono text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-platform active:border-zinc-400"
             >
               ↓ pdf

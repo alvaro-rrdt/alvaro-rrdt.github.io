@@ -1,5 +1,5 @@
 ---
-import { SITE, SOCIALS } from "@/config";
+import { SITE, SOCIALS, ANALYTICS_SRC, ANALYTICS_WEBSITE_ID } from "@/config";
 import { alternatesFor, DEFAULT_LOCALE, t, type Locale } from "@/i18n";
 
 interface Props {
@@ -26,6 +26,14 @@ const {
 
 const T = t(locale);
 const localizedDescription = description ?? SITE.description[locale];
+
+/**
+ * Analytics are on only when both Umami values are configured. The
+ * data-domains attribute pins tracking to the production hostname, so
+ * localhost and preview builds never record anything.
+ */
+const analyticsEnabled = Boolean(ANALYTICS_SRC && ANALYTICS_WEBSITE_ID);
+const siteHostname = new URL(SITE.url).hostname;
 
 /**
  * Canonical URL is derived from Astro's `site` + `base` config (set in the
@@ -150,3 +158,16 @@ const personSchema = {
 {socialImageURL && <meta name="twitter:image" content={socialImageURL.href} />}
 
 <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+
+{
+  analyticsEnabled && (
+    <script
+      is:inline
+      defer
+      src={ANALYTICS_SRC}
+      data-website-id={ANALYTICS_WEBSITE_ID}
+      data-domains={siteHostname}
+      data-performance="true"
+    />
+  )
+}

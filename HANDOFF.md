@@ -133,6 +133,18 @@ Everything below is implemented and committed on GitButler branch
   in config.ts, shown in the hero availability line and on the CV sheet.
   Public GitHub mirror link
   (SOURCE_REPO_URL in config.ts).
+- Analytics (2026-08-30): self-hosted Umami integration, shipped OFF.
+  Gated constants ANALYTICS_SRC + ANALYTICS_WEBSITE_ID in config.ts (both
+  empty until the owner deploys Umami; guide: UMAMI.md). When set:
+  BaseHead renders the deferred tracker tag (data-domains pins it to the
+  SITE.url hostname so localhost never records; data-performance collects
+  CWV), blog posts fire a one-shot post_read event at 75% scroll via
+  BaseLayout (payload: slug + locale, all locales), and CTAs carry
+  data-umami-event attributes: email_click (hero + footer mailto),
+  cv_download (hero + /cv pdf buttons), linkedin_click (footer contact
+  band + /now). Attributes are inert without the tracker; the read script
+  is a silent no-op without window.umami. Window.umami typed in
+  src/types/umami.d.ts.
 
 ## Conventions (do not break)
 
@@ -211,6 +223,9 @@ Everything below is implemented and committed on GitButler branch
    architecture) and photos from the internship (deployment department,
    Sønderborg) and the award ceremony. Owner reminder, 2026-08-27;
    also noted as YAML comments in saab.md frontmatter.
+10. Analytics go-live (owner, guide: UMAMI.md): deploy Umami on the
+   homelab, then set ANALYTICS_SRC + ANALYTICS_WEBSITE_ID in config.ts
+   and land. Until both values exist the site ships zero analytics code.
 
 ## DEPLOY (pipeline added 2026-08-25, owner setup steps pending)
 
@@ -302,4 +317,5 @@ src/styles/global.css    fonts, tokens, light-mode overrides, reveal,
 worker/                   (empty: the contact-form worker was removed)
 scripts/new-post.mjs     npm run new:post "Title" [category]
 CONTENT-GUIDE.md         how the owner publishes content
+UMAMI.md                 analytics: homelab deployment + site wiring guide
 ```

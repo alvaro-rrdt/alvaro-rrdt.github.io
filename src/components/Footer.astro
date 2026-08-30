@@ -34,6 +34,7 @@ const linkedin = SOCIALS.find((social) => social.label === "LinkedIn")?.href;
     <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
       <a
         href={`mailto:${SITE.email}`}
+        data-umami-event="email_click"
         class="inline-flex items-center gap-2 rounded-lg bg-platform px-6 py-3.5 font-mono text-sm font-semibold text-zinc-950 transition-colors hover:bg-platform/85 active:bg-platform/75"
       >
         {SITE.email}
@@ -45,6 +46,7 @@ const linkedin = SOCIALS.find((social) => social.label === "LinkedIn")?.href;
             href={linkedin}
             target="_blank"
             rel="noopener noreferrer"
+            data-umami-event="linkedin_click"
             class="inline-flex items-center gap-2 rounded-lg border border-zinc-700 bg-zinc-900 px-5 py-3.5 font-mono text-sm text-zinc-300 transition-colors hover:border-zinc-500 hover:text-platform active:border-zinc-400"
           >
             linkedin
@@ -70,6 +72,7 @@ const linkedin = SOCIALS.find((social) => social.label === "LinkedIn")?.href;
         <li>
           <a
             href={`mailto:${SITE.email}`}
+            data-umami-event="email_click"
             class="transition-colors hover:text-platform"
           >
             {SITE.email}

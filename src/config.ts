@@ -87,3 +87,13 @@ export const SOURCE_REPO_URL = "https://github.com/alvaro-rrdt/alvaro-rrdt.githu
  * HTTP 200 when healthy.
  */
 export const STATUS_URL = "";
+
+/**
+ * Self-hosted Umami analytics (deployment guide: UMAMI.md). Both values
+ * must be non-empty for any analytics code to render, so the site ships
+ * with tracking OFF until the Umami instance exists on the homelab.
+ * ANALYTICS_SRC: full tracker script URL, e.g. "https://umami.example.com/script.js"
+ * ANALYTICS_WEBSITE_ID: the UUID Umami shows under Edit -> Tracking code.
+ */
+export const ANALYTICS_SRC = "";
+export const ANALYTICS_WEBSITE_ID = "";

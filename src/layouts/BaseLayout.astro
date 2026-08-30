@@ -6,6 +6,7 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import ScrollProgress from "@/components/ScrollProgress.astro";
 import { DEFAULT_LOCALE, t, type Locale } from "@/i18n";
+import { ANALYTICS_SRC, ANALYTICS_WEBSITE_ID } from "@/config";
 
 interface Props {
   title?: string;
@@ -23,6 +24,7 @@ interface Props {
 const { title, description, type, ogImage, publishedTime, locale = DEFAULT_LOCALE } =
   Astro.props;
 const T = t(locale);
+const analyticsEnabled = Boolean(ANALYTICS_SRC && ANALYTICS_WEBSITE_ID);
 ---
 
 <!doctype html>
@@ -81,5 +83,38 @@ const T = t(locale);
         } catch {}
       });
     </script>
+
+    {
+      type === "article" && analyticsEnabled && (
+        <script is:inline>
+          // Post read tracking: one "post_read" event per post view once the
+          // reader has scrolled 75% of the page, or immediately when the whole
+          // post fits on screen. Posts in every locale report here; the locale
+          // travels in the event data so translations can be compared. Silent
+          // no-op when the tracker is missing (blocked, homelab down, off).
+          (() => {
+            const tracker = window.umami;
+            if (!tracker || typeof tracker.track !== "function") return;
+
+            let fired = false;
+            const check = () => {
+              if (fired) return;
+              const max =
+                document.documentElement.scrollHeight - window.innerHeight;
+              if (max <= 0 || window.scrollY / max >= 0.75) {
+                fired = true;
+                window.removeEventListener("scroll", check);
+                tracker.track("post_read", {
+                  slug: window.location.pathname,
+                  locale: document.documentElement.lang || "en",
+                });
+              }
+            };
+            window.addEventListener("scroll", check, { passive: true });
+            check();
+          })();
+        </script>
+      )
+    }
   </body>
 </html>
