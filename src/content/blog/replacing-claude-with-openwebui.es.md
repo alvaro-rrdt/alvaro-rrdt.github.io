@@ -100,6 +100,23 @@ menos incluso con un uso abundante, y no hay ventana de cinco horas.
 Pequeña diferencia sobre el papel, gran diferencia para un recién
 graduado entre entrevistas.
 
+## El siguiente experimento: openobserve
+
+La monitorización es la siguiente pieza que quiero sacudir. El clúster
+tiene prometheus y grafana hoy y funcionan, pero sigo topándome con
+openobserve: un único binario que cubre métricas, logs y trazas, que es
+más o menos lo que prometheus y grafana hacen juntos y algo más.
+Incluye hasta monitorización de IA en profundidad, y las empresas lo
+están adoptando ampliamente, lo que te dice hacia dónde va la
+observabilidad.
+
+Para mí el gancho es el coste, otra vez: los créditos por uso
+significan que cada búsqueda web cuesta algo, y la única forma de
+mantener una factura personal diminuta es vigilarla bien. Registrar
+tokens, consultas y gasto por pipeline en la misma herramienta que
+vigila mis servicios me suena exactamente bien. Puede que el cambio
+acabe en un post futuro, conectándolo con esta configuración.
+
 ## Por qué esto importa más allá de mí
 
 openwebui autoalojado, un modelo con visión de pago por créditos y

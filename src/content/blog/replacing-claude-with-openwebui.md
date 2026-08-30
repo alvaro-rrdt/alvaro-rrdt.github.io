@@ -92,6 +92,21 @@ less even with heavy usage, and there is no five hour window. Small
 difference on paper, big difference for a fresh graduate in between
 interviews.
 
+## The next experiment: openobserve
+
+Monitoring is the next piece I want to shake up. The cluster runs
+prometheus and grafana today, and they work, but I keep running into
+openobserve: one single binary covering metrics, logs and tracing, which
+is roughly what prometheus and grafana do together and then some. It
+even ships AI monitoring in depth, and companies are adopting it widely,
+which tells you where observability is heading.
+
+For me the hook is cost, again: metered model credits mean every web
+search costs something, and the only way to keep a personal bill tiny is
+to watch it properly. Tracking tokens, queries and spend per pipeline in
+the same tool that watches my services sounds exactly right. I might
+turn the swap into a future post, connecting it to this setup.
+
 ## Why this matters beyond me
 
 Self-hosted openwebui, a credits-based model with vision, and my own web
