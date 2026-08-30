@@ -82,3 +82,6 @@ export const alternatesFor = (path: string, siteUrl: string): Alternate[] => {
 
 /** Content-collection entry ids carry a ".es"/".it" suffix per locale. */
 export const experienceSlug = (id: string): string => id.split(".")[0];
+
+/** Generic form of the above, for any locale-suffixed collection id. */
+export const baseSlug = (id: string): string => id.split(".")[0];

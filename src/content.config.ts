@@ -8,7 +8,13 @@ import { glob } from "astro/loaders";
  * HTB policy: only write up RETIRED machines, never exam content.
  */
 const blog = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/blog" }),
+  loader: glob({
+    pattern: "**/*.md",
+    base: "./src/content/blog",
+    // Keep the locale suffix in the id: "post.es.md" -> "post.es" so
+    // baseSlug() can map /es/blog/post back to the right entry.
+    generateId: ({ entry }) => entry.replace(/\.md$/, ""),
+  }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -17,6 +23,8 @@ const blog = defineCollection({
     category: z.enum(["platform", "security", "dev"]),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
+    /** Post language; untranslated locales fall back to nothing here. */
+    locale: z.enum(["en", "es", "it"]).default("en"),
     /** Postmortem chrome (category: platform) */
     severity: z.string().optional(),
     timeToResolve: z.string().optional(),

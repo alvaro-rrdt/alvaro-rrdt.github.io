@@ -1,16 +1,23 @@
 ---
 import { getCollection, render } from "astro:content";
-import { getPosts, readingMinutes } from "@/lib/content";
+import { readingMinutes } from "@/lib/content";
 import { SITE } from "@/config";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import PostHeader from "@/components/PostHeader.astro";
 import { baseSlug, LANGUAGE_NAMES } from "@/i18n";
 
 export async function getStaticPaths() {
-  const posts = (await getPosts()).reverse();
+  const dev = import.meta.env.DEV;
+  const posts = (
+    await getCollection(
+      "blog",
+      (post) =>
+        post.data.locale === "it" && (dev || !post.data.draft),
+    )
+  ).sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-  return posts.map((post, index) => ({
-    params: { slug: post.id },
+  return posts.reverse().map((post, index) => ({
+    params: { slug: baseSlug(post.id) },
     props: {
       post,
       prev: posts[index - 1] ?? null,
@@ -21,14 +28,15 @@ export async function getStaticPaths() {
 
 const { post, prev, next } = Astro.props;
 const { Content, headings } = await render(post);
+const slug = baseSlug(post.id);
 
-/** Sibling translations of this same post, if they exist. */
-const translations = (await getCollection("blog"))
-  .filter((p) => p.data.locale !== "en" && p.id.startsWith(`${post.id}.`))
-  .map((p) => ({
-    locale: p.data.locale,
-    href: `/${p.data.locale}/blog/${baseSlug(p.id)}`,
-  }));
+/** Sibling translations of this same post (English + the other locale). */
+const translations = (
+  await getCollection("blog", (p) => baseSlug(p.id) === slug && p.data.locale !== "it")
+).map((p) => ({
+  locale: p.data.locale,
+  href: p.data.locale === "en" ? `/blog/${baseSlug(p.id)}` : `/${p.data.locale}/blog/${baseSlug(p.id)}`,
+}));
 
 /** Article schema: richer search results for the writing */
 const articleSchema = {
@@ -51,10 +59,11 @@ const readMinutes = readingMinutes(post.body);
 ---
 
 <BaseLayout
+  locale="it"
   title={post.data.title}
   description={post.data.description}
   type="article"
-  ogImage={`/og/${post.id}.png`}
+  ogImage={`/og/${slug}.png`}
   publishedTime={post.data.pubDate}
 >
   <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
@@ -62,12 +71,12 @@ const readMinutes = readingMinutes(post.body);
   <main id="main" class="mx-auto max-w-6xl px-6 pt-20 pb-16">
     <div class="xl:grid xl:grid-cols-[1fr_230px] xl:gap-14">
       <article class="mx-auto w-full max-w-[62ch] min-w-0">
-        <!-- Breadcrumb -->
+        <!-- Breadcrumb: the listing itself is English-only, so it links there -->
         <p class="font-mono text-sm text-zinc-500">
           $ cat
           <a href="/blog" class="text-platform hover:underline">~/blog</a>
           <span class="text-zinc-500">/{post.data.category}</span>
-          <span class="ml-3 text-zinc-500">· {readMinutes} min read</span>
+          <span class="ml-3 text-zinc-500">· {readMinutes} min di lettura</span>
         </p>
 
         <!-- Mobile TOC -->
@@ -75,7 +84,7 @@ const readMinutes = readingMinutes(post.body);
           toc.length > 1 && (
             <details class="mt-5 rounded-lg border border-zinc-800 bg-zinc-900 xl:hidden">
               <summary class="cursor-pointer px-4 py-2.5 font-mono text-xs text-zinc-400">
-                contents
+                contenuti
               </summary>
               <ul class="border-t border-zinc-800 px-4 py-3 font-mono text-xs">
                 {toc.map((heading) => (
@@ -105,7 +114,7 @@ const readMinutes = readingMinutes(post.body);
         {
           translations.length > 0 && (
             <p class="mt-4 font-mono text-xs text-zinc-500">
-              also in:
+              anche in:
               {translations.map((tr) => (
                 <a
                   href={tr.href}
@@ -120,7 +129,7 @@ const readMinutes = readingMinutes(post.body);
         }
 
         <article
-          class="prose prose-invert max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-headings:scroll-mt-28 prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400 prose-code:before:hidden prose-code:after:hidden prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800"
+          class="prose prose-invert mt-8 max-w-none prose-headings:font-semibold prose-headings:tracking-tight prose-headings:scroll-mt-28 prose-a:text-platform prose-blockquote:border-l-zinc-700 prose-blockquote:text-zinc-400 prose-code:before:hidden prose-code:after:hidden prose-pre:bg-zinc-900 prose-pre:border prose-pre:border-zinc-800"
         >
           <Content />
         </article>
@@ -149,40 +158,6 @@ const readMinutes = readingMinutes(post.body);
           })();
         </script>
 
-        <!-- Desktop TOC: highlight the heading crossing mid-viewport -->
-        <script is:inline>
-          (() => {
-            const links = Array.from(
-              document.querySelectorAll("[data-toc-link]"),
-            );
-            if (links.length === 0) return;
-            const byId = new Map();
-            for (const link of links) {
-              byId.set(link.getAttribute("data-toc-link"), link);
-            }
-            const setActive = (id) => {
-              for (const link of links) {
-                const active = link.getAttribute("data-toc-link") === id;
-                link.classList.toggle("text-platform", active);
-                link.classList.toggle("border-platform", active);
-                link.classList.toggle("border-transparent", !active);
-              }
-            };
-            const observer = new IntersectionObserver(
-              (entries) => {
-                for (const entry of entries) {
-                  if (entry.isIntersecting) setActive(entry.target.id);
-                }
-              },
-              { rootMargin: "-40% 0px -55% 0px", threshold: 0 },
-            );
-            for (const id of byId.keys()) {
-              const heading = document.getElementById(id);
-              if (heading) observer.observe(heading);
-            }
-          })();
-        </script>
-
         <!-- Prev / next -->
         <nav
           class="mt-14 grid gap-3 border-t border-zinc-800/60 pt-8 sm:grid-cols-2"
@@ -191,10 +166,10 @@ const readMinutes = readingMinutes(post.body);
           {
             prev ? (
               <a
-                href={`/blog/${prev.id}`}
+                href={`/it/blog/${baseSlug(prev.id)}`}
                 class="group rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 transition-colors hover:border-zinc-500"
               >
-                <span class="font-mono text-xs text-zinc-500">← older</span>
+                <span class="font-mono text-xs text-zinc-500">← più vecchi</span>
                 <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
                   {prev.data.title}
                 </p>
@@ -206,10 +181,10 @@ const readMinutes = readingMinutes(post.body);
           {
             next && (
               <a
-                href={`/blog/${next.id}`}
+                href={`/it/blog/${baseSlug(next.id)}`}
                 class="group rounded-xl border border-zinc-700/60 bg-zinc-900 p-4 text-right transition-colors hover:border-zinc-500"
               >
-                <span class="font-mono text-xs text-zinc-500">newer →</span>
+                <span class="font-mono text-xs text-zinc-500">più nuovi →</span>
                 <p class="mt-1 text-sm font-medium text-zinc-200 transition-colors group-hover:text-platform">
                   {next.data.title}
                 </p>
@@ -223,7 +198,7 @@ const readMinutes = readingMinutes(post.body);
             href="/blog"
             class="font-mono text-sm text-zinc-500 transition-colors hover:text-platform"
           >
-            ← all writing
+            ← tutti gli scritti
           </a>
         </p>
       </article>
@@ -237,7 +212,7 @@ const readMinutes = readingMinutes(post.body);
               class="sticky top-28 max-h-[70vh] overflow-y-auto"
             >
               <p class="font-mono text-xs uppercase tracking-widest text-zinc-600">
-                contents
+                contenuti
               </p>
               <ul class="toc-list mt-4 space-y-2 border-l border-zinc-800 font-mono text-xs">
                 {toc.map((heading) => (
@@ -262,45 +237,3 @@ const readMinutes = readingMinutes(post.body);
     </div>
   </main>
 </BaseLayout>
-
-<style>
-  /* Copy button injected into each code block */
-  :global(.code-copy) {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.6rem;
-    padding: 0.2rem 0.6rem;
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    color: var(--color-zinc-400);
-    background-color: var(--color-zinc-900);
-    border: 1px solid var(--color-zinc-700);
-    border-radius: 0.375rem;
-    opacity: 0;
-    transition:
-      opacity 0.15s,
-      color 0.15s,
-      border-color 0.15s;
-  }
-
-  :global(article:hover .code-copy),
-  :global(.code-copy:focus-visible) {
-    opacity: 1;
-  }
-
-  /* Touch devices have no hover, so keep the button visible there */
-  @media (pointer: coarse) {
-    :global(.code-copy) {
-      opacity: 1;
-    }
-  }
-
-  :global(article pre) {
-    position: relative;
-  }
-
-  :global(.code-copy:hover) {
-    color: var(--color-platform);
-    border-color: var(--color-platform);
-  }
-</style>

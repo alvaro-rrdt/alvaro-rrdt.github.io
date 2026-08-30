@@ -119,12 +119,13 @@ Everything below is implemented and committed on GitButler branch
 - i18n (2026-08-28): English at the root (all original URLs unchanged),
   Spanish under /es, Italian under /it, via Astro's i18n routing
   (`prefixDefaultLocale: false`, static output, no auto-redirect).
-  Locale pages exist for the homepage and the experience section only
-  (listing + deep dives); everything else (blog, /cv, /uses, /now,
-  projects deep dives, RSS, OG images) stays English-only and
-  the header toggle falls back to the locale home there. Header toggle
-  is pure build-time links (no JS): current locale omitted, other two
-  shown as `es` / `it` mono codes. BaseHead emits hreflang + x-default
+  Locale pages exist for the homepage, the experience section (listing +
+  deep dives) and individual blog posts: a post can carry es/it
+  translations as sibling files (`slug.es.md` with `locale: es`) served
+  at /es/blog/[slug]; the English post links to them ("also in"). Blog
+  LISTINGS stay English-only; as do /cv, /uses, /now, projects deep
+  dives, RSS, OG images. The header language menu falls back to the
+  locale home on untranslated paths. BaseHead emits hreflang + x-default
   alternates only for paths with locale equivalents. 33 pages build.
   Translations are agent-drafted: owner (native ES) should skim the
   Spanish, and review the Italian more carefully.
