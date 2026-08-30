@@ -35,18 +35,43 @@ reads the pages. On the search side I compared the hosted options
 (linkup, tavily) against self-hosting searxng. On the loader side:
 playwright, firecrawl, and the newer projects like crawl4ai.
 
-My filter was simple: open source, free, and running on my hardware.
-That, plus a weekend of testing, settled it:
+They are all good products, and several even come with a free monthly
+quota. The catch is what "free" means when your agent hunts in swarms: a
+single research question fans out into a dozen queries, and each of
+those fans out into pages to read. Quotas are priced for a person
+searching, not for a model that searches in swarms. The moment usage
+spikes, the free tier is gone and you are back on a metered bill.
+
+So the filter wrote itself: open source, free, running on my hardware,
+and customizable in ways a hosted API can never be.
 
 - searxng as the metasearch engine: no API key, no quota, no per-call
-  cost, and results I can tune engine by engine.
-- playwright as the loader: full JavaScript rendering, which is what most
-  modern pages need before a model can read them.
+  cost. I choose which engines it queries, how they are weighted, the
+  language and region, and it returns clean JSON the model can digest.
+- playwright as the loader: full JavaScript rendering, which is what
+  most modern pages need before a model can read them, plus control over
+  waits, scrolling and extraction.
 
-For my queries the pair performs on par with what claude was doing, and
-it does the job well enough that I stopped comparing. I am still tuning
-it: engine weights in searxng, playwright timeouts, and how aggressive
-the page-to-text step should be.
+Paired together they do the job very well, and the customization is the
+part a hosted API can never replicate: I decide how the web is searched
+and how it is read.
+
+### Two real tests
+
+The first: check crowdstrike's share price over the last week and what
+drove the changes. The pipeline searched, playwright pulled the market
+pages that actually render the numbers, and the model laid out the move
+alongside the news that drove it. The kind of multi-step research that
+used to mean opening twenty tabs.
+
+The second is ongoing: I am applying to startups and scaleups, and
+before I get excited about a company I want its financial numbers and
+who backs whom. Investors, rounds, runway. The same pipeline digs
+through funding pages and company sites so I can tell a healthy place
+with a nice future from one that is burning out.
+
+I am still tuning it: engine weights in searxng, playwright timeouts,
+and how aggressive the page-to-text step should be.
 
 ## The money part
 

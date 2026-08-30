@@ -40,19 +40,46 @@ alojadas (linkup, tavily) contra autoalojar searxng. En el lado de los
 loaders: playwright, firecrawl y los proyectos más nuevos como
 crawl4ai.
 
-Mi filtro era simple: código abierto, gratis y corriendo en mi
-hardware. Eso, más un fin de semana de pruebas, lo decidió:
+Son buenos productos, y varios incluyen incluso una cuota mensual
+gratuita. El problema es qué significa "gratis" cuando tu agente busca
+en enjambres: una sola pregunta de investigación se ramifica en una
+docena de consultas, y cada una se ramifica en páginas que leer. Las
+cuotas están pensadas para una persona que busca, no para un modelo que
+busca en enjambres. En cuanto el uso se dispara, el tier gratuito
+desaparece y vuelves al pago por consumo.
+
+Así que el filtro se escribió solo: código abierto, gratis, corriendo
+en mi hardware y personalizable de formas que una API alojada nunca
+podrá.
 
 - searxng como metabuscador: sin API key, sin cuota, sin coste por
-  llamada, y resultados que puedo afinar motor a motor.
+  llamada. Yo elijo qué motores consulta, cómo se ponderan, el idioma y
+  la región, y devuelve un JSON limpio que el modelo puede digerir.
 - playwright como loader: renderizado completo de JavaScript, que es lo
   que la mayoría de páginas modernas necesitan antes de que un modelo
-  pueda leerlas.
+  pueda leerlas, con control sobre esperas, scroll y extracción.
 
-Para mis consultas el par rinde a la par de lo que hacía claude, y hace
-el trabajo lo bastante bien como para dejar de comparar. Sigo ajustándolo:
-los pesos de los motores en searxng, los timeouts de playwright y lo
-agresivo del paso de página a texto.
+Juntos hacen el trabajo muy bien, y la personalización es justo la parte
+que una API alojada no puede replicar: yo decido cómo se busca la web y
+cómo se lee.
+
+### Dos pruebas reales
+
+La primera: comprobar el precio de crowdstrike en la última semana y
+qué movió los cambios. El pipeline buscó, playwright descargó las
+páginas de mercado que renderizan los números de verdad, y el modelo
+presentó el movimiento junto a las noticias que lo impulsaron. Ese tipo
+de investigación en varios pasos que antes significaba abrir veinte
+pestañas.
+
+La segunda es continua: estoy aplicando a startups y scaleups, y antes
+de ilusionarme con una empresa quiero sus números financieros y quién
+respalda a quién. Inversores, rondas, runway. El mismo pipeline excava
+en páginas de financiación y webs corporativas para distinguir un sitio
+saludable con futuro de uno que se está quemando.
+
+Sigo ajustándolo: los pesos de los motores en searxng, los timeouts de
+playwright y lo agresivo del paso de página a texto.
 
 ## La parte del dinero
 

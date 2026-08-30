@@ -39,20 +39,48 @@ legge le pagine. Sul lato ricerca ho confrontato le opzioni hostate
 (linkup, tavily) con il self-hosting di searxng. Sul lato loader:
 playwright, firecrawl e i progetti più recenti come crawl4ai.
 
-Il mio filtro era semplice: open source, gratis e in esecuzione sul mio
-hardware. Quello, più un weekend di test, ha deciso:
+Sono ottimi prodotti, e diversi includono persino una quota mensile
+gratuita. Il problema è cosa significhi "gratis" quando il tuo agente
+cerca in sciami: una sola domanda di ricerca si ramifica in una dozzina
+di query, e ognuna si ramifica in pagine da leggere. Le quote sono
+pensate per una persona che cerca, non per un modello che cerca in
+sciami. Appena l'uso sale, il tier gratuito sparisce e si torna al
+pagamento a consumo.
+
+Così il filtro si è scritto da solo: open source, gratis, in esecuzione
+sul mio hardware e personalizzabile in modi che una API hostata non sarà
+mai.
 
 - searxng come motore di metaricerca: nessuna API key, nessuna quota,
-  nessun costo per chiamata, e risultati che posso regolare motore per
-  motore.
+  nessun costo per chiamata. Scelgo io quali motori interroga, come sono
+  ponderati, lingua e regione, e restituisce un JSON pulito che il
+  modello può digerire.
 - playwright come loader: rendering JavaScript completo, che è ciò di
   cui la maggior parte delle pagine moderne ha bisogno prima che un
-  modello possa leggerle.
+  modello possa leggerle, con controllo su attese, scroll ed estrazione.
 
-Per le mie query la coppia fa ciò che faceva claude, e lo fa abbastanza
-bene da farmi smettere di confrontare. Sto ancora regolando: i pesi dei
-motori in searxng, i timeout di playwright e quanto aggressivo deve
-essere il passaggio da pagina a testo.
+Insieme fanno molto bene il lavoro, e la personalizzazione è proprio la
+parte che una API hostata non può replicare: decido io come si cerca il
+web e come viene letto.
+
+### Due test reali
+
+Il primo: controllare il prezzo di crowdstrike nell'ultima settimana e
+cosa ha mosso i cambiamenti. Il pipeline ha cercato, playwright ha
+caricato le pagine di mercato che renderizzano davvero i numeri, e il
+modello ha esposto il movimento insieme alle notizie che lo hanno
+guidato. Quel tipo di ricerca multi-step che prima significava aprire
+venti tab.
+
+Il secondo è in corso: sto candidandomi a startup e scaleup, e prima di
+entusiasmarmi per un'azienda voglio i suoi numeri finanziari e chi
+sostiene chi. Investitori, round, runway. Lo stesso pipeline scava tra
+le pagine di finanziamento e i siti aziendali per distinguere un posto
+sano con un bel futuro da uno che sta bruciando.
+
+Sto ancora regolando: i pesi dei motori in searxng, i timeout di
+playwright e quanto aggressivo deve essere il passaggio da pagina a
+testo.
 
 ## La parte dei soldi
 
