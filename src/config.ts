@@ -95,5 +95,5 @@ export const STATUS_URL = "";
  * ANALYTICS_SRC: full tracker script URL, e.g. "https://umami.example.com/script.js"
  * ANALYTICS_WEBSITE_ID: the UUID Umami shows under Edit -> Tracking code.
  */
-export const ANALYTICS_SRC = "";
-export const ANALYTICS_WEBSITE_ID = "";
+export const ANALYTICS_SRC = "https://homelab.tailafd118.ts.net:8443/script.js";
+export const ANALYTICS_WEBSITE_ID = "31604d58-fb8c-4e8c-b76f-6ac6fac5aa49";
