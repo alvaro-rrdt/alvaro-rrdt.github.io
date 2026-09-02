@@ -34,6 +34,14 @@ const localizedDescription = description ?? SITE.description[locale];
  */
 const analyticsEnabled = Boolean(ANALYTICS_SRC && ANALYTICS_WEBSITE_ID);
 const siteHostname = new URL(SITE.url).hostname;
+/**
+ * The heatmap recorder ships next to the tracker on the same Umami host;
+ * URL resolution keeps the two in sync if the host or tracker name ever
+ * changes.
+ */
+const heatmapRecorderSrc = analyticsEnabled
+  ? new URL("recorder.js", ANALYTICS_SRC).href
+  : "";
 
 /**
  * Canonical URL is derived from Astro's `site` + `base` config (set in the
@@ -168,6 +176,20 @@ const personSchema = {
       data-website-id={ANALYTICS_WEBSITE_ID}
       data-domains={siteHostname}
       data-performance="true"
+    />
+  )
+}
+
+<!-- Heatmap recorder: click/scroll collection for the Umami Heatmap tab.
+     Collection only happens for sessions after heatmaps are enabled and
+     sampled per the dashboard's sample rate. Anonymous, aggregated. -->
+{
+  analyticsEnabled && heatmapRecorderSrc && (
+    <script
+      is:inline
+      defer
+      src={heatmapRecorderSrc}
+      data-website-id={ANALYTICS_WEBSITE_ID}
     />
   )
 }

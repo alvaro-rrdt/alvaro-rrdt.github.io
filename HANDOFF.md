@@ -146,7 +146,9 @@ Everything below is implemented and committed on GitButler branch
   Attributes are inert without the tracker; the read script is a silent
   no-op without window.umami. Window.umami typed in
   src/types/umami.d.ts. Emptying either config value turns analytics
-  back off.
+  back off. A heatmap recorder tag (recorder.js, same gating, added
+  2026-09-02) feeds the dashboard's Heatmap tab; sample rate lives in
+  the Umami website settings, not the repo.
 
 ## Conventions (do not break)
 

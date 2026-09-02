@@ -21,6 +21,7 @@ Vitals performance data.
 |---|---|
 | `src/config.ts` | `ANALYTICS_SRC` and `ANALYTICS_WEBSITE_ID`, both empty by default |
 | `src/components/BaseHead.astro` | Deferred tracker tag, rendered only when both config values are set; pinned to the production hostname via `data-domains`; `data-performance="true"` collects Core Web Vitals |
+| `src/components/BaseHead.astro` (recorder) | Deferred `recorder.js` tag from the same Umami host, feeds the Heatmap tab (click/scroll, anonymous and aggregated); same gating as the tracker |
 | `src/layouts/BaseLayout.astro` | On blog posts only (all locales): one-shot `post_read` event when the reader passes 75% scroll, or immediately when the post fits on screen. Includes `slug` and `locale` in the payload |
 | `src/components/Hero.astro` | `data-umami-event="email_click"` on the email button, `data-umami-event="cv_download"` on the pdf button |
 | `src/components/Footer.astro` | `email_click` on both email links, `linkedin_click` on the contact band LinkedIn button |
@@ -52,6 +53,24 @@ Events emitted:
 Not tracked (on purpose): the palette's email entry (it navigates via JS,
 no anchor to tag), the quiet socials rows, and RSS readers (they fetch
 rss.xml without loading pages).
+
+### Heatmaps (added 2026-09-02)
+
+Enabled in the dashboard (Edit website, Replays & Heatmaps) plus the
+`recorder.js` tag in BaseHead. Notes that matter:
+
+- Sample rate is the fraction of sessions recorded (0 to 1). The 0.15
+  default protects high-traffic sites; at portfolio traffic set it to 1.0
+  so the Heatmap tab becomes readable within days, then dial back to
+  ~0.25 later if you want a leaner database.
+- Data only accumulates from sessions after the recorder shipped, so give
+  it a few days before judging patterns.
+- The Heatmap tab overlays dots on a live iframe of your page. GitHub
+  Pages sends no CSP or X-Frame-Options, so the preview should load; if
+  it ever does not, the click/scroll data still renders on a blank
+  canvas.
+- Data is grouped by screen width in the tab: switch widths to inspect
+  the mobile layout separately, that is where layout issues show up.
 
 ---
 
